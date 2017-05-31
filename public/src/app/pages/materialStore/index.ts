@@ -1,0 +1,11 @@
+export * from './matStore.component';
+export * from './storeBalance/balance.component';
+export * from './Inspection/inspection.component';
+export * from './Receiving/receiving.component';
+// export * from './Receiving/Details/details.component';
+export * from './Dispensing/dispensing.component';
+export * from './Dispensing/Details/details.component';
+export * from './Equalization/equalize.component';
+export * from './Equalization/Details/details.component';
+export * from './Returns/return.component';
+export * from './Returns/Details/details.component';

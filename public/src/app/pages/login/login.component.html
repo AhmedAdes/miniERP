@@ -1,0 +1,38 @@
+<div class="auth-main">
+    <div class="auth-block col-sm-8 col-md-8 col-sm-offset-2 col-md-offset-2">
+        <h1 class="text-center">miniERP</h1>
+        <h2 class="text-center">Global Brands Group</h2>
+
+        <form #f="ngForm" novalidate (ngSubmit)="f.form.valid && login()" class="form-horizontal">
+            <div class="form-group row" [ngClass]="{'has-error': (!username.valid && username.touched), 'has-success': (username.valid && username.touched)}">
+                <label for="username" class="col-sm-2 control-label">User Name</label>
+
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" required />
+                    <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
+                </div>
+            </div>
+            <div class="form-group row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+                    <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button [disabled]="!f.form.valid" type="submit" class="btn btn-success btn-auth">Sign in</button>
+                    <img *ngIf="loading" alt="Image" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                    />
+                    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+
+                    <a routerLink="/login" class="forgot-pass">Forgot password?</a>
+                </div>
+            </div>
+        </form>
+        <div class="alert-warning text-center">
+            copy-rights reserved Ahmed Ades 2016
+        </div>
+    </div>
+</div>

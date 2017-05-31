@@ -1,0 +1,20 @@
+<table class="table" id="tblSizes">
+    <thead>
+        <tr>
+            <td></td>
+            <td>{{srchObj.DisplayNames.SizeID.Disp}}</td>
+            <td>{{srchObj.DisplayNames.QuntPerDozen.Disp}}</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of sizeList" >
+            <td>
+                <input type="checkbox" name="Selected" [(ngModel)]="item.Selected" (change)="checkChanged(item)"/>
+            </td>
+            <td>{{item.Size}}</td>
+            <td>
+                <input class="form-control" *ngIf="item.Selected" type="number" name="QuntPerDozen" [(ngModel)]="item.QuntPerDozen">
+            </td>
+        </tr>
+    </tbody>
+</table>

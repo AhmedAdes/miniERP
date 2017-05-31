@@ -1,0 +1,58 @@
+<div class="page-header text-center">
+    <h2>{{CompanyName}}</h2>
+    <h3>Finished Dispensing Order</h3>
+    <h5><b>Order No.:</b> {{model.RecYear}} / {{model.SerialNo}} </h5>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+        <dl class="dl-horizontal">
+            <dt>{{srchObj.DisplayNames.DispensingDate.Disp}}</dt>
+            <dd>{{model.DispensingDate | date:'mediumDate'}}</dd>
+            <dt>{{srchObj.DisplayNames.SOID.Disp}}</dt>
+            <dd>{{model.SOID}}</dd>
+            <dt>{{srchObj.DisplayNames.CustName.Disp}}</dt>
+            <dd>{{model.CustName}}</dd>
+            <dt>{{srchObj.DisplayNames.DispenseTo.Disp}}</dt>
+            <dd>{{model.DispenseTo}}</dd>
+        </dl>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <ba-card title="Product Details" baCardClass="with-scroll">
+            <table class="table table-hover table-bordered table-striped table-responsive">
+                <colgroup>
+                    <col width="15%" />
+                    <col width="15%" />
+                    <col width="25%" />
+                    <col width="15%" />
+                    <col width="15%" />
+                    <col width="15%" />
+                </colgroup>
+                <thead>
+                    <tr style="background-color: lightseagreen; font-weight: bold ">
+                        <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.ModelCode.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.ColorName.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.BatchNo.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.Quantity.Disp}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finDetails; let i = index">
+                        <td>{{item.RecordDate | date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.ModelCode}}</td>
+                        <td>{{item.ModelName}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.BatchNo }}</td>
+                        <td>{{item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ba-card>
+    </div>
+</div>

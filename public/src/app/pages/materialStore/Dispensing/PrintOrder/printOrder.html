@@ -1,0 +1,52 @@
+<div class="page-header text-center">
+    <h2>{{CompanyName}}</h2>
+    <h3>Material Dispensing Order</h3>
+    <h5><b>Order No.:</b> {{model.RecYear}} / {{model.SerialNo}} </h5>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+        <dl class="dl-horizontal">
+            <dt>{{srchObj.DisplayNames.DispensingDate.Disp}}</dt>
+            <dd>{{model.DispensingDate | date:'mediumDate'}}</dd>
+            <dt>{{srchObj.DisplayNames.DispenseTO.Disp}}</dt>
+            <dd>{{model.DispenseTO}}</dd>
+            <dt>{{srchObj.DisplayNames.UserName.Disp}}</dt>
+            <dd>{{model.UserName}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <ba-card title="Material Details" baCardClass="with-scroll">
+            <table class="table table-hover table-bordered table-striped table-responsive">
+                <colgroup>
+                    <col width="20%" />
+                    <col width="30%" />
+                    <col width="20%" />
+                    <col width="15%" />
+                    <col width="15%" />
+                </colgroup>
+                <thead>
+                    <tr  >
+                        <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.MaterialName.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.QCNO.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.Unit.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.Quantity.Disp}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of matDetails; let i = index">
+                        <td>{{item.RecordDate | date:'mediumDate'}}</td>
+                        <td>{{item.MaterialName}}</td>
+                        <td>{{item.QCNO }}</td>
+                        <td>{{item.Unit}}</td>
+                        <td>{{item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ba-card>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="row">
+    <template ngFor let-rpt [ngForOf]="reports">
+        <div class="col-xs-12 col-md-12" *ngIf="rpt.heading">
+            <h2>{{rpt.header}}</h2>
+        </div>
+        <div class="col-xs-6 col-md-3" *ngIf="!rpt.heading">
+            <a [routerLink]="rpt.link" class="thumbnail">
+                <img src="./assets/img/ReportIcon.svg" alt="Report" style="max-height: 150px; max-width: 100px">
+                <div class="caption text-center">
+                    <h4>{{rpt.header}}</h4>
+                </div>
+            </a>
+        </div>
+    </template>
+</div>

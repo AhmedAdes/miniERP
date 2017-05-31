@@ -1,0 +1,55 @@
+<div class="page-header text-center">
+    <h2>{{CompanyName}}</h2>
+    <h3>Finished Return Order</h3>
+    <h5><b>Order No.:</b> {{model.RecYear}} / {{model.SerialNo}} </h5>
+</div>
+
+<div class="row">
+    <div class="col-md-10 col-sm-10 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+        <dl class="dl-horizontal">
+            <dt>{{srchObj.DisplayNames.ReturnDate.Disp}}</dt>
+            <dd>{{model.ReturnDate | date:'mediumDate'}}</dd>
+            <dt>{{srchObj.DisplayNames.ReturnFrom.Disp}}</dt>
+            <dd>{{model.ReturnFrom}}</dd>
+            <dt>{{srchObj.DisplayNames.ReturnReason.Disp}}</dt>
+            <dd>{{model.ReturnReason}}</dd>
+            <dt>{{srchObj.DisplayNames.UserName.Disp}}</dt>
+            <dd>{{model.UserName}}</dd>
+        </dl>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <ba-card title="Product Details" baCardClass="with-scroll">
+            <table class="table table-hover table-bordered table-striped table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="25%" />
+                    <col width="25%" />
+                    <col width="15%" />
+                    <col width="15%" />
+                </colgroup>
+                <thead>
+                    <tr style="background-color: lightseagreen; font-weight: bold ">
+                        <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.ColorName.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.BatchNo.Disp}}</th>
+                        <th>{{Detmodel.DisplayNames.Quantity.Disp}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finDetails; let i = index">
+                        <td>{{item.RecordDate | date:'mediumDate'}}</td>
+                        <td>{{item.ModelName}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.BatchNo }}</td>
+                        <td>{{item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ba-card>
+    </div>
+</div>

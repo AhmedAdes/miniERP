@@ -1,0 +1,93 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <a class="btn btn-primary" [routerLink]="['/home/finish/finrec']">Receiving استلام</a>
+        <a class="btn btn-primary" [routerLink]="['/home/finish/findisp']"> Dispensing صرف </a>
+        <a class="btn btn-primary" [routerLink]="['/home/finish/finequl']"> Equalization تسوية </a>
+        <!--<a class="btn btn-primary" [routerLink]="['/']"> Return مرتجع </a>-->
+        <a class="btn btn-primary" [routerLink]="['/home/finish/finret']"> Reject مرفوض </a>
+        <a class="btn btn-primary" [routerLink]="['/home/finish/barcode']">Print Barcodes</a>
+
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <table id="tblBrands" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="20%" />
+                <col width="40%" />
+                <col width="20%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.ModelCode.Disp}} <i (click)="SortTable('ModelCode')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelCode') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.ModelName.Disp}} <i (click)="SortTable('ModelName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Color.Disp}} <i (click)="SortTable('Color')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Color') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.ColorName.Disp}} <i (click)="SortTable('ColorName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ColorName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.ProdColorCode.Disp}} <i (click)="SortTable('ProdColorCode')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('ProdColorCode') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Quantity.Disp}} <i (click)="SortTable('Quantity')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Quantity') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.BatchNo.Disp}} <i (click)="SortTable('BatchNo')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('BatchNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchModelCode" name="ModelCode" [(ngModel)]="srchObj.ModelCode">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchModelName" name="ModelName" [(ngModel)]="srchObj.ModelName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchColor" name="Color" [(ngModel)]="srchObj.Color">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchColorName" name="ColorName" [(ngModel)]="srchObj.ColorName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchProdColorCode" name="ProdColorCode" [(ngModel)]="srchObj.ProdColorCode">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchQuantity" name="Quantity" [(ngModel)]="srchObj.Quantity">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchBatchNo" name="BatchNo" [(ngModel)]="srchObj.BatchNo">
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.ModelCode}}</td>
+                    <td>{{item.ModelName}}</td>
+                    <td [style.background]="item.Color">{{item.Color}}</td>
+                    <td>{{item.ColorName}}</td>
+                    <td>{{item.ProdColorCode}}</td>
+                    <td>{{item.Quantity}}</td>
+                    <td>{{item.BatchNo}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>

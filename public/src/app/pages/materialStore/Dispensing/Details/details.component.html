@@ -1,0 +1,53 @@
+<form id="f2" [formGroup]="detform" novalidate (ngSubmit)="detform.valid && AddDetail($event)">
+    <!--(change)="onProdChange($event)"
+(change)="onColorChange($event)"-->
+    <div class="form-horizontal">
+        <div class="form-group row">
+            <label for="MaterialID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.MaterialName.Disp}}</label>
+            <div class="col-md-10">
+                <select class="form-control" name="MaterialID" [(ngModel)]="selectedMaterialID" [formControl]="detform.controls['MaterialID']">
+                    <option value="">Select a Model ...</option>
+                    <option *ngFor="let i of materialList" [ngValue]="i.MaterialID">{{i.MaterialName}}</option>
+                </select>
+                <div *ngIf="detform.controls['MaterialID'].touched && !detform.controls['MaterialID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.MaterialName.Disp}} is required.</div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="QCNO" class="form-control-label col-md-2">{{Detmodel.DisplayNames.QCNO.Disp}}</label>
+            <div class="col-md-4">
+                <select class="form-control" id="QCNO" name="QCNO" [(ngModel)]="Detmodel.QCNO" [formControl]="detform.controls['QCNO']"
+                    required>
+                    <option value="">Select a QCNO ...</option>
+                    <option *ngFor="let i of QCList" [ngValue]="i.QCNO">{{i.QCNO}}</option>
+                </select>
+                <div *ngIf="detform.controls['QCNO'].touched && !detform.controls['QCNO'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.QCNO.Disp}} is required.</div>
+            </div>
+
+            <label for="Stock" class="form-control-label col-md-2">{{Detmodel.DisplayNames.Stock.Disp}}</label>
+            <div class="col-md-4">
+                <input class="form-control" type="number" name="Stock" [(ngModel)]="Detmodel.Stock" [formControl]="detform.controls['Stock']"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="Quantity" class="control-label col-md-2">{{Detmodel.DisplayNames.Quantity.Disp}}</label>
+            <div class="col-md-10">
+                <input class="form-control" type="number" name="Quantity" [(ngModel)]="Detmodel.Quantity" [formControl]="detform.controls['Quantity']"
+                    required min="0" [max]="Detmodel.Stock"/>
+                <div *ngIf="!detform.controls['Quantity'].valid" class="alert alert-danger">
+                    <span *ngIf="detform.controls['Quantity'].hasError('required')">{{Detmodel.DisplayNames.Quantity.Disp}} is required.</span>
+                    <span *ngIf="detform.controls['Quantity'].hasError('min')">{{Detmodel.DisplayNames.Quantity.Disp}} must be greater than or equal 0.</span>
+                    <span *ngIf="detform.controls['Quantity'].hasError('max')">{{Detmodel.DisplayNames.Quantity.Disp}} must be less than Current Store Stock.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add" class="btn btn-info" *ngIf="!EditForm" [disabled]="!detform.valid"/>
+                <button value="Edit" (click)="EditDetail()" class="btn btn-success" *ngIf="EditForm" [disabled]="!detform.valid">Edit</button>
+                <button value="Cancel" (click)="CancelEdit()" class="btn btn-danger" *ngIf="EditForm">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,220 @@
+﻿
+body {
+    /*height: 29.7cm !important;
+    width: 21cm !important;*/
+    margin: 0px !important;
+    padding: 0.9cm 1cm !important;
+}
+
+table {
+        width: 718.11px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+    }
+
+    tbody {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    tr {
+        padding: 0px !important;
+        margin: 0px !important;
+        height: 80.4px !important;
+        min-height: 75px !important;
+        width: 100% !important;
+    }
+    td {
+        word-wrap: break-word !important;
+        color: red;
+        margin: 0px !important;
+        height: 75px !important;
+        line-height: 18px !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 0 !important;
+    }
+    td.Bimage {
+        width: 70px !important;
+        padding: 1px !important;
+    }
+
+    td.Btext {
+        width: 70px !important;
+        padding: 0px !important;
+        font-size: 13px !important;
+        font-family: Arial !important;
+        box-sizing: unset;
+    }
+    .code {
+        font-size: 16px !important;
+        font-family: Arial !important;
+    }
+    p {
+        padding: 0px !important;
+        margin: 0px !important;
+        display: block !important;
+        vertical-align: middle !important;
+        font-size: 13px !important;
+        font-family: Arial !important;
+    }
+    pre {
+        padding: 0px !important;
+        margin: 0px !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        font-size: 13px !important;
+        font-family: Arial !important;
+    }
+
+    img {
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+
+/*td .Bimage {float: left;}*/
+/*td .Btext {float: right;}*/
+
+@media print {
+    @page {
+        size: A4, portrait !important;
+        padding: 0.9cm 1cm !important;
+        margin: 0px !important;
+    }
+
+    body {
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+    
+    table {
+        width: 718.11px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+    }
+
+    tbody {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    tr {
+        padding: 0px !important;
+        margin: 0px !important;
+        height: 80px !important;
+        min-height: 75px !important;
+        width: 100% !important;
+    }
+    td {
+        word-wrap: break-word !important;
+        color: red;
+        margin: 0px !important;
+        height: 75px !important;
+        line-height: 18px !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 0 !important;
+    }
+    td.Bimage {
+        width: 70px !important;
+        padding: 1px !important;
+    }
+
+    td.Btext {
+        width: 70px !important;
+        padding: 0px !important;
+        font-size: 13px !important;
+        font-family: Arial !important;
+        box-sizing: unset;
+    }
+    .code {
+        font-size: 16px !important;
+        font-family: Arial !important;
+    }
+    p {
+        padding: 0px !important;
+        margin: 0px !important;
+        display: block !important;
+        vertical-align: middle !important;
+        font-size: 13px !important;
+        font-family: Arial !important;
+    }
+    pre {
+        padding: 0px !important;
+        margin: 0px !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+        font-size: 13px !important;
+        font-family: Arial !important;
+    }
+
+    img {
+        display: inline-block !important;
+        vertical-align: middle !important;
+    }
+
+    /*td .Bimage {float: left;}*/
+    /*td .Btext {float: right;}*/
+    /*td span {position: absolute;}*/
+
+    .PrintnewPage {
+        page-break-after: always;
+    }
+
+    .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+    .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+        float: left;
+    }
+
+    .col-sm-12, .col-md-12 {
+        width: 100%;
+    }
+
+    .col-sm-11, .col-md-12 {
+        width: 91.66666666666666%;
+    }
+
+    .col-sm-10, .col-md-10 {
+        width: 83.33333333333334%;
+    }
+
+    .col-sm-9, .col-md-9 {
+        width: 75%;
+    }
+
+    .col-sm-8, .col-md-8 {
+        width: 66.66666666666666%;
+    }
+
+    .col-sm-7, .col-md-7 {
+        width: 58.333333333333336%;
+    }
+
+    .col-sm-6, .col-md-6 {
+        width: 50%;
+    }
+
+    .col-sm-5, .col-md-5 {
+        width: 41.66666666666667%;
+    }
+
+    .col-sm-4, .col-md-4 {
+        width: 33.33333333333333%;
+    }
+
+    .col-sm-3, .col-md-3 {
+        width: 25%;
+    }
+
+    .col-sm-2, .col-md-2 {
+        width: 16.666666666666664%;
+    }
+
+    .col-sm-1, .col-md-1 {
+        width: 8.333333333333332%;
+    }
+}

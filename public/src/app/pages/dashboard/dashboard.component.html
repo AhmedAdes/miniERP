@@ -1,0 +1,91 @@
+<!--<div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="card alert-info">
+            <div class="card-block">
+                <div class="card-header">Fabric Materials</div>
+                <h1>{{FabricCount}} <i class="pull-right fa fa-scissors"></i></h1>
+            </div>
+            <div class="card-footer">
+                <a [routerLink]="['/home/materials/fabrics']">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="card alert-danger">
+            <div class="card-block">
+                <div class="card-header">Accessories</div>
+                <h1>{{AccessoryCount}} <i class="pull-right fa fa-bookmark-o"></i></h1>
+            </div>
+            <div class="card-footer">
+                <a [routerLink]="['/home/materials/Accessories']">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="card alert-warning">
+            <div class="card-block">
+                <div class="card-header">Models Count To Date</div>
+                <h1>{{ModelCount}} <i class="pull-right ion ion-pricetags"></i></h1>
+            </div>
+            <div class="card-footer">
+                <a [routerLink]="['/home/model']">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="card alert-success">
+            <div class="card-block">
+                <div class="card-header">Sales Count To Date</div>
+                <h1>{{SalesCount}} <i class="pull-right ion ion-ios-cart-outline"></i></h1>
+            </div>
+            <div class="card-footer">
+                <a [routerLink]="['/home/sales/order']">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix visible-sm-block"></div>
+</div>-->
+<div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="small-box alert-info">
+            <div class="inner">
+                <h3>{{FabricCount}}</h3>
+                <span>Fabric Materials</span>
+            </div>
+            <div class="icon"><i class="fa fa-scissors"></i></div>
+            <a [routerLink]="['/home/materials/fabrics']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div><!-- /.small-box -->
+    </div><!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="small-box alert-danger">
+            <div class="inner">
+                <h3>{{AccessoryCount}}</h3>
+                <span>Accessories</span>
+            </div>
+            <div class="icon"><i class="fa fa-bookmark-o"></i></div>
+            <a [routerLink]="['/home/materials/Accessories']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div><!-- /.small-box -->        
+    </div><!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="small-box alert-warning">
+            <div class="inner">
+                <h3>{{ModelCount}}</h3>
+                <span>Models Count To Date</span>
+            </div>
+            <div class="icon"><i class="ion ion-pricetags"></i></div>
+            <a [routerLink]="['/home/model']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div><!-- /.small-box -->        
+    </div><!-- /.col -->
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="small-box alert-success">
+            <div class="inner">
+                <h3>{{SalesCount}}</h3>
+                <span>Sales Count To Date</span>
+            </div>
+            <div class="icon"><i class="ion ion-ios-cart-outline"></i></div>
+            <a [routerLink]="['/home/sales/order']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div><!-- /.small-box --> 
+    </div><!-- /.col -->    
+    <!-- fix for small devices only -->
+    <div class="clearfix visible-sm-block"></div>
+</div><!-- /.row -->

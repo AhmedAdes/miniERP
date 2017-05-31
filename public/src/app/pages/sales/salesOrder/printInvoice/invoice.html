@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+        <button class="btn btn-primary btn-block" (click)="AfterViewInit()">Print</button>
+    </div>
+    <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+        <button class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+    </div>
+</div>
+<div id="print-section">
+    <div class="page-header" style="text-align: center;">
+        <h2>{{CompanyName}}</h2>
+        <h3>Sales Order Invoice</h3>
+        <h5><b>Order No.:</b> {{header.SOID}} </h5>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-10 col-xs-10">
+            <dl class="dl-horizontal">
+                <dt> {{Dispobj.DisplayNames.SODate.Disp}} </dt>
+                <dd> {{header.SODate | date: 'mediumDate'}} </dd>
+                <dt> {{Dispobj.DisplayNames.CustName.Disp}} </dt>
+                <dd> {{header.CustName}} </dd>
+                <dt> {{Dispobj.DisplayNames.DeliveryDate.Disp}} </dt>
+                <dd> {{header.DeliveryDate | date: 'mediumDate'}} </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12 col-md-12">
+
+            <table class="table table-hover table-striped table-responsive">
+                <colgroup>
+                    <col width="15%" />
+                    <col width="20%" />
+                    <col width="15%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="15%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>{{Dispdet.DisplayNames.ModelCode.Disp}}</th>
+                        <th>{{Dispdet.DisplayNames.ModelName.Disp}}</th>
+                        <th>{{Dispdet.DisplayNames.ColorName.Disp}}</th>
+                        <th>{{Dispdet.DisplayNames.Quantity.Disp}}</th>
+                        <th>{{Dispdet.DisplayNames.Price.Disp}}</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of SDetails; let i = index">
+                        <td>{{item.ModelCode}}</td>
+                        <td>{{item.ModelName}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.Quantity}}</td>
+                        <td>{{item.Price}}</td>
+                        <td>{{item.Price * item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-2 col-xs-offset-2 col-sm-10 col-xs-10">
+            <table class="table table-responsive">
+                <tbody>
+                    <tr>
+                        <td>Total Sum المجموع:</td>
+                        <td>{{subtotal | number:'1.2-2'}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{Dispobj.DisplayNames.SalesTax.Disp}}</td>
+                        <td>{{subtotal * header.SalesTax / 100 | number:'1.2-2'}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{Dispobj.DisplayNames.Discount.Disp}}</td>
+                        <td>{{subtotal * header.Discount / 100 | number:'1.2-2'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-danger">Grand Total المجموع الكلي:</td>
+                        <td class="text-danger">{{header.GrandTotal | number:'1.2-2'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

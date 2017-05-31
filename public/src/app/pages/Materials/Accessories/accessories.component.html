@@ -1,0 +1,92 @@
+<div class="panel panel-default zz">
+	<div class="panel-heading">
+
+		<h2> {{headerText}} </h2>
+		<button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+		<br><br>
+		<div class="alert alert-danger" *ngIf="errorMessage">
+			<p>{{errorMessage}}</p>
+		</div>
+	</div>
+	<div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+		<table id="tblClothMaterials" class="table table-hover table-striped table-responsive">
+			<colgroup>
+				<col width="20%" />
+				<col width="10%" />
+				<col width="10%" />
+				<col width="15%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th> {{srchMat.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+					<th> {{srchMat.DisplayNames.Unit.Disp}} <i (click)="SortTable('Unit')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Unit') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+					<th> {{srchMat.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+					<th></th>
+				</tr>
+				<tr>
+					<th>
+						<div class="input-group">
+							<span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+							<input  class="form-control" type="text" id="srchMaterialName" name="MaterialName" [(ngModel)]="srchMat.MaterialName">
+						</div>
+					</th>
+					<th>
+						<div class="input-group">
+							<span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+							<input  class="form-control" type="text" id="srchUnit" name="Unit" [(ngModel)]="srchMat.Unit">
+						</div>
+					</th>
+					<th>
+						<div class="input-group">
+							<span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+							<input  class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchMat.UserName">
+						</div>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of (collection | filter:srchMat | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+					<td>{{item.MaterialName}}</td>
+					<td>{{item.Unit}}</td>
+					<td>{{item.UserName}}</td>
+					<td>
+						<button (click)="EditThis(item.MaterialID)" class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
+						<button (click)="ShowDetails(item.MaterialID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
+						<button (click)="Delete(item.MaterialID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+	</div>
+
+	<div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate">
+		<form (submit)="HandleForm($event)">
+			<div class="form-horizontal">
+
+				<h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this Accessory ?</h2>
+				<br>
+
+				<div class="form-group row">
+					<label for="MaterialName" class="control-label col-md-2">{{srchMat.DisplayNames.MaterialName.Disp}}</label>
+					<div class="col-md-10">
+						<input class="form-control" type="text" name="MaterialName" [(ngModel)]="model.MaterialName">
+					</div>
+				</div>
+				<div class="form-group  row">
+					<label for="Unit" class="control-label col-md-2">{{srchMat.DisplayNames.Unit.Disp}}</label>
+					<div class="col-md-10">
+						<input class="form-control" type="text" name="Unit" [(ngModel)]="model.Unit">
+					</div>
+				</div>
+				<div class="form-group no-print col-md-offset-2 col-md-10">
+					<button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>					|
+					<button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button> |
+					<button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

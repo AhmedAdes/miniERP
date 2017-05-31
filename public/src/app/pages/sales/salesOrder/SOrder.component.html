@@ -1,0 +1,217 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+        <br><br>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage | json}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="tableslide panel-body table-responsive" *ngIf="showTable">
+        <table id="tblCustomers" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="15%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="15%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchHeadObj.DisplayNames.CustName.Disp}} <i (click)="SortTable('CustName')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('CustName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchHeadObj.DisplayNames.SODate.Disp}} <i (click)="SortTable('SODate')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SODate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchHeadObj.DisplayNames.DeliveryDate.Disp}} <i (click)="SortTable('DeliveryDate')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('DeliveryDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchHeadObj.DisplayNames.SalesPerson.Disp}} <i (click)="SortTable('SalesPerson')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('SalesPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchHeadObj.DisplayNames.GrandTotal.Disp}} <i (click)="SortTable('GrandTotal')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('GrandTotal') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchHeadObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchHeadObj.CustName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSODate" name="SODate" [(ngModel)]="srchHeadObj.SODate">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchDeliveryDate" name="DeliveryDate" [(ngModel)]="srchHeadObj.DeliveryDate">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSalesPerson" name="SalesPerson" [(ngModel)]="srchHeadObj.SalesPerson">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchGrandTotal" name="GrandTotal" [(ngModel)]="srchHeadObj.GrandTotal">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchHeadObj.UserName">
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchHeadObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.CustName}}</td>
+                    <td>{{item.SODate | date:'mediumDate'}}</td>
+                    <td>{{item.DeliveryDate | date:'mediumDate'}}</td>
+                    <td>{{item.SalesPerson}}</td>
+                    <td>{{item.GrandTotal | number:'1.2-2'}}</td>
+                    <td>{{item.UserName}}</td>
+                    <td>
+                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-info" title="Print Invoice"><i class="ion-printer"></i></button>
+                        <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
+                        <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
+                        <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div [@myAnimation]="!showTable" class="dataslide panel-body" *ngIf="Formstate">
+        <form (submit)="f.form.valid && HandleForm($event)" #f="ngForm" novalidate>
+            <div class="form-horizontal">
+
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this sales order ?</h2>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ba-card title="Basic Info" baCardClass="with-scroll">
+                            <sales-header [model]="model" [currentUser]="currentUser" (custChanged)="custChanged($event)" (CalculateTotal)="CalculateTotal()"
+                                (formValid)="headerValid = $event" (changeRepExist)="changeRepExist($event)">
+                            </sales-header>
+                        </ba-card>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ba-card title="Products Details" baCardClass="with-scroll">
+                            <sales-detail *ngIf="Formstate!='Detail' && Formstate!='Delete'" [Details]="SDetails" [currentUser]="currentUser" [CustomerID]="model.CustID"
+                                [Detmodel]="Detmodel" [modelsList]="modelsList" (CalculateTotal)="CalculateTotal()">
+                            </sales-detail>
+
+                            <table class="table table-hover table-striped table-responsive">
+                                <colgroup>
+                                    <col width="15%" />
+                                    <col width="20%" />
+                                    <col width="15%" />
+                                    <col width="10%" />
+                                    <col width="10%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>{{Detmodel.DisplayNames.ModelCode.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.ColorName.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.Quantity.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.Price.Disp}}</th>
+                                        <th>Total Price</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of SDetails; let i = index">
+                                        <td>{{item.ModelCode}}</td>
+                                        <td>{{item.ModelName}}</td>
+                                        <td>{{item.ColorName}}</td>
+                                        <td>{{item.Quantity}}</td>
+                                        <td>{{item.Price}}</td>
+                                        <td>{{item.Price * item.Quantity}}</td>
+                                        <td><a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Delete</a></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            Total Sum: <span id="SumTotal">{{model.SubTotal | number:'1.2-2'}}</span>
+                                            <br> Grand Total: <span id="GrandTotal">{{model.GrandTotal | number:'1.2-2'}}</span>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </ba-card>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ba-card title="Payment Details" baCardClass="with-scroll">
+                            <sorder-payment *ngIf="Formstate!='Detail' && Formstate!='Delete'" [Payments]="SPayments" [currentUser]="currentUser" [SalesRepExist]="SalesRepExist"
+                                [Paymodel]="PayModel" (ValidateTotal)="ValidateTotal()">
+                            </sorder-payment>
+
+                            <table class="table table-hover table-striped table-responsive">
+                                <colgroup>
+                                    <col width="20%" />
+                                    <col width="20%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                    <col width="15%" />
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>{{PayModel.DisplayNames.PaymentDate.Disp}}</th>
+                                        <th>{{PayModel.DisplayNames.PayAmount.Disp}}</th>
+                                        <th>{{PayModel.DisplayNames.CommisionPaymentDate.Disp}}</th>
+                                        <th>{{PayModel.DisplayNames.CommisionAmount.Disp}}</th>
+                                        <th>{{PayModel.DisplayNames.UserName.Disp}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of SPayments; let i = index">
+                                        <td>{{item.PaymentDate | date:'mediumDate'}}</td>
+                                        <td>{{item.PayAmount | number:'1.2-2'}}</td>
+                                        <td>{{item.CommisionPaymentDate | date:'mediumDate'}}</td>
+                                        <td>{{item.CommisionAmount | number:'1.2-2'}}</td>
+                                        <td>{{item.UserName}}</td>
+                                        <td><a class="no-print" href="javascript:void(0)" (click)="DeletePayment(i)">Delete</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ba-card>
+                    </div>
+                </div>
+                <div class="form-group no-print col-md-offset-2 col-md-10">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>                    |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

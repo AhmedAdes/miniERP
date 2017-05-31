@@ -1,0 +1,18 @@
+<table class="table" id="tblColors">
+    <thead>
+        <tr>
+            <td>Color</td>
+            <td>{{srchObj.DisplayNames.ColorName.Disp}}</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of colorList; let i = index" >
+            <td>
+                <input [(colorPicker)]="item.Color" [style.background]="item.Color" [(ngModel)]="item.Color" [value]="item.Color" class="form-control"/>
+            </td>
+            <td><input type="text" name="ColorName" [(ngModel)]="item.ColorName"  class="form-control"></td>
+            <td><a class="no-print" href="javascript:void(0)" (click)="DeleteColor(i)">Delete</a></td>
+        </tr>
+    </tbody>
+</table>

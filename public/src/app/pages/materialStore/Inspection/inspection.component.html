@@ -1,0 +1,422 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <h2> {{headerText}} </h2>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew('Accessories')">Create New for Accessories</button>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew('Fabrics')">Create New for Fabrics</button>
+        <br *ngIf="!Formstate"><br *ngIf="!Formstate">
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <tabset>
+            <tab heading="Pending">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Pending Material Inspection  خامات تحت الفحص</b>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-striped table-responsive">
+                            <colgroup>
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="15%" />
+                                <col width="20%" />
+                                <col width="15%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>{{srchPend.DisplayNames.RecDate.Disp}} <i (click)="SortTable('RecDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('RecDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.ManfDate.Disp}} <i (click)="SortTable('ManfDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('ManfDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.BatchNo.Disp}} <i (click)="SortTable('BatchNo')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('BatchNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.SupName.Disp}} <i (click)="SortTable('SupName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('SupName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.QtyReceived.Disp}} <i (click)="SortTable('QtyReceived')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('QtyReceived') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th> {{srchPend.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="RecDate" [(ngModel)]="srchPend.RecDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchPend.ManfDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="BatchNo" [(ngModel)]="srchPend.BatchNo">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="SupName" [(ngModel)]="srchPend.SupName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="MaterialName" [(ngModel)]="srchPend.MaterialName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="QtyReceived" [(ngModel)]="srchPend.QtyReceived">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="UserName" [(ngModel)]="srchPend.UserName">
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of (Pending | filter:srchPend | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                                    <td>{{item.RecDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.ManfDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.BatchNo}}</td>
+                                    <td>{{item.SupName}}</td>
+                                    <td>{{item.MaterialName}}</td>
+                                    <td>{{item.QtyReceived}}</td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>
+                                        <button (click)="EditThis(item.InspID)" class="btn btn-round btn-info" title="Edit"><i class="ion-edit"></i></button>
+                                        <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="ion-eye"></i></button>
+                                        <button (click)="Delete(item.InspID)" class="btn btn-round btn-danger" title="Delete"><i class="ion-trash-a"></i></button>
+                                        <button *ngIf="item.Approved == false && item.Reject == false" (click)="Release(item.InspID)" class="btn btn-round btn-warning"
+                                            title="Release"><i class="ion-checkmark-round"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="History">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Material Inspection History تاريخ الفحص</b>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-striped table-responsive">
+                            <colgroup>
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="20%" />
+                                <col width="20%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>{{srchObj.DisplayNames.RecDate.Disp}} <i (click)="SortTable('RecDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('RecDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.ManfDate.Disp}} <i (click)="SortTable('ManfDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('ManfDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.BatchNo.Disp}} <i (click)="SortTable('BatchNo')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('BatchNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.SupName.Disp}} <i (click)="SortTable('SupName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('SupName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.QtyApproved.Disp}} <i (click)="SortTable('QtyApproved')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('QtyApproved') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.QtyReject.Disp}} <i (click)="SortTable('QtyReject')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('QtyReject') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="RecDate" [(ngModel)]="srchObj.RecDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchObj.ManfDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="BatchNo" [(ngModel)]="srchObj.BatchNo">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="SupName" [(ngModel)]="srchObj.SupName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="MaterialName" [(ngModel)]="srchObj.MaterialName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="QtyApproved" [(ngModel)]="srchObj.QtyApproved">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="QtyReject" [(ngModel)]="srchObj.QtyReject">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="UserName" [(ngModel)]="srchObj.UserName">
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of (History | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                                    <td>{{item.RecDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.ManfDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.BatchNo}}</td>
+                                    <td>{{item.SupName}}</td>
+                                    <td>{{item.MaterialName}}</td>
+                                    <td>{{item.QtyApproved}}</td>
+                                    <td>{{item.QtyReject}}</td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>
+                                        <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="ion-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </tab>
+        </tabset>        
+    </div>
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate && Formstate != 'Release'">
+        <form (submit)="basicform.valid && HandleForm($event)" id="f1" [formGroup]="basicform" novalidate>
+            <div class="form-horizontal">
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this Receiving ?</h2>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group row">
+                            <label for="RecDate" class="control-label col-md-3">{{srchObj.DisplayNames.RecDate.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="date" name="cnvRecDate" [(ngModel)]="cnvRecDate" [formControl]="basicform.controls['RecDate']"
+                                    required>
+                                <div *ngIf="basicform.controls['RecDate'].touched && !basicform.controls['RecDate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.RecDate.Disp}} is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="SupID" class="control-label col-md-3">{{srchObj.DisplayNames.SupName.Disp}}</label>
+                            <div class="col-md-9">
+                                <select class="form-control" id="SupID" name="SupID" [(ngModel)]="model.SupID" [formControl]="basicform.controls['SupID']">
+                                    <option value="">Select a Supplier ...</option>
+                                    <option *ngFor="let i of suppliers" [ngValue]="i.SupID">{{i.SupName}}</option>
+                                </select>
+                                <div *ngIf="basicform.controls['SupID'].touched && !basicform.controls['SupID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.SupName.Disp}} is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="MaterialID" class="control-label col-md-3">{{srchObj.DisplayNames.MaterialName.Disp}}</label>
+                            <div class="col-md-9">
+                                <select class="form-control" id="MaterialID" name="MaterialID" [(ngModel)]="model.MaterialID" [formControl]="basicform.controls['MaterialID']">
+                                    <option value="">Select a Material ...</option>
+                                    <option *ngFor="let i of materials" [ngValue]="i.MaterialID">{{i.MaterialName}}</option>
+                                </select>
+                                <div *ngIf="basicform.controls['MaterialID'].touched && !basicform.controls['MaterialID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.MaterialName.Disp}} is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="InvoiceNo" class="control-label col-md-3">{{srchObj.DisplayNames.InvoiceNo.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="InvoiceNo" [(ngModel)]="model.InvoiceNo" [formControl]="basicform.controls['InvoiceNo']">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="InvoiceDate" class="control-label col-md-3">{{srchObj.DisplayNames.InvoiceDate.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="date" name="InvoiceDate" [(ngModel)]="model.InvoiceDate" [formControl]="basicform.controls['InvoiceDate']">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ManfDate" class="control-label col-md-3">{{srchObj.DisplayNames.ManfDate.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="date" name="cnvManfDate" [(ngModel)]="cnvManfDate" [formControl]="basicform.controls['ManfDate']">
+                                <div *ngIf="basicform.controls['ManfDate'].touched && !basicform.controls['ManfDate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.ManfDate.Disp}} is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="BatchNo" class="control-label col-md-3">{{srchObj.DisplayNames.BatchNo.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="BatchNo" [(ngModel)]="model.BatchNo" [formControl]="basicform.controls['BatchNo']">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Unit" class="control-label col-md-3">{{srchObj.DisplayNames.Unit.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="Unit" [(ngModel)]="model.Unit" [formControl]="basicform.controls['Unit']" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="QtyReceived" class="control-label col-md-3">{{srchObj.DisplayNames.QtyReceived.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="number" name="QtyReceived" [(ngModel)]="model.QtyReceived" [formControl]="basicform.controls['QtyReceived']">
+                                <div *ngIf="basicform.controls['QtyReceived'].touched && !basicform.controls['QtyReceived'].valid" class="alert alert-danger">
+                                    <span *ngIf="basicform.controls['QtyReceived'].hasError('required')">{{srchObj.DisplayNames.QtyReceived.Disp}} is required.</span>
+                                    <span *ngIf="basicform.controls['QtyReceived'].hasError('min')">{{srchObj.DisplayNames.QtyReceived.Disp}} must be greater than or equal 0.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="SampleQty" class="control-label col-md-3">{{srchObj.DisplayNames.SampleQty.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="number" name="SampleQty" [(ngModel)]="model.SampleQty" [formControl]="basicform.controls['SampleQty']">
+                                <div *ngIf="basicform.controls['SampleQty'].touched && !basicform.controls['SampleQty'].valid" class="alert alert-danger">
+                                    <span *ngIf="basicform.controls['SampleQty'].hasError('required')">{{srchObj.DisplayNames.SampleQty.Disp}} is required.</span>
+                                    <span *ngIf="basicform.controls['SampleQty'].hasError('min')">{{srchObj.DisplayNames.SampleQty.Disp}} must be greater than or equal 0.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="UnitPrice" class="control-label col-md-3">{{srchObj.DisplayNames.UnitPrice.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="number" name="UnitPrice" [(ngModel)]="model.UnitPrice" [formControl]="basicform.controls['UnitPrice']">
+                                <div *ngIf="basicform.controls['UnitPrice'].touched && !basicform.controls['UnitPrice'].valid" class="alert alert-danger">
+                                    <span *ngIf="basicform.controls['UnitPrice'].hasError('required')">{{srchObj.DisplayNames.UnitPrice.Disp}} is required.</span>
+                                    <span *ngIf="basicform.controls['UnitPrice'].hasError('min')">{{srchObj.DisplayNames.UnitPrice.Disp}} must be greater than or equal 0.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="TotalPrice" class="control-label col-md-3">{{srchObj.DisplayNames.TotalPrice.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="number" name="TotalPrice" [(ngModel)]="model.TotalPrice" [formControl]="basicform.controls['TotalPrice']"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Notes" class="control-label col-md-3">{{srchObj.DisplayNames.Notes.Disp}}</label>
+                            <div class="col-md-9">
+                                <textarea rows="2" name="Notes" [(ngModel)]="model.Notes" [formControl]="basicform.controls['Notes']"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group no-print col-md-offset-2 col-md-8">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'" [disabled]="!basicform.valid">Save</button>                    |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate == 'Release'">
+        <form (submit)="rlsform.valid && HandleForm($event)" [formGroup]="rlsform" novalidate>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <dl class="dl-horizontal">
+                            <dt>{{srchObj.DisplayNames.RecDate.Disp}}</dt>
+                            <dd>{{model.RecDate | date: 'dd/MM/yyyy'}}</dd>
+                            <dt>Year / Serial</dt>
+                            <dd>{{model.RecYear}} / {{model.SerialNo}}</dd>
+                            <dt>{{srchObj.DisplayNames.ManfDate.Disp}}</dt>
+                            <dd>{{model.ManfDate | date: 'dd/MM/yyyy'}}</dd>
+                            <dt>{{srchObj.DisplayNames.InvoiceNo.Disp}}</dt>
+                            <dd>{{model.InvoiceNo}}</dd>
+                            <dt>{{srchObj.DisplayNames.InvoiceDate.Disp}}</dt>
+                            <dd>{{model.InvoiceDate | date: 'dd/MM/yyyy'}}</dd>
+                            <dt>{{srchObj.DisplayNames.BatchNo.Disp}}</dt>
+                            <dd>{{model.BatchNo}}</dd>
+                            <dt>{{srchObj.DisplayNames.SupName.Disp}}</dt>
+                            <dd>{{model.SupName}}</dd>
+                            <dt>{{srchObj.DisplayNames.MaterialName.Disp}}</dt>
+                            <dd>{{model.MaterialName}}</dd>
+                            <dt>{{srchObj.DisplayNames.Unit.Disp}}</dt>
+                            <dd>{{model.Unit}}</dd>
+                            <dt>{{srchObj.DisplayNames.QtyReceived.Disp}}</dt>
+                            <dd>{{model.QtyReceived}}</dd>
+                            <dt>{{srchObj.DisplayNames.SampleQty.Disp}}</dt>
+                            <dd>{{model.SampleQty}}</dd>
+                        </dl>
+                        <div class="form-group row">
+                            <label for="Approved" class="radio-inline control-label col-md-6">                            
+                                {{srchObj.DisplayNames.Approved.Disp}}  <input class="" type="checkbox" name="Approved" [(ngModel)]="model.Approved" [formControl]="rlsform.controls['Approved']">
+                            </label>
+                        </div>
+                        <div class="form-group row">
+                            <label for="QtyApproved" class="control-label col-md-3">{{srchObj.DisplayNames.QtyApproved.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="number" name="QtyApproved" [(ngModel)]="model.QtyApproved" [formControl]="rlsform.controls['QtyApproved']">
+                                <div *ngIf="rlsform.controls['QtyApproved'].touched && !rlsform.controls['QtyApproved'].valid" class="alert alert-danger">
+                                    <span class="alert alert-danger" *ngIf="rlsform.controls['QtyApproved'].hasError('min')">{{srchObj.DisplayNames.QtyApproved.Disp}} must be greater than or equal 0.</span>
+                                    <span class="alert alert-danger" *ngIf="rlsform.controls['QtyApproved'].hasError('max')">{{srchObj.DisplayNames.QtyApproved.Disp}} must be less than or equal {{model.QtyReceived - model.SampleQty}}.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Reject" class="radio-inline control-label col-md-6">
+                                {{srchObj.DisplayNames.Reject.Disp}}  <input class="" type="checkbox" name="Reject" [(ngModel)]="model.Reject" [formControl]="rlsform.controls['Reject']">
+                            </label>
+                        </div>
+                        <div class="form-group row">
+                            <label for="QtyReject" class="control-label col-md-3">{{srchObj.DisplayNames.QtyReject.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="number" name="QtyReject" [(ngModel)]="model.QtyReject" [formControl]="rlsform.controls['QtyReject']">
+                                <div *ngIf="rlsform.controls['QtyReject'].touched && !rlsform.controls['QtyReject'].valid" class="alert alert-danger">
+                                    <span class="alert alert-danger" *ngIf="rlsform.controls['QtyReject'].hasError('min')">{{srchObj.DisplayNames.QtyReject.Disp}} must be greater than or equal 0.</span>
+                                    <span class="alert alert-danger" *ngIf="rlsform.controls['QtyReject'].hasError('max')">{{srchObj.DisplayNames.QtyReject.Disp}} must be less than or equal {{model.QtyReceived - model.SampleQty}}.</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="Notes" class="control-label col-md-3">{{srchObj.DisplayNames.Notes.Disp}}</label>
+                            <div class="col-md-9">
+                                <textarea rows="2" name="Notes" [(ngModel)]="model.Notes" [formControl]="rlsform.controls['Notes']"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group no-print col-md-offset-2 col-md-8">
+                            <button type="submit" value="Save" class="btn btn-info" [disabled]="!rlsform.valid">Save</button>                            |
+                            <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

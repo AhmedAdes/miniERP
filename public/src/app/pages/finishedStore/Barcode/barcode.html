@@ -1,0 +1,90 @@
+<div class="panel-body table-responsive" *ngIf="!showTable">
+    <form [formGroup]="detform" novalidate (ngSubmit)="detform.valid && generateCodes($event)">
+
+        <div class="form-group">
+            <div class="form-group row">
+                <label for="ModelID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
+                <div class="col-md-10">
+                    <select class="form-control" name="ModelID" [(ngModel)]="selectedModelID" [formControl]="detform.controls['ModelID']">
+                        <option value="">Select a Model ...</option>
+                        <option *ngFor="let i of modelsList" [ngValue]="i.ModelID">{{i.ModelName}}</option>
+                    </select>
+                    <div *ngIf="detform.controls['ModelID'].touched && !detform.controls['ModelID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ColorID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ColorName.Disp}}</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" [formControl]="detform.controls['ColorID']">
+                        <option value="">Select a Color ...</option>
+                        <option *ngFor="let i of colorList" [ngValue]="i.ColorID">{{i.ColorName}}</option>
+                    </select>
+                    <div *ngIf="detform.controls['ColorID'].touched && !detform.controls['ColorID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ColorName.Disp}} is required.</div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="BatchNo" class="control-label col-md-2">{{Detmodel.DisplayNames.BatchNo.Disp}}</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="text" name="BatchNo" [(ngModel)]="Detmodel.BatchNo" [formControl]="detform.controls['BatchNo']">
+                    <div *ngIf="detform.controls['BatchNo'].touched && !detform.controls['BatchNo'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.BatchNo.Disp}} is required.</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Quantity" class="control-label col-md-2">{{Detmodel.DisplayNames.Quantity.Disp}}</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="number" name="Quantity" [(ngModel)]="Detmodel.Quantity" [formControl]="detform.controls['Quantity']"
+                        required>
+                    <div *ngIf="detform.controls['Quantity'].touched && !detform.controls['Quantity'].valid" class="alert alert-danger">
+                        <span *ngIf="detform.controls['Quantity'].hasError('required')">{{Detmodel.DisplayNames.Quantity.Disp}} is required.</span>
+                        <span *ngIf="detform.controls['Quantity'].hasError('min')">{{Detmodel.DisplayNames.Quantity.Disp}} must be greater than or equal 0.</span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-large btn-primary" value="Print BarCodes">
+        </div>
+    </form>
+</div>
+<!--<div [@myAnimation]="showTable" class="panel-body" *ngIf="showTable">
+    <table class="table table-bordered">
+        <tbody>
+            <tr *ngFor="let item of createRange(RowsCount)">
+                <td><qr-code [data]="barcodeData" [size]="70"></qr-code></td>
+                    <td class="Btext">
+<p>GBG
+{{visBrandName}}
+{{visModelName}}
+{{visColorCode}}</p>
+                    </td>
+                <td><qr-code [data]="barcodeData" [size]="70"></qr-code></td>
+                <td class="Btext">
+<p>GBG
+{{visBrandName}}
+{{visModelName}}
+{{visColorCode}}</p>
+                    </td>
+                <td><qr-code [data]="barcodeData" [size]="70"></qr-code></td>
+                <td class="Btext">
+<p>GBG
+{{visBrandName}}
+{{visModelName}}
+{{visColorCode}}</p>
+                    </td>
+                <td><qr-code [data]="barcodeData" [size]="70"></qr-code></td>
+                <td class="Btext">
+<p>GBG
+{{visBrandName}}
+{{visModelName}}
+{{visColorCode}}</p>
+                    </td>
+                <td><qr-code [data]="barcodeData" [size]="70"></qr-code></td> 
+                <td class="Btext">
+<p>GBG
+{{visBrandName}}
+{{visModelName}}
+{{visColorCode}}</p>
+                    </td>               
+            </tr>
+        </tbody>
+    </table>
+</div>-->

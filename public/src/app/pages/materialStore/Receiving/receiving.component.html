@@ -1,0 +1,343 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <h2> {{headerText}} </h2>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew('Accessories')">Create New for Accessories</button>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew('Cloth')">Create New for Fabrics</button>
+        <br *ngIf="!Formstate"><br *ngIf="!Formstate">
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <tabset>
+            <tab heading="Pending">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Pending Material Reception خامات تحت الاستلام</b>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-striped table-responsive">
+                            <colgroup>
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="20%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Year / Serial</th>
+                                    <th>{{srchPend.DisplayNames.RecDate.Disp}} <i (click)="SortTable('RecDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('RecDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.SupName.Disp}} <i (click)="SortTable('SupName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('SupName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.ManfDate.Disp}} <i (click)="SortTable('ManfDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('ManfDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.BatchNo.Disp}} <i (click)="SortTable('BatchNo')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('BatchNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.QtyApproved.Disp}} <i (click)="SortTable('QtyApproved')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('QtyApproved') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchPend.DisplayNames.QtyReject.Disp}} <i (click)="SortTable('QtyReject')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('QtyReject') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th> {{srchPend.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="RecDate" [(ngModel)]="srchPend.RecDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="SupName" [(ngModel)]="srchPend.SupName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="MaterialName" [(ngModel)]="srchPend.MaterialName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchPend.ManfDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="BatchNo" [(ngModel)]="srchPend.BatchNo">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="QtyApproved" [(ngModel)]="srchPend.QtyApproved">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="QtyReject" [(ngModel)]="srchPend.QtyReject">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="UserName" [(ngModel)]="srchPend.UserName">
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of (Pending | filter:srchPend | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                                    <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                                    <td>{{item.RecDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.SupName}}</td>
+                                    <td>{{item.MaterialName}}</td>
+                                    <td>{{item.ManfDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.BatchNo}}</td>
+                                    <td>{{item.QtyApproved}}</td>
+                                    <td>{{item.QtyReject}}</td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>
+                                        <button (click)="Receive(item)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="History">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <b>Material Receiving History تاريخ الاستلام</b>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-striped table-responsive">
+                            <colgroup>
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="20%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                                <col width="10%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Year / Serial</th>
+                                    <th>{{srchObj.DisplayNames.ReceivingDate.Disp}} <i (click)="SortTable('ReceivingDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('ReceivingDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.Quantity.Disp}} <i (click)="SortTable('Quantity')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('Quantity') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.ManfDate.Disp}} <i (click)="SortTable('ManfDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('ManfDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.InvoiceNo.Disp}} <i (click)="SortTable('InvoiceNo')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('InvoiceNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th>{{srchObj.DisplayNames.InvoiceDate.Disp}} <i (click)="SortTable('InvoiceDate')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('InvoiceDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
+                                            [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="ReceivingDate" [(ngModel)]="srchObj.ReceivingDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="MaterialName" [(ngModel)]="srchObj.MaterialName">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="Quantity" [(ngModel)]="srchObj.Quantity">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchObj.ManfDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="InvoiceNo" [(ngModel)]="srchObj.InvoiceNo">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="InvoiceDate" [(ngModel)]="srchObj.InvoiceDate">
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="input-group">
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <input class="form-control" type="text" name="UserName" [(ngModel)]="srchObj.UserName">
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of (History | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                                    <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                                    <td>{{item.ReceivingDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.MaterialName}}</td>
+                                    <td>{{item.Quantity}}</td>
+                                    <td>{{item.ManfDate | date: 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.InvoiceNo}}</td>
+                                    <td>{{item.InvoiceDate}}</td>
+                                    <td>{{item.UserName}}</td>
+                                    <td>
+                                        <button (click)="PrintOrder(item.MatReceivingID)" class="btn btn-info" title="Print Order"><i class="ion-printer"></i></button>
+                                        <button (click)="ShowDetails(item.MatReceivingID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
+                                        <button (click)="Delete(item.MatReceivingID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+                                        <button (click)="PrintDetails(item.MatReceivingID)" class="btn btn-warning btn-icon" title="Print"><i class="ion-printer"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate && Formstate != 'Delete' && Formstate != 'Details'">
+        <!-- Create , Edit -->
+        <form (submit)="basicform.valid && HandleForm($event)" [formGroup]="basicform" novalidate>
+            <div class="form-horizontal">
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this Receiving ?</h2>
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group row">
+                            <label for="ReceivingDate" class="control-label col-md-3">{{srchObj.DisplayNames.ReceivingDate.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="date" name="cnvRecDate" [(ngModel)]="cnvRecDate" [formControl]="basicform.controls['ReceivingDate']">
+                                <div *ngIf="basicform.controls['ReceivingDate'].touched && !basicform.controls['ReceivingDate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.ReceivingDate.Disp}} is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ManfDate" class="control-label col-md-3">{{srchObj.DisplayNames.ManfDate.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="date" name="cnvManfDate" [(ngModel)]="cnvManfDate" [formControl]="basicform.controls['ManfDate']"
+                                    readonly>
+                                <div *ngIf="basicform.controls['ManfDate'].touched && !basicform.controls['ManfDate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.ManfDate.Disp}} is required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="InvoiceNo" class="control-label col-md-3">{{srchObj.DisplayNames.InvoiceNo.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="InvoiceNo" [(ngModel)]="model.InvoiceNo" [formControl]="basicform.controls['InvoiceNo']"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="InvoiceDate" class="control-label col-md-3">{{srchObj.DisplayNames.InvoiceDate.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="date" name="InvoiceDate" [(ngModel)]="model.InvoiceDate" [formControl]="basicform.controls['InvoiceDate']"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="BatchNo" class="control-label col-md-3">{{srchObj.DisplayNames.BatchNo.Disp}}</label>
+                            <div class="col-md-9">
+                                <input class="form-control" type="text" name="BatchNo" [(ngModel)]="model.BatchNo" [formControl]="basicform.controls['BatchNo']"
+                                    readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ba-card title="Material Details" baCardClass="with-scroll">
+                            <!--<mat-rec-detail *ngIf="Formstate!='Detail' && Formstate!='Delete'" [Details]="matDetails" [currentUser]="currentUser" [materialList]="materialList"
+                                [Detmodel]="Detmodel" [BatchNo]="model.BatchNo">
+                            </mat-rec-detail>-->
+
+                            <table class="table table-hover table-striped table-responsive">
+                                <colgroup>
+                                    <col width="10%" />
+                                    <col width="20%" *ngIf="Formstate!='Detail' && Formstate!='Delete'" />
+                                    <col width="20%" />
+                                    <col width="10%" />
+                                    <col width="10%" />
+                                    <col width="10%" *ngIf="Formstate!='Detail' && Formstate!='Delete'" />
+                                    <col width="10%" *ngIf="Formstate!='Detail' && Formstate!='Delete'" />
+                                    <col width="10%" *ngIf="Formstate=='Detail' || Formstate=='Delete'" />
+                                    <col width="10%" *ngIf="Formstate=='Detail' || Formstate=='Delete'" />
+                                </colgroup>
+                                <thead>
+                                    <!--Quantity,UnitPrice-->
+                                    <tr>
+                                        <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
+                                        <th *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{Detmodel.DisplayNames.SupName.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.MaterialName.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.SupplierBatchNo.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.QCNO.Disp}}</th>
+                                        <th *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{Detmodel.DisplayNames.QtyReceived.Disp}}</th>
+                                        <th *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{Detmodel.DisplayNames.QtyApproved.Disp}}</th>
+                                        <th *ngIf="Formstate=='Detail' || Formstate=='Delete'">{{Detmodel.DisplayNames.Quantity.Disp}}</th>
+                                        <th *ngIf="Formstate=='Detail' || Formstate=='Delete'">{{Detmodel.DisplayNames.UnitPrice.Disp}}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of matDetails; let i = index">
+                                        <td>{{item.RecordDate | date:'mediumDate'}}</td>
+                                        <td *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{item.SupName}}</td>
+                                        <td>{{item.MaterialName}}</td>
+                                        <td>{{item.SupplierBatchNo }}</td>
+                                        <td>{{item.QCNO}}</td>
+                                        <td *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{item.QtyReceived}}</td>
+                                        <td *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{item.QtyApproved}}</td>
+                                        <td *ngIf="Formstate=='Detail' || Formstate=='Delete'">{{item.Quantity}}</td>
+                                        <td *ngIf="Formstate=='Detail' || Formstate=='Delete'">{{item.UnitPrice}}</td>
+                                        <!--<td><a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Remove</a></td>
+                                        <td><a class="no-print" href="javascript:void(0)" (click)="EditDetail(i)">Edit</a></td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ba-card>
+                    </div>
+                </div>
+
+                <div class="form-group no-print col-md-offset-2 col-md-10">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'" [disabled]="!basicform.valid">Save</button>                    |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

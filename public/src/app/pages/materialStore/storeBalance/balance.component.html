@@ -1,0 +1,69 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/finrec']">Receiving استلام</a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/findisp']"> Dispensing صرف </a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/finequl']"> Equalization تسوية </a>
+        <!--<a class="btn btn-primary" [routerLink]="['/']"> Return مرتجع </a>-->
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/finret']"> Reject مرفوض </a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/barcode']">Print Barcodes</a>
+
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <table id="tblBrands" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="20%" />
+                <col width="40%" />
+                <col width="20%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.QCNO.Disp}} <i (click)="SortTable('QCNO')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('QCNO') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.UnitPrice.Disp}} <i (click)="SortTable('UnitPrice')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UnitPrice') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Quantity.Disp}} <i (click)="SortTable('Quantity')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Quantity') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchMaterialName" name="MaterialName" [(ngModel)]="srchObj.MaterialName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchQCNO" name="QCNO" [(ngModel)]="srchObj.QCNO">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchUnitPrice" name="UnitPrice" [(ngModel)]="srchObj.UnitPrice">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchQuantity" name="Quantity" [(ngModel)]="srchObj.Quantity">
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.MaterialName}}</td>
+                    <td>{{item.QCNO}}</td>
+                    <td>{{item.UnitPrice}}</td>
+                    <td>{{item.Quantity}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+</div>

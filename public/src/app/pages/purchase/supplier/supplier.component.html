@@ -1,0 +1,191 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <h2> {{headerText}} </h2>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+        <br><br>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="tableslide panel-body table-responsive" *ngIf="showTable">
+        <table id="tblSuppliers" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="15%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="15%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.SupName.Disp}} <i (click)="SortTable('SupName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SupName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.SupContactPerson.Disp}} <i (click)="SortTable('SupContactPerson')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('SupContactPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Country.Disp}} <i (click)="SortTable('Country')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Country') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Address.Disp}} <i (click)="SortTable('Address')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Address') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Tel.Disp}} <i (click)="SortTable('Tel')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Tel') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Contractor.Disp}} <i (click)="SortTable('Contractor')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('Contractor') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSupName" name="SupName" [(ngModel)]="srchObj.SupName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSupContactPerson" name="SupContactPerson" [(ngModel)]="srchObj.SupContactPerson">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchCountry" name="Country" [(ngModel)]="srchObj.Country">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchAddress" name="Address" [(ngModel)]="srchObj.Address">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchTel" name="Tel" [(ngModel)]="srchObj.Tel">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchContractor" name="Contractor" [(ngModel)]="srchObj.Contractor">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.SupName}}</td>
+                    <td>{{item.SupContactPerson}}</td>
+                    <td>{{item.Country}}</td>
+                    <td>{{item.Address}}</td>
+                    <td>{{item.Tel}}</td>
+                    <td>{{item.Contractor}}</td>
+                    <td>{{item.UserName}}</td>
+                    <td>
+                        <button (click)="EditThis(item.SupID)" class="btn btn-info btn-circle" title="Edit"><i class="ion-edit"></i></button>
+                        <button (click)="ShowDetails(item.SupID)" class="btn btn-success btn-circle" title="Details"><i class="ion-eye"></i></button>
+                        <button (click)="Delete(item.SupID)" class="btn btn-danger btn-circle" title="Delete"><i class="ion-trash-a"></i></button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div [@myAnimation]="!showTable" class="dataslide panel-body" *ngIf="Formstate">
+        <form (submit)="f.form.valid && HandleForm($event)" #f="ngForm" novalidate>
+            <div class="form-horizontal">
+
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this supplier ?</h2>
+                <br>
+
+                <div class="form-group row">
+                    <label for="SupName" class="control-label col-md-2">{{srchObj.DisplayNames.SupName.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="SupName" [(ngModel)]="model.SupName" #supplierName="ngModel" required>
+                        <div *ngIf="f.submitted && !supplierName.valid" class="alert alert-danger">{{srchObj.DisplayNames.SupName.Disp}} is required</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="SupContactPerson" class="control-label col-md-2">{{srchObj.DisplayNames.SupContactPerson.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="SupContactPerson" [(ngModel)]="model.SupContactPerson">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Country" class="control-label col-md-2">{{srchObj.DisplayNames.Country.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="Country" [(ngModel)]="model.Country">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Address" class="control-label col-md-2">{{srchObj.DisplayNames.Address.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="Address" [(ngModel)]="model.Address">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Tel" class="control-label col-md-2">{{srchObj.DisplayNames.Tel.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="Tel" [(ngModel)]="model.Tel">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="CommercialRecord" class="control-label col-md-2">{{srchObj.DisplayNames.CommercialRecord.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="CommercialRecord" [(ngModel)]="model.CommercialRecord">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="TaxFileNo" class="control-label col-md-2">{{srchObj.DisplayNames.TaxFileNo.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="TaxFileNo" [(ngModel)]="model.TaxFileNo">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Email" class="control-label col-md-2">{{srchObj.DisplayNames.Email.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="Email" [(ngModel)]="model.Email">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Website" class="control-label col-md-2">{{srchObj.DisplayNames.Website.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="Website" [(ngModel)]="model.Website">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Website" class="control-label col-md-4">
+                        {{srchObj.DisplayNames.Contractor.Disp}}  <input class="form-control" type="checkbox" name="Website" [(ngModel)]="model.Contractor">                        
+                    </label>
+                </div>
+                <div class="form-group row" *ngIf="model.Contractor">
+                    <label for="ContractDate" class="control-label col-md-2">{{srchObj.DisplayNames.ContractDate.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="date" name="ContractDate" [(ngModel)]="cnvContractDate">
+                    </div>
+                </div>
+                <div class="form-group row" *ngIf="model.Contractor">
+                    <label for="ContractLength" class="control-label col-md-2">{{srchObj.DisplayNames.ContractLength.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="number" name="ContractLength" [(ngModel)]="model.ContractLength">
+                    </div>
+                </div>
+
+                <div class="form-group no-print col-md-offset-2 col-md-10">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>                    |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

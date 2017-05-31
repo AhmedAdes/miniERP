@@ -1,0 +1,149 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <h2> {{headerText}} </h2>
+        <br><br>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <table id="tblBrands" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="20%" />
+                <col width="40%" />
+                <col width="20%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.SOID.Disp}} <i (click)="SortTable('SOID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SOID') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.CustName.Disp}} <i (click)="SortTable('CustName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('CustName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.PaymentDate.Disp}} <i (click)="SortTable('PaymentDate')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('PaymentDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.PayAmount.Disp}} <i (click)="SortTable('PayAmount')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('PayAmount') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Paid.Disp}} <i (click)="SortTable('Paid')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Paid') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSOID" name="SOID" [(ngModel)]="srchObj.SOID">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchObj.CustName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchPaymentDate" name="PaymentDate" [(ngModel)]="srchObj.PaymentDate">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchPayAmount" name="PayAmount" [(ngModel)]="srchObj.PayAmount">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchPaid" name="Paid" [(ngModel)]="srchObj.Paid">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.SOID}}</td>
+                    <td>{{item.CustName}}</td>
+                    <td>{{item.PaymentDate | date:'mediumDate'}}</td>
+                    <td>{{item.PayAmount | number:'1.2-2'}}</td>
+                    <td>{{item.Paid ? "Yes" : "No"}}</td>
+                    <td>{{item.UserName}}</td>
+                    <td>
+                        <button (click)="EditThis(item.SOPayID)" class="btn btn-info" title="Receive Payment"><i class="ion-cash"></i></button>
+                        <button (click)="ShowDetails(item.SOPayID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+    </div>
+
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate">
+        <form (submit)="f.form.valid && HandleForm($event)" #f="ngForm" novalidate>
+            <div class="form-horizontal">
+
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this payment ?</h2>
+                <br>
+                <div class="form-group row">
+                    <label for="SOID" class="control-label col-md-2">{{srchObj.DisplayNames.SOID.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="SOID" [ngModel]="model.SOID" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="SODate" class="control-label col-md-2">{{srchObj.DisplayNames.SODate.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="SODate" [(ngModel)]="cnvSODate" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="CustName" class="control-label col-md-2">{{srchObj.DisplayNames.CustName.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="CustName" [ngModel]="model.CustName" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="PaymentDate" class="control-label col-md-2">{{srchObj.DisplayNames.PaymentDate.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="PaymentDate" [ngModel]="cnvPayDate" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="PayAmount" class="control-label col-md-2">{{srchObj.DisplayNames.PayAmount.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="PayAmount" [ngModel]="model.PayAmount" readonly>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="PayNoteNo" class="control-label col-md-2">{{srchObj.DisplayNames.PayNoteNo.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="PayNoteNo" [(ngModel)]="model.PayNoteNo" #note="ngModel" required>
+                        <div *ngIf="f.submitted && !note.valid" class="alert alert-danger">{{srchObj.DisplayNames.PayNoteNo.Disp}} is required</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="ReceivePaymentDate" class="control-label col-md-2">{{srchObj.DisplayNames.ReceivePaymentDate.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="date" name="ReceivePaymentDate" [(ngModel)]="model.ReceivePaymentDate" #recdate="ngModel"
+                            required>
+                        <div *ngIf="f.submitted && !recdate.valid" class="alert alert-danger">{{srchObj.DisplayNames.ReceivePaymentDate.Disp}} is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group no-print col-md-offset-2 col-md-10">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
