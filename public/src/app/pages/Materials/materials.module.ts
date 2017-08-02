@@ -2,7 +2,7 @@ import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
-import { Ng2PaginationModule } from 'ng2-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { routing }       from './materials.routing';
 import { Materials } from './materials.component';
@@ -15,7 +15,7 @@ import { ClothComponent } from './cloth/cloth.component';
     CommonModule,
     FormsModule,
     NgaModule,
-    routing, Ng2PaginationModule
+    routing, NgxPaginationModule
   ],
   declarations: [
     Materials,
@@ -23,4 +23,4 @@ import { ClothComponent } from './cloth/cloth.component';
     ClothComponent
   ]
 })
-export default class MaterialsModule {}
+export class MaterialsModule {}

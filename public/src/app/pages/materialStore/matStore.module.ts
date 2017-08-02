@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
-import { Ng2PaginationModule } from 'ng2-pagination';
-import { QRCodeModule } from 'angular2-qrcode';
-import { TabsModule } from 'ng2-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
+// import { QRCodeModule } from 'angular2-qrcode';
+import { TabsModule } from 'ngx-bootstrap';
 
 import { routing } from './matStore.routing';
 import {
@@ -22,7 +22,7 @@ import {
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NgaModule, routing, Ng2PaginationModule, QRCodeModule,
+    NgaModule, routing, NgxPaginationModule, //QRCodeModule,
     TabsModule
   ],
   declarations: [
@@ -37,4 +37,4 @@ import {
     MatReturnService, MatEqualizeService
   ]
 })
-export default class MatStoreModule { }
+export class MatStoreModule { }

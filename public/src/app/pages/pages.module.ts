@@ -4,8 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
-import { ColorPickerModule } from 'angular2-color-picker';
-import { Ng2PaginationModule } from 'ng2-pagination';
+import { ColorPickerModule } from 'angular4-color-picker';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { QRCodeModule } from 'angular2-qrcode';
 
 import { routing } from './pages.routing';
@@ -29,7 +29,7 @@ import { PipeModule } from './pipes/pipes.module';
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
-    ImageUploadModule, ColorPickerModule, Ng2PaginationModule, QRCodeModule,
+    ImageUploadModule, ColorPickerModule, NgxPaginationModule, QRCodeModule,
     ReportsModule, BrowserAnimationsModule
   ],
   declarations: [

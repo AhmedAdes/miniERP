@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Ng2PaginationModule } from 'ng2-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { NgaModule } from '../../theme/nga.module';
 
 import { routing } from './reports.routing';
@@ -14,7 +14,7 @@ import { CustomerService } from '../services/index';
 
 @NgModule({
   imports: [
-    CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing, Ng2PaginationModule, ChartsModule
+    CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing, NgxPaginationModule, ChartsModule
   ],
   declarations: [
     ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent

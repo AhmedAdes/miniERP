@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
-import { Ng2PaginationModule } from 'ng2-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { QRCodeModule } from 'angular2-qrcode';
 import { NgaModule } from '../../theme/nga.module';
 
@@ -22,7 +22,7 @@ import {
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
-    ImageUploadModule, Ng2PaginationModule, QRCodeModule
+    ImageUploadModule, NgxPaginationModule, QRCodeModule
   ],
   declarations: [
     PrintOut, PrintBarcodeComponent, InvoicePrintComponent, PrintFinDispOrderComponent,

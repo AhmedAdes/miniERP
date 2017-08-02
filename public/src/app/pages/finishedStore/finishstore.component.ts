@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'finStore',
+  selector: 'finishedOutlet',
   template: `<router-outlet></router-outlet>`
 })
-export class finStore {
+export class FinStoreOutletComponent {
 
   constructor() {
   }

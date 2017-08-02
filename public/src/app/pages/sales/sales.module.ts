@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
-import { Ng2PaginationModule } from 'ng2-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { routing } from './sales.routing';
 import {
@@ -17,7 +17,7 @@ import { PipeModule } from '../pipes/pipes.module';
 @NgModule({
 	imports: [
 		CommonModule, FormsModule, ReactiveFormsModule,
-		NgaModule, routing, Ng2PaginationModule
+		NgaModule, routing, NgxPaginationModule
 	],
 	declarations: [
 		Sales, SalesOrderComponent, SalesHeaderComponent,
@@ -29,4 +29,4 @@ import { PipeModule } from '../pipes/pipes.module';
 		SalesPaymentService, SalesRepService
 	]
 })
-export default class SalesModule { }
+export class SalesModule { }

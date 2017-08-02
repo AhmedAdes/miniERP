@@ -2,7 +2,7 @@
 	<div class="panel-heading">
 
 		<h2> {{headerText}} </h2>
-		<button *ngIf="!Formstate && currentUser.jobClass < 4" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+		<button *ngIf="!Formstate && currentUser.isAdmin" class="btn btn-primary" (click)="CreateNew()">Create New</button>
 		<br><br>
 		<div class="alert alert-danger" *ngIf="errorMessage">
 			<p>{{errorMessage}}</p>
@@ -51,11 +51,11 @@
 					<td>{{item.LoginName}}</td>
 					<td>{{item.JobClass}}</td>
 					<td>
-						<button *ngIf="currentUser.jobClass <= 1" [disabled]="item.Approved" (click)='ApproveUser(item.UserID)' class="btn btn-success"
+						<button *ngIf="currentUser.isAdmin" [disabled]="item.Approved" (click)='ApproveUser(item.UserID)' class="btn btn-success"
 							title="Approve User"><i class="glyphicon glyphicon-ok"></i></button>
-						<button *ngIf="currentUser.jobClass <= 1" (click)='EditThis(item.UserID)' class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
+						<button *ngIf="currentUser.isAdmin" (click)='EditThis(item.UserID)' class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
 						<button (click)="ShowDetails(item.UserID)" class="btn btn-warning btn-icon" title="Details"><i class="ion-eye"></i></button>
-						<button *ngIf="currentUser.jobClass <= 1" (click)="Delete(item.UserID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+						<button *ngIf="currentUser.isAdmin" (click)="Delete(item.UserID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
 					</td>
 				</tr>
 
