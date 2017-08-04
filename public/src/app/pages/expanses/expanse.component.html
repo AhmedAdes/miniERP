@@ -1,0 +1,151 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <h2> {{headerText}} </h2>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+        <br><br>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <table id="tblExpanses" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="20%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.ExpanseName.Disp}} <i (click)="SortTable('ExpanseName')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('ExpanseName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.ExpanseType.Disp}} <i (click)="SortTable('ExpanseType')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('ExpanseType') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Amount.Disp}} <i (click)="SortTable('Amount')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('Amount') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.ExpanseDate.Disp}} <i (click)="SortTable('ExpanseDate')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('ExpanseDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.ResPerson.Disp}} <i (click)="SortTable('ResPerson')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('ResPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchExpanseName" name="ExpanseName" [(ngModel)]="srchObj.ExpanseName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchExpanseType" name="ExpanseType" [(ngModel)]="srchObj.ExpanseType">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchAmount" name="Amount" [(ngModel)]="srchObj.Amount">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="date" id="srchExpanseDate" name="ExpanseDate" [(ngModel)]="srchObj.ExpanseDate">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchResPerson" name="ResPerson" [(ngModel)]="srchObj.ResPerson">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.ExpanseName}}</td>
+                    <td>{{item.ExpanseType}}</td>
+                    <td>{{item.Amount | number:'1.2-2'}}</td>
+                    <td>{{item.ExpanseDate | date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.ResPerson}}</td>
+                    <td>{{item.UserName}}</td>
+                    <td>
+                        <button (click)="EditThis(item.ExpanseID)" class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
+                        <button (click)="ShowDetails(item.ExpanseID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
+                        <button (click)="Delete(item.ExpanseID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate">
+        <form (submit)="f.form.valid && HandleForm($event)" #f="ngForm" novalidate>
+            <div class="form-horizontal">
+
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this Expanse ?</h2>
+                <br>
+
+                <div class="form-group row">
+                    <label for="ExpanseName" class="control-label col-md-2">{{srchObj.DisplayNames.ExpanseName.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="ExpanseName" [(ngModel)]="model.ExpanseName" #expnsName="ngModel" required>
+                        <div *ngIf="f.submitted && !expnsName.valid" class="alert alert-danger">{{srchObj.DisplayNames.ExpanseName.Disp}} is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="ExpanseType" class="control-label col-md-2">{{srchObj.DisplayNames.ExpanseType.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="ExpanseType" [(ngModel)]="model.ExpanseType" #expnsType="ngModel" required>
+                        <div *ngIf="f.submitted && !expnsType.valid" class="alert alert-danger">{{srchObj.DisplayNames.ExpanseType.Disp}} is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="Amount" class="control-label col-md-2">{{srchObj.DisplayNames.Amount.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="Amount" [(ngModel)]="model.Amount" #amnt="ngModel" required>
+                        <div *ngIf="f.submitted && !amnt.valid" class="alert alert-danger">{{srchObj.DisplayNames.Amount.Disp}} is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="cnvRecDate" class="control-label col-md-2">{{srchObj.DisplayNames.ExpanseDate.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="date" name="cnvRecDate" [(ngModel)]="cnvRecDate" #recdate="ngModel" required>
+                        <div *ngIf="recdate.touched && !recdate.valid" class="alert alert-danger">{{srchObj.DisplayNames.ExpanseDate.Disp}} is required.</div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="ResPerson" class="control-label col-md-2">{{srchObj.DisplayNames.ResPerson.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="ResPerson" [(ngModel)]="model.ResPerson" #res="ngModel">
+                    </div>
+                </div>
+
+                <div class="form-group no-print col-md-offset-2 col-md-10">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>                    |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

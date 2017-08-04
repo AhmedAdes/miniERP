@@ -21,7 +21,8 @@ import {
 } from './index';
 import {
   AuthenticationService, AuthGuard, DashboardService, AccessoryService, BrandService,
-  MaterialService, ModelService, ColorService, SizeService, CustomerService, SupplierService
+  MaterialService, ModelService, ColorService, SizeService, CustomerService, SupplierService,
+  ExpansesService
 } from './services/index';
 
 import { PipeModule } from './pipes/pipes.module';
@@ -42,7 +43,7 @@ import { PipeModule } from './pipes/pipes.module';
     AuthGuard, AuthenticationService, DashboardService,
     AccessoryService, BrandService,
     MaterialService, ModelService, ColorService,
-    SizeService
+    SizeService, ExpansesService
   ]
 })
 export class PagesModule {

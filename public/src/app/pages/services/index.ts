@@ -28,3 +28,4 @@ export * from './matDetails.service';
 export * from './matDispensing.service';
 export * from './matEqualize.service';
 export * from './matReturn.service';
+export * from './expanses.service';

@@ -8,3 +8,4 @@ export * from './finishedStore';
 export * from './sales';
 export * from './materialStore';
 export * from './purchase';
+export * from './expanses';
