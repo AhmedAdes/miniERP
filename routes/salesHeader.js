@@ -12,7 +12,6 @@ router.get('/', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); })
 });
-
 router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
@@ -20,7 +19,99 @@ router.get('/:id(\\d+)', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
-
+router.get('/salesByCust/:id(\\d+).:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, (d.Quantity * d.Price) SubTotal, ISNULL(h.Discount, 0) Discount, m.ModelCode, h.SODate
+                    FROM dbo.SalesOrderDetails d JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
+                    JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
+                    JOIN dbo.Customers c ON c.CustID = h.CustID
+                    WHERE c.CustID = ${req.params.id} AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/salesByCntry/:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT c.Country, SUM(d.Quantity) Quantity, SUM(h.GrandTotal) Amount
+                    FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID JOIN dbo.Customers c ON c.CustID = h.CustID 
+                    WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
+                    GROUP BY c.Country ORDER BY c.Country`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/salesByArea/:cntry.:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT c.Area, SUM(d.Quantity) Quantity, SUM(h.GrandTotal) Amount
+                    FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID JOIN dbo.Customers c ON c.CustID = h.CustID 
+                    WHERE c.Country = '${req.params.cntry}' AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
+                    GROUP BY c.Country, c.Area ORDER BY c.Area`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/sellingCntry', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT DISTINCT Country FROM dbo.Customers WHERE CustID IN (SELECT CustID FROM dbo.SalesOrderHeader)`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/TsellProd/:fltr.:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT TOP 10 m.ModelCode, m.ModelName, SUM(d.Quantity) Quantity, SUM(d.Quantity * d.Price) Amount
+                    FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID
+                    JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID
+                    WHERE  h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
+                    GROUP BY m.ModelCode, m.ModelName ORDER BY ${req.params.fltr} DESC`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/LsellProdQty/:fltr.:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT TOP 10 m.ModelCode, m.ModelName, SUM(d.Quantity) Quantity, SUM(d.Quantity * d.Price) Amount
+                    FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID
+                    JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID
+                    WHERE  h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
+                    GROUP BY m.ModelCode, m.ModelName ORDER BY ${req.params.fltr} ASC`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/compareSales/:month1.:year1.:month2.:year2', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT M1.ModelCode, M1.ModelName, M1.Quantity M1Quantity, M1.Amount M1Amount, ISNULL(M2.Quantity,0) M2Quantity, ISNULL(M2.Amount,0) M2Amount 
+                    FROM fncMonthSales(${req.params.month1}, ${req.params.year1}) M1 
+                    LEFT JOIN (SELECT * FROM dbo.fncMonthSales(${req.params.month2},${req.params.year2})) M2 ON M1.ModelCode = M2.ModelCode`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+    
+router.get('/salesSummary/:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT SUM(GrandTotal) TotalAmount, COUNT(DISTINCT h.SOID) TotalOrders, COUNT(DISTINCT CustID) TotalCustomers, SUM(d.Quantity) AS TotalProducts 
+                    FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/salesSummaryChrt/:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`;with  MonthRecursive as (
+                    select CAST('${req.params.fromDate}' as DATE) as MonthDate ,1 as [level]
+                    union all
+                    select DATEADD(MONTH,level, CAST('${req.params.fromDate}' as DATE)),[level]+1 from  
+                    MonthRecursive where DATEADD(MONTH,level, CAST('${req.params.fromDate}' as DATE))<=CAST('${req.params.toDate}' as DATE))
+                    SELECT MonthDate, (SELECT SUM(GrandTotal)  FROM dbo.SalesOrderHeader h 
+                    WHERE SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalAmount from MonthRecursive d`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+    
+    
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var so = req.body.master;

@@ -1,4 +1,4 @@
-export * from './finishStore.component';
+export * from './finishstore.component';
 export * from './storeBalance/balance.component';
 export * from './Receiving/receiving.component';
 export * from './Receiving/Details/details.component';

@@ -2,14 +2,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '../services/auth.guard';
 
-import { FinStoreOutletComponent, StoreBalanceComponent, FinReceivingComponent, BarcodeComponent, FinDispensingComponent, 
+import { FinStoreHomeComponent, StoreBalanceComponent, FinReceivingComponent, BarcodeComponent, FinDispensingComponent, 
   FinEqualizeComponent, FinReturnComponent } from './index';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
   {
     path: '',
-    component: FinStoreOutletComponent,
+    component: FinStoreHomeComponent,
     children: [
       { path: 'balance', component: StoreBalanceComponent, canActivate: [AuthGuard] },
       { path: 'finrec', component: FinReceivingComponent, canActivate: [AuthGuard] },

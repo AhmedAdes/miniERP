@@ -40,4 +40,11 @@ export class CustomerService {
     getCustomerByPeriod(fromDate: string, toDate: string) {
         return this.http.get(this.url + 'ByPeriod/' + fromDate + '.' + toDate, this.options).map(res => res.json());
     }
+    getTopCustomers(fromDate: string, toDate: string){
+        return this.http.get(this.url + 'topCust/' + fromDate + '.' + toDate, this.options).map(res => res.json())
+    }
+    getSalesCustomers(){
+        return this.http.get(this.url + 'SalesCusts', this.options).map(res => res.json());
+    }
+    
 }

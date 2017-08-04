@@ -27,3 +27,12 @@ export class Customer {
         UserName: { Disp: "User Name" }
     }
 }
+
+export class rptTopCustomers{
+    CustID: number;
+    CustName: string;
+    Quantity: number;
+    GT: number;
+    Perc: number;
+    AllQty: number;
+}

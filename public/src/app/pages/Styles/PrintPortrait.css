@@ -17,12 +17,35 @@ thead tr th {
     font-weight: bold !important;
 }
 
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.print-chart{
+    max-height: 612px;
+    max-width: 700px;
+}
 @media print {
     @page {
         size: portrait;
         margin: 1cm;
     }
 
+    .no-print {
+        display: none
+    }
+    .print-chart{
+        max-height: 612px;
+        max-width: 700px;
+    }
     .PrintnewPage {
         page-break-after: always;
     }
@@ -91,5 +114,17 @@ thead tr th {
 
     .col-sm-1, .col-md-1 {
         width: 8.333333333333332%;
+    }
+    
+    .text-right {
+    text-align: right;
+    }
+
+    .text-left {
+    text-align: left;
+    }
+
+    .text-center {
+    text-align: center;
     }
 }

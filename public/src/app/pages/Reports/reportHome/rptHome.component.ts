@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'rpt-home',
-    templateUrl: './rptHome.component.html'
+    templateUrl: './rptHome.component.html',
+    styles: [`.text-center{
+       text-align: center; 
+    }`]
 })
 export class ReportHomeComponent implements OnInit {
     constructor() { }
@@ -20,8 +23,8 @@ export class ReportHomeComponent implements OnInit {
             link: "/reports/custcntry"
         }, 
         {
-            header: "Customer By Sales Amount",
-            link: "/reports/custamnt"
+            header: "Top Customer By Sales Amount",
+            link: "/reports/topCust"
         }, 
         {
             header: "Sales Analysis",
@@ -40,8 +43,20 @@ export class ReportHomeComponent implements OnInit {
             link: "/reports/slsarea"
         }, 
         {
-            header: "Sales By Amount",
-            link: "/reports/slsamnt"
+            header: "Top 10 Selling Products",
+            link: "/reports/topProd"
+        }, 
+        {
+            header: "Least 10 Selling Products",
+            link: "/reports/lstProd"
+        }, 
+        {
+            header: "Compare with Last Month By Product",
+            link: "/reports/cmprMonth"
+        }, 
+        {
+            header: "Sales Summary",
+            link: "/reports/slsSmry"
         }
     ]
     ngOnInit() { }

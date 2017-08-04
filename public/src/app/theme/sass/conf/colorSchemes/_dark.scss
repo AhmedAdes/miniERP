@@ -62,3 +62,15 @@ $hoverlink: $primary-dark;
 @mixin additional-bg() {
   //display: block; // additional background layer, hidden by default
 }
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}

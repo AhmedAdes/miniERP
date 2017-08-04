@@ -6,21 +6,27 @@ import { NgaModule } from '../../theme/nga.module';
 
 import { routing } from './reports.routing';
 import {
-  ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent
+  ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent, RptTopCustComponent,
+  RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
+  RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
+  RptSalesSummaryComponent
 } from './index';
 // import { ChartsModule } from './charts.module'
 import { ChartsModule } from 'ng2-charts';
-import { CustomerService } from '../services/index';
+import { CustomerService, SalesHeaderService } from '../services/index';
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing, NgxPaginationModule, ChartsModule
   ],
   declarations: [
-    ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent
+    ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent, RptTopCustComponent,
+    RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
+    RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
+    RptSalesSummaryComponent
   ],
   providers: [
-    CustomerService
+    CustomerService, SalesHeaderService
   ],
 })
 export class ReportsModule {

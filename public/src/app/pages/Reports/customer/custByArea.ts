@@ -30,12 +30,18 @@ export class RptCustAreaComponent implements OnInit {
             this.collection = ret
             this.pieChartData = ret.map(data => { return data.CustCount })//CustCount
             this.pieChartLabels = ret.map(data => { return data.Area })
+            this.forceChartRefresh()
         })
     }
 
     AfterViewInit() {
-        window.setTimeout(function () { window.print(); }, 500);
+        // window.setTimeout(function () { window.print(); }, 500);
         // window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
+    }
+    forceChartRefresh() {
+        setTimeout(() => {
+            this._chart.refresh();
+        }, 10);
     }
     goBack() {
         this.loc.back();

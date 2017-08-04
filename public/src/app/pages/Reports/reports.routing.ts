@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '../services/auth.guard';
 
 import {
-  ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent
+  ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent, RptTopCustComponent,
+  RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent, 
+  RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent, RptSalesSummaryComponent
 } from './index';
 
 // noinspection TypeScriptValidateTypes
@@ -15,14 +17,14 @@ const routes: Routes = [
       { path: 'home', component: ReportHomeComponent, canActivate: [AuthGuard] },
       { path: 'custcntry', component: RptCustCountryComponent, canActivate: [AuthGuard] },
       { path: 'custarea', component: RptCustAreaComponent, canActivate: [AuthGuard] },
-      //   { path: 'finDisp/:id', component: PrintFinDispOrderComponent, canActivate: [AuthGuard] },
-      //   { path: 'finRec/:id', component: PrintFinRecOrderComponent, canActivate: [AuthGuard] },
-      //   { path: 'finEqul/:id', component: PrintFinEqulOrderComponent, canActivate: [AuthGuard] },
-      //   { path: 'finRet/:id', component: PrintFinRtrnOrderComponent, canActivate: [AuthGuard] },
-      //   { path: 'matDisp/:id', component: PrintMatDispComponent, canActivate: [AuthGuard] },
-      //   { path: 'matRec/:id', component: PrintMatRecComponent, canActivate: [AuthGuard] },
-      //   { path: 'matEqul/:id', component: PrintMatEqulComponent, canActivate: [AuthGuard] },
-      //   { path: 'matRet/:id', component: PrintMatRetComponent, canActivate: [AuthGuard] }
+      { path: 'topCust', component: RptTopCustComponent, canActivate: [AuthGuard] },
+      { path: 'slsCust', component: RptSalesByCustComponent, canActivate: [AuthGuard] },
+      { path: 'slscntry', component: RptSalesByCntryComponent, canActivate: [AuthGuard] },
+      { path: 'slsarea', component: RptSalesByAreaComponent, canActivate: [AuthGuard] },
+      { path: 'topProd', component: RptTopSalesProdQtyComponent, canActivate: [AuthGuard] },
+      { path: 'lstProd', component: RptLeastSalesProdQtyComponent, canActivate: [AuthGuard] },
+      { path: 'cmprMonth', component: RptSalesCompareComponent, canActivate: [AuthGuard] },
+      { path: 'slsSmry', component: RptSalesSummaryComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

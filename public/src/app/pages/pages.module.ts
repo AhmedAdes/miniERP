@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
-import { ColorPickerModule } from 'angular4-color-picker';
+import { ColorPickerModule } from 'ngx-colorpicker';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { QRCodeModule } from 'angular2-qrcode';
 

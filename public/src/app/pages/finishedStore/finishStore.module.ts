@@ -6,7 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { QRCodeModule } from 'angular2-qrcode';
 
 import { routing } from './finishStore.routing';
-import { FinStoreOutletComponent, StoreBalanceComponent, BarcodeComponent, FinReceivingComponent, FinRecDetailsComponent,
+import { FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, FinReceivingComponent, FinRecDetailsComponent,
   FinDispensingComponent, FinDispDetailsComponent, FinEqualizeComponent, FinEqualDetailsComponent,
   FinReturnComponent, FinReturnDetailsComponent
 } from './index';
@@ -19,7 +19,7 @@ import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingSe
     NgaModule, routing, NgxPaginationModule, QRCodeModule
   ],
   declarations: [
-      FinStoreOutletComponent, StoreBalanceComponent, BarcodeComponent, 
+      FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, 
       FinReceivingComponent, FinRecDetailsComponent, 
       FinDispensingComponent, FinDispDetailsComponent, 
       FinEqualizeComponent, FinEqualDetailsComponent,

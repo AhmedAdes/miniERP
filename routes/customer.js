@@ -47,6 +47,31 @@ router.get('/ByPeriod/:fromDate.:toDate', function (req, res, next) {
         .catch(function (err) { res.json({ error: err }); console.log(err); })
 });
 
+
+router.get('/topCust/:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT TOP 5 s.CustID, c.CustName, SUM(GrandTotal) GT, SUM(d.Quantity) Quantity, 
+                ( SELECT SUM(Quantity)  FROM dbo.SalesOrderDetails WHERE SOID IS NOT NULL) AllQty, 
+                CAST(ROUND(CAST(SUM(d.Quantity) AS DECIMAL(10,2)) / ( SELECT SUM(Quantity) AllQ FROM dbo.SalesOrderDetails WHERE SOID IS NOT NULL),4) AS REAL) AS Perc  
+                FROM dbo.SalesOrderHeader s 
+                JOIN dbo.Customers c ON c.CustID = s.CustID 
+                JOIN dbo.SalesOrderDetails d ON d.SOID = s.SOID
+                WHERE s.SODate Between '${req.params.fromDate}' And '${req.params.toDate}'
+                GROUP BY s.CustID, c.CustName ORDER BY GT DESC`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); })
+});
+
+
+router.get('/SalesCusts', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT * FROM dbo.Customers WHERE CustID IN (SELECT CustID FROM dbo.SalesOrderHeader)`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); })
+});
+
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var cust = req.body;

@@ -1,0 +1,75 @@
+<ba-card class="well no-print">
+    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+        <div class="form-horizontal">
+            <div class="form-group row">
+                <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !first.valid }">
+                    <label for="firstDate" class="control-label col-md-2 col-sm-4">First Month</label>
+                    <div class="col-md-4 col-sm-8">
+                        <input class="form-control" type="date" name="firstDate" [(ngModel)]="firstDate" #first="ngModel" required>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !second.valid }">
+                    <label for="secondDate" class="control-label col-md-2 col-sm-4">Second Month</label>
+                    <div class="col-md-4 col-sm-8">
+                        <input class="form-control" type="date" name="secondDate" [(ngModel)]="secondDate" #second="ngModel" required>
+                    </div>
+                </div>
+            </div>   
+            <div class="form-group row">
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                    <button type="submit" class="btn btn-primary btn-block">View</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                    <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                    <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ba-card>
+<div class="panel panel-default">
+    <div class="panel-heading row">
+        <h3 class="text-center">{{reportHeader}}</h3>
+    </div>
+    <div class="panel-body">
+        <table id="tblReps" class="table table-hover table-striped table-responsive table-bordered">
+            <colgroup>
+                <col width="20%" />
+                <col width="20%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="15%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th colspan="2"></th>
+                    <th colspan="2">Month 1</th>
+                    <th colspan="2">Month 2</th>
+                </tr>
+                <tr>
+                    <th> Model Code</th>
+                    <th> Model Name </th>
+                    <th> Quantity </th>
+                    <th> Amount </th>
+                    <th> Quantity </th>
+                    <th> Amount </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of collection; let i = index">
+                    <td>{{item.ModelCode}}</td>
+                    <td>{{item.ModelName}}</td>
+                    <td>{{item.M1Quantity}}</td>
+                    <td>{{item.M1Amount}}</td>
+                    <td>{{item.M2Quantity}}</td>
+                    <td>{{item.M2Amount}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!--<pagination-controls class="no-print" (pageChange)="p = $event" maxSize="10"></pagination-controls>-->
+    </div>
+    
+</div>

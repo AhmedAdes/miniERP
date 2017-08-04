@@ -78,7 +78,7 @@ export class SalesPayment {
     CustName: string;
     SalesRepID: number;
     SalesPerson: string;
-    
+
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
         PaymentDate: { Disp: "Payment Date تاريخ الدفع" },
@@ -108,3 +108,27 @@ export class SalesRep {
         Tel: { Disp: "Tel التليفون" }
     }
 }
+
+export class rptSalesByCust {
+    CustID: number;
+    CustName: string;
+    ColorID: number;
+    ModelCode: string;
+    ModelName: string;
+    Quantity: number;
+    UnitPrice: number;
+    Discount: number;
+    SubTotal: number;
+    SODate: Date;
+}
+export class rptCompareSales{
+    ModelCode: string;
+    ModelName: string;
+    M1Quantity: number;
+    M1Amount: number;
+    M2Quantity: number;
+    M2Amount: number;   
+}
+
+// M1.ModelCode, M1.ModelCode, M1.Quantity M1Quantity, M1.Amount M1Amount, M2.Quantity M2Quantity, M2.Amount M2Amount
+//  h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, h.GrandTotal, ISNULL(h.Discount, 0) Discount, m.ModelCode
