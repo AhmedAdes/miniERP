@@ -55,6 +55,7 @@ export class FinDispensingComponent implements OnInit {
     orderbyClass: string = "fa fa-sort";
     cnvRecDate: string;
     basicform: FormGroup;
+    stillSaving: boolean
 
     ngOnInit() {
         this.srvDisp.getDispensing().subscribe(cols => {
@@ -116,10 +117,13 @@ export class FinDispensingComponent implements OnInit {
         this.model = new FinishedDispensing();
         this.Detmodel = new FinishedStoreDetail();
         this.finDetails = [];
+        this.stillSaving = false
         this.basicform.reset();
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.finDetails.length == 0) {

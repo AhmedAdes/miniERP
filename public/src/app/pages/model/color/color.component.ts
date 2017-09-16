@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModelColor, CurrentUser } from '../../Models/index';
-import { ColorPickerService } from 'ngx-colorpicker';
+import { ColorPickerService } from 'ngx-color-picker';
 
 @Component({
     selector: 'prod-color',

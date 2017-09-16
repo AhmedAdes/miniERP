@@ -4,9 +4,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ImageUploadModule } from 'ng2-imageupload';
-import { ColorPickerModule } from 'ngx-colorpicker';
+import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { QRCodeModule } from 'angular2-qrcode';
+// import { QRCodeModule } from 'ng2-qrcode';
 
 import { routing } from './pages.routing';
 import { NgaModule } from '../theme/nga.module';
@@ -16,7 +16,7 @@ import { Pages } from './pages.component';
 import { ReportsModule } from './Reports/reports.module';
 
 import {
-  BrandComponent, DashboardComponent, ModelComponent, UserComponent,
+  BrandComponent, DashboardComponent, ModelComponent, UserComponent, ExpansesComponent,
   ColorComponent, SizeComponent, ProdInfoComponent, LoginComponent, LogOutComponent
 } from './index';
 import {
@@ -30,14 +30,14 @@ import { PipeModule } from './pipes/pipes.module';
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
-    ImageUploadModule, ColorPickerModule, NgxPaginationModule, QRCodeModule,
+    ImageUploadModule, ColorPickerModule, NgxPaginationModule, //NgxQRCodeModule,
     ReportsModule, BrowserAnimationsModule
   ],
   declarations: [
     Pages,
     UserComponent, BrandComponent, LoginComponent, LogOutComponent,
     DashboardComponent, ModelComponent,
-    ColorComponent, SizeComponent, ProdInfoComponent
+    ColorComponent, SizeComponent, ProdInfoComponent, ExpansesComponent
   ],
   providers: [
     AuthGuard, AuthenticationService, DashboardService,

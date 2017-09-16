@@ -10,3 +10,4 @@ export * from './model/basicInfo/prodInfo.component';
 export * from './user/user.component';
 export * from './login/login.component';
 export * from './sales/index';
+export * from './expanses/expanse.component'

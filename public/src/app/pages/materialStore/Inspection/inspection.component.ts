@@ -42,6 +42,7 @@ export class MatInspectionComponent implements OnInit {
     cnvManfDate: string;
     basicform: FormGroup;
     rlsform: FormGroup;
+    stillSaving: boolean
 
     constructor(private srvInsp: MatInspectionService, private srvSup: SupplierService, private srvMat: MaterialService,
         private srvAcc: AccessoryService, private auth: AuthenticationService, fb: FormBuilder) {
@@ -141,9 +142,12 @@ export class MatInspectionComponent implements OnInit {
         this.Formstate = null;
         this.headerText = 'Material Inspection';
         this.errorMessage = null;
+        this.stillSaving = false
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID
         this.model.SampleQty = this.model.SampleQty == null ? 0 : this.model.SampleQty
 

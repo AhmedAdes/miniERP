@@ -40,19 +40,19 @@
                 <tr>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchObj.CustName">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchContactPerson" name="ContactPerson" [(ngModel)]="srchObj.ContactPerson">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <select class="form-control" id="srchCustType" name="CustType" [(ngModel)]="srchObj.CustType">
                                 <option value="">Select a Type ...</option>
                                 <option *ngFor="let i of CustTypeList" [ngValue]="i.name">{{i.name}}</option>
@@ -61,31 +61,31 @@
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchCountry" name="Country" [(ngModel)]="srchObj.Country">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchArea" name="Area" [(ngModel)]="srchObj.Area">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchAddress" name="Address" [(ngModel)]="srchObj.Address">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchTel" name="Tel" [(ngModel)]="srchObj.Tel">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
                         </div>
                     </th>
@@ -103,9 +103,9 @@
                     <td>{{item.Tel}}</td>
                     <td>{{item.UserName}}</td>
                     <td>
-                        <button (click)="EditThis(item.CustID)" class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
-                        <button (click)="ShowDetails(item.CustID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
-                        <button (click)="Delete(item.CustID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+                        <button (click)="EditThis(item.CustID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
+                        <button (click)="ShowDetails(item.CustID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
+                        <button (click)="Delete(item.CustID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
                     </td>
                 </tr>
 

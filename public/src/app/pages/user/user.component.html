@@ -26,19 +26,19 @@
 				<tr>
 					<th>
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1"><i class="ion-android-search"></i></span>
+							<span class="input-group-addon" id="basic-addon1"><i class="icon ion-android-search"></i></span>
 							<input type="text" id="srchUserName" name="UserName" [(ngModel)]="searchUser.UserName">
 						</div>
 					</th>
 					<th>
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1"><i class="ion-android-search"></i></span>
+							<span class="input-group-addon" id="basic-addon1"><i class="icon ion-android-search"></i></span>
 							<input type="text" id="srchLoginName" name="LoginName" [(ngModel)]="searchUser.LoginName">
 						</div>
 					</th>
 					<th>
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1"><i class="ion-android-search"></i></span>
+							<span class="input-group-addon" id="basic-addon1"><i class="icon ion-android-search"></i></span>
 							<input type="text" id="srchJobClass" name="JobClass" [(ngModel)]="searchUser.JobClass">
 						</div>
 					</th>
@@ -53,9 +53,9 @@
 					<td>
 						<button *ngIf="currentUser.isAdmin" [disabled]="item.Approved" (click)='ApproveUser(item.UserID)' class="btn btn-success"
 							title="Approve User"><i class="glyphicon glyphicon-ok"></i></button>
-						<button *ngIf="currentUser.isAdmin" (click)='EditThis(item.UserID)' class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
-						<button (click)="ShowDetails(item.UserID)" class="btn btn-warning btn-icon" title="Details"><i class="ion-eye"></i></button>
-						<button *ngIf="currentUser.isAdmin" (click)="Delete(item.UserID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+						<button *ngIf="currentUser.isAdmin" (click)='EditThis(item.UserID)' class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
+						<button (click)="ShowDetails(item.UserID)" class="btn btn-warning btn-icon" title="Details"><i class="icon ion-eye"></i></button>
+						<button *ngIf="currentUser.isAdmin" (click)="Delete(item.UserID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
 					</td>
 				</tr>
 

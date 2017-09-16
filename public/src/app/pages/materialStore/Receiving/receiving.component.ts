@@ -43,6 +43,7 @@ export class MatReceivingComponent implements OnInit {
     cnvRecDate: string;
     cnvManfDate: string;
     basicform: FormGroup;
+    stillSaving: boolean
 
     constructor(public srvRec: MatReceivingService, private srvInsp: MatInspectionService, private auth: AuthenticationService,
         private srvDet: MatDetailService, private srvMat: MaterialService, private srvAcc: AccessoryService,
@@ -150,10 +151,13 @@ export class MatReceivingComponent implements OnInit {
         this.model = new MaterialReceiving();
         this.Detmodel = new MaterialStoreDetail();
         this.matDetails = [];
+        this.stillSaving = false
         this.basicform.reset();
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         if (this.matDetails.length == 0) {
             this.errorMessage = "Must Add some Materials First";

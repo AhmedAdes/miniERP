@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 @Component({
     selector: 'print-barcode',
     templateUrl: './barcode.print.html',
-    styleUrls: ['./PrintBarcode.css'],
+    styleUrls: ['./PrintBarcode.css']
 })
 
 export class PrintBarcodeComponent implements OnInit, AfterViewInit {
@@ -15,6 +15,7 @@ export class PrintBarcodeComponent implements OnInit, AfterViewInit {
     visModelName: string;
     visColorCode: string;
     BatchNo: string;    
+    elementType = 'img';
 
     constructor(private route: ActivatedRoute, private router: Router) { }
     //{ brand: this.visBrandName, model: this.visModelName, code: this.visColorCode, batch: this.Detmodel.BatchNo, rows: this.RowsCount }

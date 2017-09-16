@@ -52,6 +52,7 @@ export class MatEqualizeComponent implements OnInit {
     orderbyClass: string = "fa fa-sort";
     cnvRecDate: string;
     basicform: FormGroup;
+    stillSaving: boolean
 
     ngOnInit() {
         this.srvEqul.getEqualize().subscribe(cols => {
@@ -123,10 +124,13 @@ export class MatEqualizeComponent implements OnInit {
         this.model = new MaterialEqualization();
         this.Detmodel = new MaterialStoreDetail();
         this.matDetails = [];
+        this.stillSaving = false
         this.basicform.reset();
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.matDetails.length == 0) {

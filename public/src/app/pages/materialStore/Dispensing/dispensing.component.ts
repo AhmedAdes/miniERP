@@ -50,6 +50,7 @@ export class MatDispensingComponent implements OnInit {
     orderbyClass: string = "fa fa-sort";
     cnvRecDate: string;
     basicform: FormGroup;
+    stillSaving: boolean
 
     ngOnInit() {
         this.srvDisp.getDispensing().subscribe(cols => {
@@ -122,10 +123,13 @@ export class MatDispensingComponent implements OnInit {
         this.model = new MaterialDispensing();
         this.Detmodel = new MaterialStoreDetail();
         this.matDetails = [];
+        this.stillSaving = false
         this.basicform.reset();
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.matDetails.length == 0) {

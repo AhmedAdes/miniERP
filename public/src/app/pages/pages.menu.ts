@@ -8,7 +8,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Dashboard',
-            icon: 'ion-android-home',
+            icon: 'icon ion-android-home',
             selected: false,
             expanded: false,
             order: 0
@@ -20,7 +20,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Materials خامات',
-            icon: 'ion ion-ios-gear-outline',
+            icon: 'icon ion-ios-gear-outline',
             selected: false,
             expanded: false,
             order: 100,
@@ -51,7 +51,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Products منتجات',
-            icon: 'ion ion-ios-box',
+            icon: 'icon ion-ios-box',
             selected: false,
             expanded: false,
             order: 200,
@@ -63,7 +63,7 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Brands ماركات',
-                icon: 'ion ion-pricetag'
+                icon: 'icon ion-pricetag'
               }
             }
           },
@@ -72,7 +72,7 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Models موديلات',
-                icon: 'ion ion-pricetags'
+                icon: 'icon ion-pricetags'
               }
             },
           }
@@ -325,7 +325,7 @@ export const PAGES_MENU = [
         data: {
           menu: {
             title: 'Reports التقارير',
-            icon: 'ion-android-home',
+            icon: 'icon ion-android-home',
             selected: false,
             expanded: false,
             order: 0

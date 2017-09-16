@@ -35,37 +35,37 @@
                 <tr>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchHeadObj.CustName">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchSODate" name="SODate" [(ngModel)]="srchHeadObj.SODate">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchDeliveryDate" name="DeliveryDate" [(ngModel)]="srchHeadObj.DeliveryDate">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchSalesPerson" name="SalesPerson" [(ngModel)]="srchHeadObj.SalesPerson">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchGrandTotal" name="GrandTotal" [(ngModel)]="srchHeadObj.GrandTotal">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchHeadObj.UserName">
                         </div>
                     </th>
@@ -81,10 +81,10 @@
                     <td>{{item.GrandTotal | number:'1.2-2'}}</td>
                     <td>{{item.UserName}}</td>
                     <td>
-                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-info" title="Print Invoice"><i class="ion-printer"></i></button>
-                        <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit"><i class="ion-edit"></i></button>
-                        <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details"><i class="ion-eye"></i></button>
-                        <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete"><i class="ion-trash-a"></i></button>
+                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-info" title="Print Invoice"><i class="icon ion-printer"></i></button>
+                        <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
+                        <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
+                        <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
                     </td>
                 </tr>
 

@@ -35,6 +35,7 @@ export class ExpansesComponent implements OnInit {
     errorMessage: string;
     orderbyString: string = "";
     orderbyClass: string = "fa fa-sort";
+    stillSaving: boolean
 
     ngOnInit() {
         this.serv.getExpanses().subscribe(cols => this.collection = cols);
@@ -81,9 +82,12 @@ export class ExpansesComponent implements OnInit {
         this.Formstate = null;
         this.headerText = 'Expanses';
         this.errorMessage = null;
+        this.stillSaving = false
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
 
         switch (this.Formstate) {

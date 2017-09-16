@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { AuthenticationService } from './index';
+import { AuthenticationService } from './auth.service';
 import 'rxjs/add/operator/map';
 import { SalesHeader, SalesDetail, SalesPayment, DBConStrng } from '../Models/index';
 
@@ -66,5 +66,17 @@ export class SalesHeaderService {
   }
   getSalesSummaryChart(fromdate: string, todate: string){
     return this.http.get(this.url + 'salesSummaryChrt/' + fromdate + '.' + todate, this.options).map(res => res.json())
+  }
+  getIncomeTracker(){
+    return this.http.get(this.url + 'incomeTracker/', this.options).map(res => res.json())
+  }
+  getUnpaidInvoices(){
+    return this.http.get(this.url + 'unpaidInvoices/', this.options).map(res => res.json())
+  }
+  getOverdueInvoices(){
+    return this.http.get(this.url + 'overDueInvoices/', this.options).map(res => res.json())
+  }
+  getPaidInvoices(){
+    return this.http.get(this.url + 'paidInvoices/', this.options).map(res => res.json())
   }
 }

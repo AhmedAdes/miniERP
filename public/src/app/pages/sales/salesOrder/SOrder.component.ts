@@ -47,6 +47,7 @@ export class SalesOrderComponent implements OnInit {
     subtotal: number;
     headerValid: boolean;
     SalesRepExist: boolean;
+    stillSaving: boolean
 
     ngOnInit() {
         this.srvHead.getSalesHeader().subscribe(cols => {
@@ -119,9 +120,12 @@ export class SalesOrderComponent implements OnInit {
         this.PayModel = new SalesPayment();
         this.SDetails = [];
         this.SPayments = [];
+        this.stillSaving = false
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
 
         if (this.SDetails.length == 0) {

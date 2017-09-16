@@ -35,6 +35,8 @@ export class CustomerComponent implements OnInit {
     orderbyString: string = "";
     orderbyClass: string = "fa fa-sort";
     CustTypeList = CustTypes;
+    stillSaving: boolean
+
 
     ngOnInit() {
         this.serv.getCustomer().subscribe(cols => this.collection = cols);
@@ -77,9 +79,12 @@ export class CustomerComponent implements OnInit {
         this.Formstate = null;
         this.headerText = 'Customers';
         this.errorMessage = null;
+        this.stillSaving = false
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
 
         switch (this.Formstate) {

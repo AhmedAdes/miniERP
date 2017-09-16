@@ -53,6 +53,7 @@ export class FinReceivingComponent implements OnInit {
     cnvRecDate: string;
     cnvManfDate: string;
     basicform: FormGroup;
+    stillSaving: boolean
 
     ngOnInit() {
         this.srvRec.getReceiving().subscribe(cols => {
@@ -114,10 +115,13 @@ export class FinReceivingComponent implements OnInit {
         this.model = new FinishedReceiving();
         this.Detmodel = new FinishedStoreDetail();
         this.finDetails = [];
+        this.stillSaving = false
         this.basicform.reset();
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         if (this.finDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";

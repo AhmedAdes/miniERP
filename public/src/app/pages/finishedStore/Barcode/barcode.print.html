@@ -2,7 +2,8 @@
     <tbody>
         <tr *ngFor="let itspan of createRange(RowsCount)">
             <td class="Bimage">
-                <qr-code [value]="barcodeData" [size]="70"></qr-code>
+                <!-- <qrcode [value]="barcodeData" [size]="70" [level]="'M'"></qrcode> -->
+                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -11,7 +12,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <qr-code [value]="barcodeData" [size]="70"></qr-code>
+                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -20,7 +21,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <qr-code [value]="barcodeData" [size]="70"></qr-code>
+                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -29,7 +30,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <qr-code [value]="barcodeData" [size]="70"></qr-code>
+                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -38,7 +39,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <qr-code [value]="barcodeData" [size]="70"></qr-code>
+                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
             </td>
             <td class="Btext">
                 <p>GBG</p>

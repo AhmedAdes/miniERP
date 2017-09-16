@@ -51,6 +51,7 @@ export class FinReturnComponent implements OnInit {
     orderbyClass: string = "fa fa-sort";
     cnvRecDate: string;
     basicform: FormGroup;
+    stillSaving: boolean
 
     ngOnInit() {
         this.srvEqul.getReturn().subscribe(cols => {
@@ -111,10 +112,13 @@ export class FinReturnComponent implements OnInit {
         this.model = new FinishedReturn();
         this.Detmodel = new FinishedStoreDetail();
         this.finDetails = [];
+        this.stillSaving = false
         this.basicform.reset();
     }
     HandleForm(event) {
         event.preventDefault();
+        if (this.stillSaving) return
+        this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.finDetails.length == 0) {

@@ -49,43 +49,43 @@
                                 <tr>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="RecDate" [(ngModel)]="srchPend.RecDate">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchPend.ManfDate">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="BatchNo" [(ngModel)]="srchPend.BatchNo">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="SupName" [(ngModel)]="srchPend.SupName">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="MaterialName" [(ngModel)]="srchPend.MaterialName">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="QtyReceived" [(ngModel)]="srchPend.QtyReceived">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="UserName" [(ngModel)]="srchPend.UserName">
                                         </div>
                                     </th>
@@ -102,11 +102,11 @@
                                     <td>{{item.QtyReceived}}</td>
                                     <td>{{item.UserName}}</td>
                                     <td>
-                                        <button (click)="EditThis(item.InspID)" class="btn btn-round btn-info" title="Edit"><i class="ion-edit"></i></button>
-                                        <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="ion-eye"></i></button>
-                                        <button (click)="Delete(item.InspID)" class="btn btn-round btn-danger" title="Delete"><i class="ion-trash-a"></i></button>
+                                        <button (click)="EditThis(item.InspID)" class="btn btn-round btn-info" title="Edit"><i class="icon ion-edit"></i></button>
+                                        <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="icon ion-eye"></i></button>
+                                        <button (click)="Delete(item.InspID)" class="btn btn-round btn-danger" title="Delete"><i class="icon ion-trash-a"></i></button>
                                         <button *ngIf="item.Approved == false && item.Reject == false" (click)="Release(item.InspID)" class="btn btn-round btn-warning"
-                                            title="Release"><i class="ion-checkmark-round"></i></button>
+                                            title="Release"><i class="icon ion-checkmark-round"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -155,49 +155,49 @@
                                 <tr>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="RecDate" [(ngModel)]="srchObj.RecDate">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchObj.ManfDate">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="BatchNo" [(ngModel)]="srchObj.BatchNo">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="SupName" [(ngModel)]="srchObj.SupName">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="MaterialName" [(ngModel)]="srchObj.MaterialName">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="QtyApproved" [(ngModel)]="srchObj.QtyApproved">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="QtyReject" [(ngModel)]="srchObj.QtyReject">
                                         </div>
                                     </th>
                                     <th>
                                         <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="ion-android-search"></i></span>
+                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="UserName" [(ngModel)]="srchObj.UserName">
                                         </div>
                                     </th>
@@ -215,7 +215,7 @@
                                     <td>{{item.QtyReject}}</td>
                                     <td>{{item.UserName}}</td>
                                     <td>
-                                        <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="ion-eye"></i></button>
+                                        <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="icon ion-eye"></i></button>
                                     </td>
                                 </tr>
                             </tbody>

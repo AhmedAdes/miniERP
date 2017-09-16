@@ -1,0 +1,120 @@
+<ba-card class="well no-print">
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-warning">
+                <div class="inner">
+                    <h3>{{UnpaidA | number:'1.2-2'}}</h3>
+                    <span>{{UnpaidQ}} OPEN INVOICES</span>
+                </div>
+                <a (click)="ShowUnPaid()" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+            <!-- /.small-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-danger">
+                <div class="inner">
+                    <h3>{{OverDueA | number:'1.2-2'}}</h3>
+                    <span>{{OverDueQ}} OVERDUE</span>
+                </div>
+                <a (click)="ShowOverDue()" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+            <!-- /.small-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-success">
+                <div class="inner">
+                    <h3>{{PaidA | number:'1.2-2'}}</h3>
+                    <span>{{PaidQ}} PAID last 30 Days</span>
+                </div>
+                <a (click)="ShowPaid()" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+            <!-- /.small-box -->
+        </div>
+        <!-- /.col -->
+        <div class="clearfix visible-sm-block"></div>
+    </div>
+    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+        <div class="form-horizontal">
+            <div class="form-group row">
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                    <button type="submit" class="btn btn-primary btn-block">View</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                    <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                    <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ba-card>
+<div class="panel panel-default">
+    <div class="panel-heading row">
+        <h3 class="text-center">{{reportHeader}}</h3>
+    </div>
+    <div class="panel-body">
+        <table id="tblPayments" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="20%" />
+                <col width="20%" />
+                <col width="20%" />
+                <col width="20%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.SOID.Disp}} <i (click)="SortTable('SOID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SOID') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.CustName.Disp}} <i (click)="SortTable('CustName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('CustName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.PaymentDate.Disp}} <i (click)="SortTable('PaymentDate')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('PaymentDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.PayAmount.Disp}} <i (click)="SortTable('PayAmount')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('PayAmount') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Paid.Disp}} <i (click)="SortTable('Paid')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Paid') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSOID" name="SOID" [(ngModel)]="srchObj.SOID">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchObj.CustName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchPaymentDate" name="PaymentDate" [(ngModel)]="srchObj.PaymentDate">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchPayAmount" name="PayAmount" [(ngModel)]="srchObj.PayAmount">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchPaid" name="Paid" [(ngModel)]="srchObj.Paid">
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString)">
+                    <td>{{item.SOID}}</td>
+                    <td>{{item.CustName}}</td>
+                    <td>{{item.PaymentDate | date:'mediumDate'}}</td>
+                    <td>{{item.PayAmount | number:'1.2-2'}}</td>
+                    <td>{{item.Paid ? "Yes" : "No"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
