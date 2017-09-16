@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, FinEqualizeService, FinDetailService, ModelService } from '../../services/index';
-import { CurrentUser, FinishedEqualization, FinishedStoreDetail, Model, EqualizeTypes } from '../../Models/index';
+import { AuthenticationService, FinEqualizeService, FinDetailService, ModelService } from '../../../services';
+import { CurrentUser, FinishedEqualization, FinishedStoreDetail, Model, EqualizeTypes } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 

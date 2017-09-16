@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { SalesPayment, CurrentUser, Customer, CustTypes, DeliveryTypes, PayMethods, Model, ModelColor } from '../../../Models/index';
-import { SalesPaymentService } from '../../../services/index';
+import { SalesPayment, CurrentUser, Customer, CustTypes, DeliveryTypes, PayMethods, Model, ModelColor } from '../../../../Models';
+import { SalesPaymentService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { min, max } from '../../../pipes/validators';
+import { min, max } from '../../../../pipes/validators';
 
 @Component({
     selector: 'sorder-payment',
@@ -21,7 +21,9 @@ export class SalesPaymentComponent implements OnInit {
             PaymentDate: ['', Validators.required],
             CommDate: [''],
             PayAmount: ['', [min(0)]],
-            CommAmount: ['', [min(0)]]
+            PayDone: [false],
+            CommAmount: ['', [min(0)]],
+            CommDone: [false]
         });
         // this.ctrlColorID.valueChanges.subscribe(value => this.onColorChange(value));
     }
@@ -41,8 +43,6 @@ export class SalesPaymentComponent implements OnInit {
     AddPayment(event) {
         this.Paymodel.UserID = this.currentUser.userID;
         this.Paymodel.UserName = this.currentUser.userName;
-        this.Paymodel.Paid = false;
-        this.Paymodel.CommsionPaid = false;
         this.Payments.push(this.Paymodel);
         this.Paymodel = new SalesPayment();
         this.ValidateTotal.emit();

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, MatStoreService } from '../../services/index';
-import { MaterialStore, CurrentUser } from '../../Models/index';
+import { AuthenticationService, MatStoreService } from '../../../services';
+import { MaterialStore, CurrentUser } from '../../../Models';
 
 @Component({
     selector: 'mat-balance',

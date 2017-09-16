@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHeader } from '../../../Models/index';
-import { ModelService, ColorService, FinDetailService } from '../../../services/index';
+import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHeader } from '../../../../Models';
+import { ModelService, ColorService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { min, max } from '../../../pipes/validators';
+import { min, max } from '../../../../pipes/validators';
 
 @Component({
     selector: 'fin-equl-detail',

@@ -1,13 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 import { PrintOut } from './printout.component';
 
-import { AuthGuard } from '../services/auth.guard';
+import { AuthGuard } from '../../services/auth.guard';
 
 import {
   PrintBarcodeComponent, InvoicePrintComponent, PrintFinDispOrderComponent, 
   PrintFinRecOrderComponent, PrintFinEqulOrderComponent, PrintFinRtrnOrderComponent,
-  PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent
-
+  PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent,
+  PrintMatInspComponent
 } from './index';
 
 // noinspection TypeScriptValidateTypes
@@ -25,7 +25,8 @@ const routes: Routes = [
       { path: 'matDisp/:id', component: PrintMatDispComponent, canActivate: [AuthGuard] },
       { path: 'matRec/:id', component: PrintMatRecComponent, canActivate: [AuthGuard] },
       { path: 'matEqul/:id', component: PrintMatEqulComponent, canActivate: [AuthGuard] },
-      { path: 'matRet/:id', component: PrintMatRetComponent, canActivate: [AuthGuard] }
+      { path: 'matRet/:id', component: PrintMatRetComponent, canActivate: [AuthGuard] },
+      { path: 'matInsp/:id', component: PrintMatInspComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

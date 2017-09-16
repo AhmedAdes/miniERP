@@ -5,7 +5,7 @@ import { ModuleWithProviders } from '@angular/core';
 
 // export function loadChildren(path) { return System.import(path); };
 
-import { AuthGuard } from './services/auth.guard';
+import { AuthGuard } from '../services/auth.guard';
 
 import {
   BrandComponent, DashboardComponent, ModelComponent, UserComponent

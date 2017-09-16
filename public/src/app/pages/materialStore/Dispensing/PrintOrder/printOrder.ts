@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { CurrentUser, MaterialDispensing, MaterialStoreDetail, CompanyName } from '../../../Models/index';
-import { MatDispensingService, MatDetailService } from '../../../services/index';
+import { CurrentUser, MaterialDispensing, MaterialStoreDetail, CompanyName } from '../../../../Models';
+import { MatDispensingService, MatDetailService } from '../../../../services';
 
 @Component({
     selector: 'print-matDisp-order',
     templateUrl: './printOrder.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
 })
 export class PrintMatDispComponent implements OnInit {
     constructor(public srvDisp: MatDispensingService, private srvDet: MatDetailService,

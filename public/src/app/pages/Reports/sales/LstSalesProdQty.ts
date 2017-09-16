@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
-import { SalesHeaderService } from '../../services';
-// import { rptTopCustomers } from '../../Models';
+import { SalesHeaderService } from '../../../services';
+// import { rptTopCustomers } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
 
 interface SlsProdQtyreport {
@@ -13,7 +13,7 @@ interface SlsProdQtyreport {
 @Component({
     selector: 'rpt-lstProdQty',
     templateUrl: './LstSalesProdQty.html',
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptLeastSalesProdQtyComponent implements OnInit {
     constructor(private srv: SalesHeaderService, private loc: Location) { }

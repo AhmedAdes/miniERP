@@ -1,6 +1,6 @@
 // import { Component, OnInit, Input } from '@angular/core';
-// import { SalesDetail, CurrentUser, Customer, DeliveryTypes, PayMethods } from '../../../Models/index';
-// import { CustomerService } from '../../../services/index';
+// import { SalesDetail, CurrentUser, Customer, DeliveryTypes, PayMethods } from '../../../../Models';
+// import { CustomerService } from '../../../../services';
 
 // @Component({
 //     selector: 'sales-detail',

@@ -1,12 +1,16 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, MatInspectionService, MaterialService, AccessoryService, SupplierService } from '../../services/index';
-import { CurrentUser, MaterialReceiving, MaterialInspection, MaterialStoreDetail, Material, Supplier } from '../../Models/index';
+import { AuthenticationService, MatInspectionService, MaterialService, AccessoryService, SupplierService } from '../../../services';
+import { CurrentUser, MaterialReceiving, MaterialInspection, MaterialStoreDetail, Material, Supplier } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { min, max } from '../../pipes/validators'
+import { min, max } from '../../../pipes/validators'
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'mat-insp',
     templateUrl: './inspection.component.html',
+    styles: [`a.nav-link {
+        font-size:18px!important
+      }`],
     animations: [
         trigger(
             'myAnimation', [
@@ -45,7 +49,7 @@ export class MatInspectionComponent implements OnInit {
     stillSaving: boolean
 
     constructor(private srvInsp: MatInspectionService, private srvSup: SupplierService, private srvMat: MaterialService,
-        private srvAcc: AccessoryService, private auth: AuthenticationService, fb: FormBuilder) {
+        private srvAcc: AccessoryService, private auth: AuthenticationService, fb: FormBuilder, private router: Router) {
         this.basicform = fb.group({
             // RecDate ,RecYear ,SerialNo ,ManfDate ,InvoiceNo ,InvoiceDate ,BatchNo ,QCNO ,MaterialID ,QtyReceived ,SampleQty ,UnitPrice ,TotalPrice ,Notes ,POID ,SupID ,UserID
             RecDate: ['', Validators.required],
@@ -271,6 +275,11 @@ export class MatInspectionComponent implements OnInit {
         // var unitPrice = this.model.UnitPrice == null ? 0 : this.model.UnitPrice;
         var QtyReceived = this.model.QtyReceived == null ? 0 : this.model.QtyReceived;
         this.model.TotalPrice = value * QtyReceived;
+    }
+    PrintOrder(orderID) {
+        this.router.navigate(['printout/matInsp', orderID])
+
+        // window.open(`#/printout/invoice/${soid}`, '_blank')
     }
 
 }

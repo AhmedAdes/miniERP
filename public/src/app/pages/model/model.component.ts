@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { ImageResult } from 'ng2-imageupload';
-import { AuthenticationService, ModelService, BrandService, ColorService, SizeService } from '../services/index';
-import { Brand, Model, CurrentUser, ModelColor, ModelSize } from '../Models/index';
+import { AuthenticationService, ModelService, BrandService, ColorService, SizeService } from '../../services';
+import { Brand, Model, CurrentUser, ModelColor, ModelSize } from '../../Models';
 
 @Component({
     selector: 'app-model',

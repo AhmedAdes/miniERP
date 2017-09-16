@@ -11,7 +11,7 @@ import { FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, FinRece
   FinReturnComponent, FinReturnDetailsComponent
 } from './index';
 import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingService, SalesHeaderService, SalesDetailService,
-  FinEqualizeService, FinRejectService, FinReturnService } from '../services/index';
+  FinEqualizeService, FinRejectService, FinReturnService } from '../../services';
 
 @NgModule({
   imports: [

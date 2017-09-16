@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common'
-import { CustomerService } from '../../services';
-import { Customer } from '../../Models';
+import { CustomerService } from '../../../services';
+import { Customer } from '../../../Models';
 
 interface CustCntryreport {
     Country: string
@@ -12,7 +12,7 @@ interface CustCntryreport {
 @Component({
     selector: 'rpt-custCntry',
     templateUrl: './custByCountry.html',
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptCustCountryComponent implements OnInit {
     constructor(private srv: CustomerService, private loc: Location) { }

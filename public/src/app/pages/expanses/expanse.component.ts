@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, ExpansesService } from '../services/index';
-import { Expanses, CurrentUser } from '../Models/index';
+import { AuthenticationService, ExpansesService } from '../../services';
+import { Expanses, CurrentUser } from '../../Models';
 
 @Component({
     selector: 'app-expanse',

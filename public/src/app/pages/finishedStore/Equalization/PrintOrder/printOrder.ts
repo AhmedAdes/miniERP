@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { CurrentUser, Model, ModelColor, FinishedEqualization, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../Models/index';
-import { FinEqualizeService, FinDetailService } from '../../../services/index';
+import { CurrentUser, Model, ModelColor, FinishedEqualization, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../../Models';
+import { FinEqualizeService, FinDetailService } from '../../../../services';
 
 @Component({
     selector: 'print-finEqul-order',
     templateUrl: './printOrder.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
 })
 export class PrintFinEqulOrderComponent implements OnInit {
     constructor(public srvEqul: FinEqualizeService, private srvDet: FinDetailService,

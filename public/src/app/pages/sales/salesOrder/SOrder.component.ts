@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, SalesHeaderService, SalesDetailService, SalesPaymentService, CustomerService, ModelService } from '../../services/index';
-import { Customer, CurrentUser, SalesHeader, SalesDetail, SalesPayment, CustTypes, Model } from '../../Models/index';
+import { AuthenticationService, SalesHeaderService, SalesDetailService, SalesPaymentService, CustomerService, ModelService } from '../../../services';
+import { Customer, CurrentUser, SalesHeader, SalesDetail, SalesPayment, CustTypes, Model } from '../../../Models';
 import { Router } from '@angular/router';
 
 @Component({
@@ -67,48 +67,29 @@ export class SalesOrderComponent implements OnInit {
         this.Formstate = 'Create';
         this.headerText = 'Create New Sales Order';
     }
-
-    EditThis(id: number) {
+    LoadDetails(id, state) {
         this.srvHead.getSalesHeader(id).subscribe(mat => {
             this.model = mat[0];
             this.srvDet.getSalesDetail(id).subscribe(det => {
                 this.SDetails = det;
                 this.srvPay.getSalesOrderPayment(id).subscribe(pay => {
                     this.SPayments = pay;
+                    this.CalculateTotal();
                     this.showTable = false;
-                    this.Formstate = 'Edit';
-                    this.headerText = 'Edit Sales Order';
+                    this.Formstate = state;
+                    this.headerText = state == 'Detail' ? `Sales Order ${state}s` : `${state} Sales Order`;
                 })
             });
         });
+    }
+    EditThis(id: number) {
+        this.LoadDetails(id, 'Edit');
     }
     ShowDetails(id: number) {
-        this.srvHead.getSalesHeader(id).subscribe(mat => {
-            this.model = mat[0];
-            this.srvDet.getSalesDetail(id).subscribe(det => {
-                this.SDetails = det;
-                this.srvPay.getSalesOrderPayment(id).subscribe(pay => {
-                    this.SPayments = pay;
-                    this.showTable = false;
-                    this.Formstate = 'Detail';
-                    this.headerText = 'Sales Order Details';
-                })
-            });
-        });
+        this.LoadDetails(id, 'Detail');
     }
     Delete(id: number) {
-        this.srvHead.getSalesHeader(id).subscribe(mat => {
-            this.model = mat[0];
-            this.srvDet.getSalesDetail(id).subscribe(det => {
-                this.SDetails = det;
-                this.srvPay.getSalesOrderPayment(id).subscribe(pay => {
-                    this.SPayments = pay;
-                    this.showTable = false;
-                    this.Formstate = 'Delete';
-                    this.headerText = 'Delete Sales Order';
-                })
-            });
-        });
+        this.LoadDetails(id, 'Delete');
     }
     TableBack() {
         this.showTable = true;
@@ -236,7 +217,7 @@ export class SalesOrderComponent implements OnInit {
     ValidateTotal() {
         var subtotal = 0;
         this.SPayments.forEach(element => {
-            this.subtotal += element.PayAmount;
+            subtotal += element.PayAmount;
         });
         if (this.model.GrandTotal < subtotal) {
             this.errorMessage = "Grand Total is Greater Than the Paid Amount";

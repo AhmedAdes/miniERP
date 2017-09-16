@@ -17,7 +17,7 @@ import {
   MaterialService, MatStoreService, MatInspectionService, SupplierService,
   MatDetailService, MatReceivingService, MatDispensingService,
   MatReturnService, MatEqualizeService
-} from '../services/index';
+} from '../../services';
 
 @NgModule({
   imports: [

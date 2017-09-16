@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SalesHeader, CurrentUser, Customer, SalesRep, DeliveryTypes, PayMethods } from '../../../Models/index';
-import { CustomerService, SalesRepService } from '../../../services/index';
+import { SalesHeader, CurrentUser, Customer, SalesRep, DeliveryTypes, PayMethods } from '../../../../Models';
+import { CustomerService, SalesRepService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 
 @Component({

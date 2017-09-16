@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { MaterialService, AuthenticationService } from '../../services/index';
-import { Material, CurrentUser } from '../../Models/index';
+import { MaterialService, AuthenticationService } from '../../../services';
+import { Material, CurrentUser } from '../../../Models';
 
 @Component({
   selector: 'app-cloth',

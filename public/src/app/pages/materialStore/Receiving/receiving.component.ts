@@ -1,6 +1,6 @@
 import { Component, OnInit, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, MatReceivingService, MatInspectionService, MatDetailService, MaterialService, AccessoryService } from '../../services/index';
-import { CurrentUser, MaterialReceiving, MaterialStoreDetail, MaterialInspection, Material } from '../../Models/index';
+import { AuthenticationService, MatReceivingService, MatInspectionService, MatDetailService, MaterialService, AccessoryService } from '../../../services';
+import { CurrentUser, MaterialReceiving, MaterialStoreDetail, MaterialInspection, Material } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -139,7 +139,7 @@ export class MatReceivingComponent implements OnInit {
         this.LoadDetails(id, 'Detail');
     }
     PrintDetails(id: number){
-        window.open(`#/printout/matrec/${id}`, '_blank')
+        window.open(`#/printout/matRec/${id}`, '_blank')
     }
     Delete(id: number) {
         this.LoadDetails(id, 'Delete');

@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
-import { SalesHeaderService } from '../../services';
-import { rptCompareSales } from '../../Models';
+import { SalesHeaderService } from '../../../services';
+import { rptCompareSales } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'rpt-slscmpr',
     templateUrl: './cmprlastMnth.html',
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesCompareComponent implements OnInit {
     constructor(private srv: SalesHeaderService, private loc: Location) { }

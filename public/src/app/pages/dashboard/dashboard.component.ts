@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../services';
+import { DashboardService } from '../../services';
 
 @Component({
     selector: 'dashboard',
     templateUrl: './dashboard.component.html',
-    styleUrls: ['../Styles/dashboard.css']
+    styleUrls: ['../../Styles/dashboard.css']
 })
 export class DashboardComponent implements OnInit {
     constructor(private srv: DashboardService) { }

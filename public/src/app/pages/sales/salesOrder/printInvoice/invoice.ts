@@ -1,25 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common'
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { SalesHeaderService, SalesDetailService } from '../../../services/index';
-import { SalesHeader, SalesDetail } from '../../../Models/index';
+import { SalesHeaderService, SalesDetailService, SalesPaymentService } from '../../../../services';
+import { SalesHeader, SalesDetail, SalesPayment } from '../../../../Models';
 
 @Component({
     selector: 'print-invoice',
     templateUrl: './invoice.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
 })
 
 export class InvoicePrintComponent implements OnInit {
 
     //Make sure you bootstrap your service at startup
     constructor(private srvHead: SalesHeaderService, private srvDet: SalesDetailService,
-        private route: ActivatedRoute, private router: Router, private loc: Location) { }
+        private srvPay: SalesPaymentService, private route: ActivatedRoute,
+        private router: Router, private loc: Location) { }
     CompanyName = "Global Brands Group"
     header: SalesHeader = new SalesHeader();
     Dispobj: SalesHeader = new SalesHeader();
     Dispdet: SalesDetail = new SalesDetail();
+    DispPay: SalesPayment = new SalesPayment();
     SDetails: SalesDetail[] = [];
+    SPayments: SalesPayment[] = [];
     subtotal: number;
 
     ngOnInit() {
@@ -29,11 +32,14 @@ export class InvoicePrintComponent implements OnInit {
                 this.header = mat[0];
                 this.srvDet.getSalesDetail(id).subscribe(det => {
                     this.SDetails = det;
-                    this.subtotal = 0;
-                    this.SDetails.forEach(element => {
-                        this.subtotal += element.Price * element.Quantity;
-                        // this.AfterViewInit()
-                    });
+                    this.srvPay.getSalesOrderPayment(id).subscribe(pay => {
+                        this.SPayments = pay;
+                        this.subtotal = 0;
+                        this.SDetails.forEach(element => {
+                            this.subtotal += element.Price * element.Quantity;
+                            // this.AfterViewInit()
+                        });
+                    })
                 })
             })
         })
@@ -42,7 +48,7 @@ export class InvoicePrintComponent implements OnInit {
         window.setTimeout(function () { window.print(); }, 500);
         // window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
     }
-    goBack(){
+    goBack() {
         this.loc.back();
     }
 }

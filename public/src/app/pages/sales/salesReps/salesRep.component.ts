@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, SalesRepService } from '../../services/index';
-import { SalesRep, CurrentUser } from '../../Models/index';
+import { AuthenticationService, SalesRepService } from '../../../services';
+import { SalesRep, CurrentUser } from '../../../Models';
 
 @Component({
   selector: 'sales-rep',

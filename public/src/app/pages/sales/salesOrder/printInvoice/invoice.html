@@ -19,7 +19,7 @@
                 <dt> {{Dispobj.DisplayNames.SODate.Disp}} </dt>
                 <dd> {{header.SODate | date: 'mediumDate'}} </dd>
                 <dt> {{Dispobj.DisplayNames.CustName.Disp}} </dt>
-                <dd> {{header.CustName}} </dd>
+                <dd> {{header.CustName}} -- {{header.ContactPerson}} </dd>
                 <dt> {{Dispobj.DisplayNames.DeliveryDate.Disp}} </dt>
                 <dd> {{header.DeliveryDate | date: 'mediumDate'}} </dd>
             </dl>
@@ -28,20 +28,16 @@
     <div class="row">
         <div class="col-sm-12 col-xs-12 col-md-12">
 
-            <table class="table table-hover table-striped table-responsive">
+            <table class="table table-hover table-striped table-bordered table-responsive">
                 <colgroup>
-                    <col width="15%" />
-                    <col width="20%" />
-                    <col width="15%" />
-                    <col width="10%" />
-                    <col width="10%" />
-                    <col width="15%" />
+                    <col width="25%" />
+                    <col width="25%" />
+                    <col width="25%" />
+                    <col width="25%" />
                 </colgroup>
                 <thead>
                     <tr>
                         <th>{{Dispdet.DisplayNames.ModelCode.Disp}}</th>
-                        <th>{{Dispdet.DisplayNames.ModelName.Disp}}</th>
-                        <th>{{Dispdet.DisplayNames.ColorName.Disp}}</th>
                         <th>{{Dispdet.DisplayNames.Quantity.Disp}}</th>
                         <th>{{Dispdet.DisplayNames.Price.Disp}}</th>
                         <th>Total Price</th>
@@ -50,8 +46,6 @@
                 <tbody>
                     <tr *ngFor="let item of SDetails; let i = index">
                         <td>{{item.ModelCode}}</td>
-                        <td>{{item.ModelName}}</td>
-                        <td>{{item.ColorName}}</td>
                         <td>{{item.Quantity}}</td>
                         <td>{{item.Price}}</td>
                         <td>{{item.Price * item.Quantity}}</td>
@@ -82,6 +76,28 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Payment Details الدفعات</h3>
+            <div class="col-sm-offset-2 col-xs-offset-2 col-sm-10 col-xs-10">
+                <table class="table table-hover table-striped table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{{DispPay.DisplayNames.PaymentDate.Disp}}</th>
+                            <th>{{DispPay.DisplayNames.PayAmount.Disp}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of SPayments; let i = index">
+                            <td>{{item.PaymentDate | date:'mediumDate'}}</td>
+                            <td><input type="checkbox" [checked]="item.Paid" disabled> {{item.PayAmount | number:'1.2-2'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

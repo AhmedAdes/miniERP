@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
-import { SalesHeaderService } from '../../services';
-// import { rptSalesByCust } from '../../Models';
+import { SalesHeaderService } from '../../../services';
+// import { rptSalesByCust } from '../../../Models';
 import { BaseChartDirective, Color } from 'ng2-charts';
 
 
@@ -21,7 +21,7 @@ interface slsSummary {
     selector: 'rpt-slsSmry',
     templateUrl: './salesSummary.html',
     styles: [".rowHeader: {font-weight: bold!important; background-color: palegreen!important}"],
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesSummaryComponent implements OnInit {
     constructor(private srv: SalesHeaderService, private loc: Location) { }

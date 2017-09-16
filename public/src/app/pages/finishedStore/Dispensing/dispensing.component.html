@@ -22,6 +22,7 @@
                 <tr>
                     <th> {{srchObj.DisplayNames.RecYear.Disp}} <i (click)="SortTable('RecYear')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('RecYear') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.SerialNo.Disp}} <i (click)="SortTable('SerialNo')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SerialNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.SOID.Disp}} <i (click)="SortTable('SOID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SOID') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.DispensingDate.Disp}} <i (click)="SortTable('DispensingDate')" class="btn btn-default"
                             [ngClass]="(orderbyString.indexOf('DispensingDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.DispenseTo.Disp}} <i (click)="SortTable('DispenseTo')" class="btn btn-default"
@@ -67,11 +68,12 @@
                 <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
                     <td>{{item.RecYear}}</td>
                     <td>{{item.SerialNo}}</td>
+                    <td>{{item.SOID}}</td>
                     <td>{{item.DispensingDate | date:'mediumDate'}}</td>
                     <td>{{item.DispenseTo}}</td>
                     <td>{{item.UserName}}</td>
                     <td>
-                        <button (click)="PrintOrder(item.FinDispensingID)" class="btn btn-info" title="Print Order"><i class="icon ion-printer"></i></button>
+                        <button (click)="PrintOrder(item.FinDispensingID)" class="btn btn-warning" title="Print Order"><i class="icon ion-printer"></i></button>
                         <button (click)="EditThis(item.FinDispensingID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
                         <button (click)="ShowDetails(item.FinDispensingID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
                         <button (click)="Delete(item.FinDispensingID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
@@ -97,14 +99,14 @@
                                 <div class="col-md-10">
                                     <div class="input-group">
                                         <span class="input-group-addon">
-                                        <input type="checkbox" name="chkSOID" value="false" [formControl]="basicform.controls['chkSOID']" class="checkbox checkbox-inline" />
-                                    </span>
+                                            <input type="checkbox" name="chkSOID" value="false" [formControl]="basicform.controls['chkSOID']" class="checkbox checkbox-inline" />
+                                        </span>
                                         <select class="form-control" name="SOID" [(ngModel)]="SOID" [formControl]="basicform.controls['soID']">
                                             <option value="">Select Sales Order ...</option>
-                                            <option *ngFor="let i of SOList" [ngValue]="i.SOID"> {{i.CustName}} on {{i.SODate | date:'mediumDate'}}</option>
+                                            <option *ngFor="let i of SOList" [ngValue]="i.SOID"> {{i.SOID}} by {{i.CustName}}--{{i.ContactPerson}} on {{i.SODate | date:'mediumDate'}}</option>
                                         </select>
-                                        <div *ngIf="basicform.controls['soID'].touched && !basicform.controls['soID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.SOID.Disp}} is required.</div>
                                     </div>
+                                    <div *ngIf="basicform.controls['soID'].touched && !basicform.controls['soID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.SOID.Disp}} is required.</div>
                                 </div>
                             </div>
                             <div class="form-group row">

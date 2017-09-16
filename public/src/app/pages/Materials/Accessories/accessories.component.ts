@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AccessoryService, AuthenticationService } from '../../services/index';
-import { Material, CurrentUser } from '../../Models/index';
+import { AccessoryService, AuthenticationService } from '../../../services';
+import { Material, CurrentUser } from '../../../Models';
 
 @Component({
   selector: 'app-Accessory',

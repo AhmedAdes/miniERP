@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, CustomerService } from '../../services/index';
-import { Customer, CurrentUser, CustTypes } from '../../Models/index';
+import { AuthenticationService, CustomerService } from '../../../services';
+import { Customer, CurrentUser, CustTypes } from '../../../Models';
 
 @Component({
     selector: 'app-customer',

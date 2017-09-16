@@ -10,8 +10,8 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-        <tabset>
-            <tab heading="Pending">
+        <tabset [justified]="true" >
+            <tab heading="Pending تحت الفحص">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <b>Pending Material Inspection  خامات تحت الفحص</b>
@@ -102,6 +102,7 @@
                                     <td>{{item.QtyReceived}}</td>
                                     <td>{{item.UserName}}</td>
                                     <td>
+                                        <button (click)="PrintOrder(item.InspID)" class="btn btn-warning" title="Print Order"><i class="icon ion-printer"></i></button>
                                         <button (click)="EditThis(item.InspID)" class="btn btn-round btn-info" title="Edit"><i class="icon ion-edit"></i></button>
                                         <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="icon ion-eye"></i></button>
                                         <button (click)="Delete(item.InspID)" class="btn btn-round btn-danger" title="Delete"><i class="icon ion-trash-a"></i></button>
@@ -114,7 +115,7 @@
                     </div>
                 </div>
             </tab>
-            <tab heading="History">
+            <tab heading="History تاريخ الفحص">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <b>Material Inspection History تاريخ الفحص</b>
@@ -216,6 +217,7 @@
                                     <td>{{item.UserName}}</td>
                                     <td>
                                         <button (click)="ShowDetails(item.InspID)" class="btn btn-round btn-success" title="Details"><i class="icon ion-eye"></i></button>
+                                        <button (click)="PrintOrder(item.InspID)" class="btn btn-warning" title="Print Order"><i class="icon ion-printer"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -223,7 +225,7 @@
                     </div>
                 </div>
             </tab>
-        </tabset>        
+        </tabset>
     </div>
     <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate && Formstate != 'Release'">
         <form (submit)="basicform.valid && HandleForm($event)" id="f1" [formGroup]="basicform" novalidate>

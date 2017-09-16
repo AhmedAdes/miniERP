@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
-import { CustomerService } from '../../services';
-import { rptTopCustomers } from '../../Models';
+import { CustomerService } from '../../../services';
+import { rptTopCustomers } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'rpt-topCust',
     templateUrl: './topCust.html',
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptTopCustComponent implements OnInit {
     constructor(private srv: CustomerService, private loc: Location) { }

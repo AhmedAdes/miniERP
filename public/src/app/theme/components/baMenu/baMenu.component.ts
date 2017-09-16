@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-
 import { BaMenuService } from '../../services';
 import { GlobalState } from '../../../global.state';
 

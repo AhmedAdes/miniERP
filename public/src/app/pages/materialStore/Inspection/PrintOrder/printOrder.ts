@@ -1,38 +1,36 @@
-// import { Component, OnInit } from '@angular/core';
-// import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-// import { CurrentUser, MaterialDispensing, MaterialStoreDetail, CompanyName } from '../../../Models/index';
-// import { MatDispensingService, MatDetailService } from '../../../services/index';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common'
+import { Router, ActivatedRoute, Params, Data } from '@angular/router';
+import { CurrentUser, MaterialInspection, CompanyName } from '../../../../Models';
+import { MatInspectionService } from '../../../../services';
 
-// @Component({
-//     selector: 'print-matInsp-order',
-//     templateUrl: './printOrder.html',
-//     styleUrls: ['../../../Styles/PrintPortrait.css']
-// })
-// export class PrintMatInspOrderComponent implements OnInit {
-//     constructor(public srvDisp: MatDispensingService, private srvDet: MatDetailService,
-//         private route: ActivatedRoute, private router: Router) { }
+@Component({
+    selector: 'print-matInsp-order',
+    templateUrl: './printOrder.html',
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
+})
+export class PrintMatInspComponent implements OnInit {
+    constructor(public srvInsp: MatInspectionService, 
+        private route: ActivatedRoute, private router: Router, private loc: Location) { }
 
-//     model: Materia = new MaterialDispensing();
-//     srchObj: MaterialDispensing = new MaterialDispensing();
-//     matDetails: MaterialStoreDetail[] = [];
-//     Detmodel: MaterialStoreDetail = new MaterialStoreDetail();
-//     CompanyName = CompanyName
+    model: MaterialInspection = new MaterialInspection();
+    srchObj: MaterialInspection = new MaterialInspection();
+    CompanyName = CompanyName
 
-//     ngOnInit() {
-//         this.route.params.subscribe((params: Params) => {
-//             var id = +params['id']
-//             this.srvDisp.getDispensing(id).subscribe(mat => {
-//                 this.model = mat[0];
-//                 this.srvDet.getMatEqualDetail(id).subscribe(det => {
-//                     this.matDetails = det;
-//                     this.AfterViewInit()
-//                 });
-//             })
-//         })
-//     }
+    ngOnInit() {
+        this.route.params.subscribe((params: Params) => {
+            var id = +params['id']
+            this.srvInsp.getInspection(id).subscribe(mat => {
+                this.model = mat[0];
+            })
+        })
+    }
 
-//     AfterViewInit() {
-//         window.setTimeout(function () { window.print(); }, 500);
-//         // window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
-//     }
-// }
+    AfterViewInit() {
+        window.setTimeout(function () { window.print(); }, 500);
+        // window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }
+    }
+    goBack() {
+        this.loc.back();
+    }
+}

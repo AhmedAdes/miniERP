@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, FinStoreService } from '../../services/index';
-import { FinishedStore, CurrentUser } from '../../Models/index';
+import { AuthenticationService, FinStoreService } from '../../../services';
+import { FinishedStore, CurrentUser } from '../../../Models';
 
 @Component({
     selector: 'fin-balance',

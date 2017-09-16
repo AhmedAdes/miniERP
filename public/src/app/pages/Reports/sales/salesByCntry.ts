@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
-import { SalesHeaderService } from '../../services';
-// import { SalesHeader } from '../../Models';
+import { SalesHeaderService } from '../../../services';
+// import { SalesHeader } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
 
 interface SlsCntryreport {
@@ -13,7 +13,7 @@ interface SlsCntryreport {
 @Component({
     selector: 'rpt-slsCntry',
     templateUrl: './salesByCntry.html',
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesByCntryComponent implements OnInit {
     constructor(private srv: SalesHeaderService, private loc: Location) { }

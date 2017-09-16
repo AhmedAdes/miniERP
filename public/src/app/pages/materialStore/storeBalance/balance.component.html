@@ -1,12 +1,12 @@
 <div class="panel panel-default zz">
     <div class="panel-heading">
 
-        <a class="btn btn-primary" [routerLink]="['/home/matstore/finrec']">Receiving استلام</a>
-        <a class="btn btn-primary" [routerLink]="['/home/matstore/findisp']"> Dispensing صرف </a>
-        <a class="btn btn-primary" [routerLink]="['/home/matstore/finequl']"> Equalization تسوية </a>
-        <!--<a class="btn btn-primary" [routerLink]="['/']"> Return مرتجع </a>-->
-        <a class="btn btn-primary" [routerLink]="['/home/matstore/finret']"> Reject مرفوض </a>
-        <a class="btn btn-primary" [routerLink]="['/home/matstore/barcode']">Print Barcodes</a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/matinsp']"> Inspection فحص </a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/matrec']">Receiving استلام</a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/matdisp']"> Dispensing صرف </a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/matequl']"> Equalization تسوية </a>
+        <a class="btn btn-primary" [routerLink]="['/home/matstore/matret']"> Reject مرفوض </a>
+        <!-- <a class="btn btn-primary" [routerLink]="['/home/matstore/barcode']">Print Barcodes</a> -->
 
         <div class="alert alert-danger" *ngIf="errorMessage">
             <p>{{errorMessage}}</p>

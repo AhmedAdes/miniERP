@@ -10,9 +10,8 @@ import {
 	SalesRepComponent, SalesDetailComponent, SalesPaymentComponent,
 	PaymentComponent, CommissionComponent
 } from './index';
-import { CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService, SalesRepService } from '../services/index';
-
-import { PipeModule } from '../pipes/pipes.module';
+import { CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService, SalesRepService } from '../../services';
+import { PipeModule } from '../../pipes/pipes.module';
 
 @NgModule({
 	imports: [

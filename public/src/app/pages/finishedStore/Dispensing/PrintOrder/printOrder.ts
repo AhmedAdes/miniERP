@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { CurrentUser, Model, ModelColor, FinishedDispensing, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../Models/index';
-import { FinDispensingService, FinDetailService } from '../../../services/index';
+import { CurrentUser, Model, ModelColor, FinishedDispensing, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../../Models';
+import { FinDispensingService, FinDetailService } from '../../../../services';
 
 @Component({
     selector: 'print-findisp-order',
     templateUrl: './printOrder.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
 })
 export class PrintFinDispOrderComponent implements OnInit {
     constructor(public srvDisp: FinDispensingService, private srvDet: FinDetailService,

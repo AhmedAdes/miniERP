@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Model, Brand, CurrentUser } from '../../Models/index';
+import { Model, Brand, CurrentUser } from '../../../Models';
 import { ResizeOptions, ImageResult } from 'ng2-imageupload';
 
 @Component({

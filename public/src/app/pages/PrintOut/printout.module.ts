@@ -9,13 +9,15 @@ import { PrintOut } from './printout.component';
 import {
   PrintBarcodeComponent, InvoicePrintComponent, PrintFinDispOrderComponent,
   PrintFinRecOrderComponent, PrintFinEqulOrderComponent, PrintFinRtrnOrderComponent,
-  PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent
+  PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent,
+  PrintMatInspComponent
 } from './index';
 import {
-  SalesHeaderService, SalesDetailService,
+  SalesHeaderService, SalesDetailService, SalesPaymentService,
   FinDetailService, FinReceivingService, FinDispensingService, FinEqualizeService, FinReturnService,
-  MatDetailService, MatReceivingService, MatDispensingService, MatEqualizeService, MatReturnService
-} from '../services/index';
+  MatDetailService, MatReceivingService, MatDispensingService, MatEqualizeService, MatReturnService,
+  MatInspectionService
+} from '../../services';
 
 @NgModule({
   imports: [
@@ -25,12 +27,14 @@ import {
   declarations: [
     PrintOut, PrintBarcodeComponent, InvoicePrintComponent, PrintFinDispOrderComponent,
     PrintFinRecOrderComponent, PrintFinEqulOrderComponent, PrintFinRtrnOrderComponent,
-    PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent
+    PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent,
+    PrintMatInspComponent
   ],
   providers: [
-    SalesHeaderService, SalesDetailService,
+    SalesHeaderService, SalesDetailService, SalesPaymentService,
     FinDetailService, FinReceivingService, FinDispensingService, FinEqualizeService, FinReturnService,
-    MatDetailService, MatReceivingService, MatDispensingService, MatEqualizeService, MatReturnService
+    MatDetailService, MatReceivingService, MatDispensingService, MatEqualizeService, MatReturnService,
+    MatInspectionService
   ],
 })
 export class PrintOutModule {

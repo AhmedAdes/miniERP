@@ -8,9 +8,9 @@ import { routing } from './purchase.routing';
 import {
   Purchase, SupplierComponent
 } from './index';
-import { SupplierService } from '../services/index';
+import { SupplierService } from '../../services';
 
-import { PipeModule } from "../pipes/pipes.module";
+import { PipeModule } from "../../pipes/pipes.module";
 
 @NgModule({
   imports: [

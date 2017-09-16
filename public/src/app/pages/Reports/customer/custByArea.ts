@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
-import { CustomerService } from '../../services';
-import { Customer } from '../../Models';
+import { CustomerService } from '../../../services';
+import { Customer } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
 
 interface CustAreareport {
@@ -13,7 +13,7 @@ interface CustAreareport {
 @Component({
     selector: 'rpt-custArea',
     templateUrl: './custByArea.html',
-    styleUrls: ['../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptCustAreaComponent implements OnInit {
     constructor(private srv: CustomerService, private loc: Location) { }

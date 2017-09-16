@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { UserService, AuthenticationService } from '../services/index';
-import { emailValidator, matchingPasswords } from '../pipes/index';
-import { User, CurrentUser } from '../Models/index';
+import { UserService, AuthenticationService } from '../../services';
+import { emailValidator, matchingPasswords } from '../../pipes/index';
+import { User, CurrentUser } from '../../Models';
 
 @Component({
   selector: 'app-user',

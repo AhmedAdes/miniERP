@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, MatDispensingService, MatDetailService, MaterialService, AccessoryService } from '../../services/index';
-import { CurrentUser, MaterialDispensing, MaterialStoreDetail, Material, SalesHeader } from '../../Models/index';
+import { AuthenticationService, MatDispensingService, MatDetailService, MaterialService, AccessoryService } from '../../../services';
+import { CurrentUser, MaterialDispensing, MaterialStoreDetail, Material, SalesHeader } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 

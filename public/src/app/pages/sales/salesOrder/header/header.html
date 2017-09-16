@@ -15,7 +15,7 @@
             <select class="form-control" name="CustID" [(ngModel)]="model.CustID" 
                     [formControl]="headerForm.controls['CustID']" required (change)="onCustChanged($event)">
                 <option value="">Select a Customer ...</option>
-                <option *ngFor="let i of customerList" [ngValue]="i.CustID">{{i.CustName}}</option>
+                <option *ngFor="let i of customerList" [ngValue]="i.CustID">{{i.CustName}} -- {{i.ContactPerson}}</option>
             </select>
             <div *ngIf="headerForm.controls['CustID'].touched && !headerForm.controls['CustID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.CustName.Disp}} is required.</div>
         </div>

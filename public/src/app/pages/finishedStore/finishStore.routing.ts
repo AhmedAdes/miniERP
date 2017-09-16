@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard } from '../services/auth.guard';
+import { AuthGuard } from '../../services/auth.guard';
 
 import { FinStoreHomeComponent, StoreBalanceComponent, FinReceivingComponent, BarcodeComponent, FinDispensingComponent, 
   FinEqualizeComponent, FinReturnComponent } from './index';

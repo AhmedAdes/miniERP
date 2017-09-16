@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, FinDispensingService, FinDetailService, ModelService, SalesHeaderService, SalesDetailService } from '../../services/index';
-import { CurrentUser, FinishedDispensing, FinishedStoreDetail, Model, SalesHeader } from '../../Models/index';
+import { AuthenticationService, FinDispensingService, FinDetailService, ModelService, SalesHeaderService, SalesDetailService } from '../../../services';
+import { CurrentUser, FinishedDispensing, FinishedStoreDetail, Model, SalesHeader } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -62,7 +62,7 @@ export class FinDispensingComponent implements OnInit {
             this.collection = cols;
             this.srvModel.getModel().subscribe(mod => {
                 this.modelsList = mod;
-                this.srvSO.getSalesHeader().subscribe(so => this.SOList = so);
+                this.srvSO.getUnFinishedSalesHeader().subscribe(so => this.SOList = so);
                 this.TableBack();
             })
         });
@@ -91,12 +91,16 @@ export class FinDispensingComponent implements OnInit {
     LoadDetails(id, state) {
         this.srvDisp.getDispensing(id).subscribe(mat => {
             this.model = mat[0];
-            this.srvDet.getFinDispDetail(id).subscribe(det => {
-                this.finDetails = det;
-                this.cnvRecDate = this.model.DispensingDate ? this.HandleDate(new Date(this.model.DispensingDate)) : this.HandleDate(new Date());
-                this.showTable = false;
-                this.Formstate = state;
-                this.headerText = state == 'Detail' ? `Finished Store Dispensing ${state}s` : `${state} Finished Store Dispensing`;
+            this.srvSO.getSalesHeader(this.model.SOID).subscribe(so => {
+                this.SOList.push(so[0])
+                this.basicform.controls['soID'].setValue(this.model.SOID)
+                this.srvDet.getFinDispDetail(id).subscribe(det => {
+                    this.finDetails = det;
+                    this.cnvRecDate = this.model.DispensingDate ? this.HandleDate(new Date(this.model.DispensingDate)) : this.HandleDate(new Date());
+                    this.showTable = false;
+                    this.Formstate = state;
+                    this.headerText = state == 'Detail' ? `Finished Store Dispensing ${state}s` : `${state} Finished Store Dispensing`;
+                })
             });
         });
     }
@@ -114,11 +118,16 @@ export class FinDispensingComponent implements OnInit {
         this.Formstate = null;
         this.headerText = "";
         this.errorMessage = null;
+        this.RemoveSOIDfromtheList()
         this.model = new FinishedDispensing();
         this.Detmodel = new FinishedStoreDetail();
         this.finDetails = [];
         this.stillSaving = false
         this.basicform.reset();
+    }
+    RemoveSOIDfromtheList(){        
+        var index = this.SOList.findIndex(a=> a.SOID == this.model.SOID)
+        this.SOList.splice(index, 1);
     }
     HandleForm(event) {
         event.preventDefault();
@@ -126,10 +135,12 @@ export class FinDispensingComponent implements OnInit {
         this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
+        this.model.SOID = this.basicform.controls['soID'].value
         if (this.finDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
             return;
         }
+        this.RemoveSOIDfromtheList()
         switch (this.Formstate) {
             case 'Create':
                 this.srvDisp.insertDispensing(this.model, this.finDetails).subscribe(ret => {
@@ -189,9 +200,11 @@ export class FinDispensingComponent implements OnInit {
         }
     }
     onSOIDchange(value) {
-        if (!value) { return }
+        if (!value || this.basicform.controls['chkSOID'].value == null) { return }
         this.srvSODet.getSalesDetail(value).subscribe(sd => {
             this.finDetails = sd
+            var selSo = this.SOList.filter(so => so.SOID == value)[0]
+            this.model.DispenseTo = selSo.CustName + ' ' + selSo.ContactPerson
             this.finDetails.map(det => {
                 det.RecordDate = new Date()
                 // det.FinDispensingID = this.model.FinDispensingID

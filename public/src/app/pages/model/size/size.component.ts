@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModelSize, CurrentUser } from '../../Models/index';
+import { ModelSize, CurrentUser } from '../../../Models';
 
 @Component({
     selector: 'prod-size',

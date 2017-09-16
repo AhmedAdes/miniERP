@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { CurrentUser, Model, ModelColor, FinishedReceiving, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../Models/index';
-import { FinReceivingService, FinDetailService } from '../../../services/index';
+import { CurrentUser, Model, ModelColor, FinishedReceiving, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../../Models';
+import { FinReceivingService, FinDetailService } from '../../../../services';
 
 @Component({
     selector: 'print-finrec-order',
     templateUrl: './printOrder.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
 })
 export class PrintFinRecOrderComponent implements OnInit {
     constructor(public srvRec: FinReceivingService, private srvDet: FinDetailService,

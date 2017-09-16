@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, SalesPaymentService } from '../../services/index';
-import { SalesPayment, CurrentUser } from '../../Models/index';
+import { AuthenticationService, SalesPaymentService } from '../../../services';
+import { SalesPayment, CurrentUser } from '../../../Models';
 
 @Component({
     selector: 'sales-commission',

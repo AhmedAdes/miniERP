@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, BrandService } from '../services/index';
-import { Brand, CurrentUser } from '../Models/index';
+import { AuthenticationService, BrandService } from '../../services';
+import { Brand, CurrentUser } from '../../Models';
 
 @Component({
   selector: 'app-brand',

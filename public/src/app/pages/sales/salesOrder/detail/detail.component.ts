@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SalesDetail, CurrentUser, Customer, CustTypes, DeliveryTypes, PayMethods, Model, ModelColor } from '../../../Models/index';
-import { ModelService, ColorService, CustomerService } from '../../../services/index';
+import { SalesDetail, CurrentUser, Customer, CustTypes, DeliveryTypes, PayMethods, Model, ModelColor } from '../../../../Models';
+import { ModelService, ColorService, CustomerService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { min, max } from '../../../pipes/validators';
+import { min, max } from '../../../../pipes/validators';
 
 @Component({
     selector: 'sales-detail',

@@ -23,15 +23,16 @@ import {
   AuthenticationService, AuthGuard, DashboardService, AccessoryService, BrandService,
   MaterialService, ModelService, ColorService, SizeService, CustomerService, SupplierService,
   ExpansesService
-} from './services/index';
+} from '../services';
 
-import { PipeModule } from './pipes/pipes.module';
+import { PipeModule } from '../pipes/pipes.module';
+import { PrintOutModule } from './PrintOut/printout.module'
 
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
     ImageUploadModule, ColorPickerModule, NgxPaginationModule, //NgxQRCodeModule,
-    ReportsModule, BrowserAnimationsModule
+    ReportsModule, BrowserAnimationsModule, PrintOutModule
   ],
   declarations: [
     Pages,

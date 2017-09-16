@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, SupplierService } from '../../services/index';
-import { Supplier, CurrentUser, CustTypes } from '../../Models/index';
+import { AuthenticationService, SupplierService } from '../../../services';
+import { Supplier, CurrentUser, CustTypes } from '../../../Models';
 
 @Component({
     selector: 'app-supplier',

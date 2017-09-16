@@ -81,7 +81,7 @@
                     <td>{{item.GrandTotal | number:'1.2-2'}}</td>
                     <td>{{item.UserName}}</td>
                     <td>
-                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-info" title="Print Invoice"><i class="icon ion-printer"></i></button>
+                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-warning" title="Print Invoice"><i class="icon ion-printer"></i></button>
                         <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
                         <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
                         <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
@@ -154,11 +154,10 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>
-                                            Total Sum: <span id="SumTotal">{{model.SubTotal | number:'1.2-2'}}</span>
+                                        <td colspan="2">
+                                            Total Sum: <span id="SumTotal">{{subtotal | number:'1.2-2'}}</span>
                                             <br> Grand Total: <span id="GrandTotal">{{model.GrandTotal | number:'1.2-2'}}</span>
                                         </td>
-                                        <td></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -195,9 +194,9 @@
                                 <tbody>
                                     <tr *ngFor="let item of SPayments; let i = index">
                                         <td>{{item.PaymentDate | date:'mediumDate'}}</td>
-                                        <td>{{item.PayAmount | number:'1.2-2'}}</td>
+                                        <td><input type="checkbox" [checked]="item.Paid" disabled> {{item.PayAmount | number:'1.2-2'}}</td>
                                         <td>{{item.CommisionPaymentDate | date:'mediumDate'}}</td>
-                                        <td>{{item.CommisionAmount | number:'1.2-2'}}</td>
+                                        <td><input type="checkbox" [checked]="item.CommsionPaid" disabled> {{item.CommisionAmount | number:'1.2-2'}}</td>
                                         <td>{{item.UserName}}</td>
                                         <td><a class="no-print" href="javascript:void(0)" (click)="DeletePayment(i)">Delete</a></td>
                                     </tr>

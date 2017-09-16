@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
-import { CurrentUser, MaterialEqualization, MaterialStoreDetail, CompanyName } from '../../../Models/index';
-import { MatEqualizeService, MatDetailService } from '../../../services/index';
+import { CurrentUser, MaterialEqualization, MaterialStoreDetail, CompanyName } from '../../../../Models';
+import { MatEqualizeService, MatDetailService } from '../../../../services';
 
 @Component({
     selector: 'print-matEqul-order',
     templateUrl: './printOrder.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../../Styles/PrintPortrait.css']
 })
 export class PrintMatEqulComponent implements OnInit {
     constructor(public srvEqul: MatEqualizeService, private srvDet: MatDetailService,

@@ -5,8 +5,8 @@
         <div class="form-group row">
             <label for="PaymentDate" class="control-label col-md-2">{{Paymodel.DisplayNames.PaymentDate.Disp}}</label>
             <div class="col-md-10">
-                <input class="form-control" type="date" name="PaymentDate" [(ngModel)]="Paymodel.PaymentDate" 
-                    [formControl]="payform.controls['PaymentDate']" required>
+                <input class="form-control" type="date" name="PaymentDate" [(ngModel)]="Paymodel.PaymentDate" [formControl]="payform.controls['PaymentDate']"
+                    required>
                 <div *ngIf="payform.controls['PaymentDate'].touched && !payform.controls['PaymentDate'].valid" class="alert alert-danger">
                     <span *ngIf="payform.controls['PaymentDate'].hasError('required')">{{Paymodel.DisplayNames.PaymentDate.Disp}} is required.</span>
                 </div>
@@ -15,7 +15,14 @@
         <div class="form-group row">
             <label for="PayAmount" class="control-label col-md-2">{{Paymodel.DisplayNames.PayAmount.Disp}}</label>
             <div class="col-md-10">
-                <input class="form-control" type="number" name="PayAmount" [(ngModel)]="Paymodel.PayAmount" [formControl]="payform.controls['PayAmount']" required>
+                <div class="input-group">
+                    <input class="form-control" type="number" name="PayAmount" [(ngModel)]="Paymodel.PayAmount" [formControl]="payform.controls['PayAmount']"
+                        required>
+                    <span class="input-group-addon" id="basic-addon1">(Done) Paid</span>
+                    <span class="input-group-addon" id="basic-addon1">
+                        <input type="checkbox" name="Paid" [(ngModel)]="Paymodel.Paid" [formControl]="payform.controls['PayDone']">
+                    </span>
+                </div>
                 <div *ngIf="payform.controls['PayAmount'].touched && !payform.controls['PayAmount'].valid" class="alert alert-danger">
                     <span *ngIf="payform.controls['PayAmount'].hasError('required')">{{Paymodel.DisplayNames.PayAmount.Disp}} is required.</span>
                     <span *ngIf="payform.controls['PayAmount'].hasError('min')"><br>{{Paymodel.DisplayNames.PayAmount.Disp}} must be greater than or equal 0.</span>
@@ -25,8 +32,8 @@
         <div class="form-group row">
             <label for="CommisionPaymentDate" class="control-label col-md-2">{{Paymodel.DisplayNames.CommisionPaymentDate.Disp}}</label>
             <div class="col-md-10">
-                <input class="form-control" type="date" name="CommisionPaymentDate" [(ngModel)]="Paymodel.CommisionPaymentDate" 
-                    [formControl]="payform.controls['CommDate']" [required]="SalesRepExist">
+                <input class="form-control" type="date" name="CommisionPaymentDate" [(ngModel)]="Paymodel.CommisionPaymentDate" [formControl]="payform.controls['CommDate']"
+                    [required]="SalesRepExist">
                 <div *ngIf="payform.controls['CommDate'].touched && !payform.controls['CommDate'].valid" class="alert alert-danger">
                     <span *ngIf="payform.controls['CommDate'].hasError('required')">{{Paymodel.DisplayNames.CommisionPaymentDate.Disp}} is required.</span>
                 </div>
@@ -35,8 +42,14 @@
         <div class="form-group row">
             <label for="CommisionAmount" class="control-label col-md-2">{{Paymodel.DisplayNames.CommisionAmount.Disp}}</label>
             <div class="col-md-10">
-                <input class="form-control" type="number" name="CommisionAmount" [(ngModel)]="Paymodel.CommisionAmount"
-                     [formControl]="payform.controls['CommAmount']" [required]="SalesRepExist">
+                <div class="input-group">
+                    <input class="form-control" type="number" name="CommisionAmount" [(ngModel)]="Paymodel.CommisionAmount" [formControl]="payform.controls['CommAmount']"
+                        [required]="SalesRepExist">
+                    <span class="input-group-addon" id="basic-addon1">(Done) Paid</span>
+                    <span class="input-group-addon" id="basic-addon1">
+                        <input type="checkbox" name="CommsionPaid" [(ngModel)]="Paymodel.CommsionPaid" [formControl]="payform.controls['CommDone']">
+                    </span>
+                </div>
                 <div *ngIf="payform.controls['CommAmount'].touched && !payform.controls['CommAmount'].valid" class="alert alert-danger">
                     <span *ngIf="payform.controls['CommAmount'].hasError('required')">{{Paymodel.DisplayNames.CommisionAmount.Disp}} is required.</span>
                     <span *ngIf="payform.controls['CommAmount'].hasError('min')"><br>{{Paymodel.DisplayNames.CommisionAmount.Disp}} must be greater than or equal 0.</span>

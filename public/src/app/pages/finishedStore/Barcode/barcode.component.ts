@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, FinReceivingService, FinDetailService, ModelService, ColorService } from '../../services/index';
-import { CurrentUser, FinishedReceiving, FinishedStoreDetail, Model, ModelColor, Barcode } from '../../Models/index';
+import { AuthenticationService, FinReceivingService, FinDetailService, ModelService, ColorService } from '../../../services';
+import { CurrentUser, FinishedReceiving, FinishedStoreDetail, Model, ModelColor, Barcode } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { min, max } from '../../pipes/validators';
+import { min, max } from '../../../pipes/validators';
 import { Router } from '@angular/router';
 
 @Component({

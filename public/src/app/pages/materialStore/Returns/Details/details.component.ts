@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { CurrentUser, MaterialStoreDetail, QC, Material } from '../../../Models/index';
-import { MaterialService, AccessoryService, MatDetailService } from '../../../services/index';
+import { CurrentUser, MaterialStoreDetail, QC, Material } from '../../../../Models';
+import { MaterialService, AccessoryService, MatDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { min, max } from '../../../pipes/validators';
+import { min, max } from '../../../../pipes/validators';
 
 @Component({
     selector: 'mat-ret-detail',
