@@ -6,13 +6,20 @@
         <button class="btn btn-danger btn-block" (click)="goBack()">Back</button>
     </div>
 </div>
-<div id="print-section">
-    <div class="page-header" style="text-align: center;">
-        <h2>{{CompanyName}}</h2>
-        <h3>Sales Order Invoice</h3>
-        <h5><b>Order No.:</b> {{header.SOID}} </h5>
+<div id="print-section container">
+    <div class="row" style="margin: 5px">
+        <div class="col-lg-3 col-md-3 col-sm-3">
+            <img class="img-fluid" src="./assets/img/brand_logo.jpg" alt="brand_logo" style="display:initial">
+        </div>
+        <div class="page-header col-lg-6 col-md-6 col-sm-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3" style="text-align: center;">
+            <br>
+            <h2>{{CompanyName}}</h2>
+            <h3>Sales Order Invoice</h3>
+            <h5><b>Order No.:</b> {{header.SOID}} </h5>
+        </div>
     </div>
-
+    <br>
+    <br>
     <div class="row">
         <div class="col-sm-10 col-xs-10">
             <dl class="dl-horizontal">
@@ -59,6 +66,10 @@
             <table class="table table-responsive">
                 <tbody>
                     <tr>
+                        <td>Total Quantity مجموع القطع:</td>
+                        <td>{{subQuant | number:'1.2-2'}}</td>
+                    </tr>
+                    <tr>
                         <td>Total Sum المجموع:</td>
                         <td>{{subtotal | number:'1.2-2'}}</td>
                     </tr>
@@ -68,7 +79,9 @@
                     </tr>
                     <tr>
                         <td>{{Dispobj.DisplayNames.Discount.Disp}}</td>
-                        <td>{{subtotal * header.Discount / 100 | number:'1.2-2'}}</td>
+                        <td>
+                            {{header.Discount ? header.DiscountPrcnt ? (subtotal * header.Discount / 100) : header.Discount : 0 | number:'1.2-2'}}
+                        </td>
                     </tr>
                     <tr>
                         <td class="text-danger">Grand Total المجموع الكلي:</td>
@@ -84,18 +97,31 @@
             <h3 class="card-title">Payment Details الدفعات</h3>
             <div class="col-sm-offset-2 col-xs-offset-2 col-sm-10 col-xs-10">
                 <table class="table table-hover table-striped table-bordered table-responsive">
+                    <colgroup>
+                        <col width="55%" />
+                        <col width="25%" />
+                        <col width="10%" />
+                    </colgroup>
                     <thead>
                         <tr>
                             <th>{{DispPay.DisplayNames.PaymentDate.Disp}}</th>
                             <th>{{DispPay.DisplayNames.PayAmount.Disp}}</th>
+                            <th>{{DispPay.DisplayNames.Paid.Disp}}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of SPayments; let i = index">
                             <td>{{item.PaymentDate | date:'mediumDate'}}</td>
                             <td><input type="checkbox" [checked]="item.Paid" disabled> {{item.PayAmount | number:'1.2-2'}}</td>
+                            <td>{{item.Paid ? "Yes" : "No"}}</td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td> Total Payments </td>
+                            <td colspan="2"> {{sumPay | number:'1.2-2'}} </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

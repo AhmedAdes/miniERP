@@ -73,6 +73,10 @@ table {
         display: inline-block !important;
         vertical-align: middle !important;
     }
+    span {
+        margin: 0px!important;
+        padding: 0px!important;
+    }
 
 /*td .Bimage {float: left;}*/
 /*td .Btext {float: right;}*/

@@ -19,10 +19,17 @@ router.get('/:id(\\d+)', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
-router.get('/ers', function (req, res, next) {
+router.get('/unfinSales', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * FROM dbo.vwSalesOrderHeader Where SOID NOT IN (SELECT SOID FROM dbo.FinishedDispensing WHERE SOID IS NOT NULL)`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/finSales', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`Select * FROM dbo.vwSalesOrderHeader Where SOID IN (SELECT SOID FROM dbo.FinishedDispensing WHERE SOID IS NOT NULL)`)
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
@@ -95,7 +102,7 @@ router.get('/compareSales/:month1.:year1.:month2.:year2', function (req, res, ne
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
-    
+
 router.get('/salesSummary/:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
@@ -117,8 +124,55 @@ router.get('/salesSummaryChrt/:fromDate.:toDate', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
-    
-    
+
+router.get('/incomeTracker/', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.multiple = true;
+    request.query(`
+        SELECT ISNULL(SUM(PayAmount),0) UnpaidAmount, COUNT(SOPayID) OpenInvoices FROM dbo.SalesOrderPayment WHERE Paid = 0 ;
+        SELECT ISNULL(SUM(PayAmount),0) OverDueAmount, COUNT(SOPayID) OverDueInvoices FROM dbo.SalesOrderPayment WHERE Paid = 0 AND PaymentDate < GETDATE();
+        SELECT ISNULL(SUM(PayAmount),0) PaidAmount, COUNT(SOPayID) BilledInvoices FROM dbo.SalesOrderPayment WHERE Paid = 1 AND ReceivePaymentDate > DATEADD(MONTH, -1, GETDATE());
+    `, function (err, recordsets, affected) {
+            if (err) { res.json({ error: err }); console.log(err); }
+            res.json({ Unpaid: recordsets[0], OverDue: recordsets[1], Paid: recordsets[2] });
+        })
+});
+router.get('/unpaidInvoices', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT * FROM dbo.vwSalesOrderPayment WHERE Paid = 0`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/overDueInvoices', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT * FROM dbo.vwSalesOrderPayment WHERE Paid = 0 AND PaymentDate < GETDATE()`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/paidInvoices', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT * FROM dbo.vwSalesOrderPayment WHERE Paid = 1 AND ReceivePaymentDate > DATEADD(MONTH, -1, GETDATE())`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/SlsHdModels/:soid', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT m.ModelID, m.ModelCode,m.ModelName, c.ColorName ,c.ColorID , fdet.BatchNo, ABS(fdet.Quantity) Quantity, 
+    (SELECT SUM(Quantity)  FROM dbo.FinishedStoreDetails Where ColorID = c.ColorID AND BatchNo = fdet.BatchNo GROUP BY BatchNo) Stock
+    FROM dbo.ProductModelCoding m 
+    JOIN dbo.ProductColorCoding c ON c.ModelID = m.ModelID 
+    JOIN dbo.SalesOrderDetails det ON det.ColorID = c.ColorID 
+    LEFT JOIN dbo.FinishedDispensing fd ON fd.SOID = det.SOID 
+    LEFT JOIN dbo.FinishedStoreDetails fdet ON fdet.FinDispensingID = fd.FinDispensingID AND fdet.ColorID = c.ColorID
+    WHERE det.SOID = ${req.params.soid}`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var so = req.body.master;

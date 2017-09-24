@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { Ng2CompleterModule } from "ng2-completer";
+// import { CustomMaterialModule } from '../customMaterial.module'
 
 import { routing } from './sales.routing';
 import {
@@ -10,13 +12,13 @@ import {
 	SalesRepComponent, SalesDetailComponent, SalesPaymentComponent,
 	PaymentComponent, CommissionComponent
 } from './index';
-import { CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService, SalesRepService } from '../../services';
+import { CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService, SalesRepService, FinDetailService } from '../../services';
 import { PipeModule } from '../../pipes/pipes.module';
 
 @NgModule({
 	imports: [
 		CommonModule, FormsModule, ReactiveFormsModule,
-		NgaModule, routing, NgxPaginationModule
+		NgaModule, routing, NgxPaginationModule, Ng2CompleterModule
 	],
 	declarations: [
 		Sales, SalesOrderComponent, SalesHeaderComponent,
@@ -25,7 +27,7 @@ import { PipeModule } from '../../pipes/pipes.module';
 	],
 	providers: [
 		CustomerService, SalesDetailService, SalesHeaderService,
-		SalesPaymentService, SalesRepService
+		SalesPaymentService, SalesRepService, FinDetailService
 	]
 })
 export class SalesModule { }

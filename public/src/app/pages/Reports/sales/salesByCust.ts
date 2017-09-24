@@ -19,6 +19,7 @@ export class RptSalesByCustComponent implements OnInit {
     fromDate: string
     toDate: string
     reportHeader: string
+    subHeader: string
     selCust: Customer = new Customer()
     sumTotals: number
 
@@ -30,7 +31,8 @@ export class RptSalesByCustComponent implements OnInit {
 
     ViewReport() {
         this.srv.getSalesByCustReport(this.custID, this.fromDate, this.toDate).subscribe(ret => {
-            this.reportHeader = `Sales By Customer From ${this.fromDate} To ${this.toDate}`
+            this.reportHeader = `Sales By Customer`
+            this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.collection = ret
             this.selCust = this.custList.filter(x => x.CustID == this.custID)[0]
             var Total = this.collection.reduce((a, b) => a + b.SubTotal, 0)

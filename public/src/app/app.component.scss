@@ -1,6 +1,14 @@
 @import './theme/sass/conf/conf';
 @import './theme/components/baSidebar/baSidebar';
 
+:host >>> .completer-dropdown {
+  width: 100% !important;
+  overflow-y: auto;
+  max-height: 100px;
+}
+:host >>> .completer-input {
+  width: 100%!important;
+}
 :host /deep/ {
   @mixin layout-collapsed() {
     .al-main {
@@ -119,5 +127,11 @@
     .al-footer {
       padding-left: 0;
     }
+  }
+}
+
+@media print {
+  .no-print {
+  display: none
   }
 }

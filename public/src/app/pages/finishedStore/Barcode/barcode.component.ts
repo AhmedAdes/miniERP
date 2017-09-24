@@ -29,6 +29,7 @@ export class BarcodeComponent implements OnInit {
 
     modelsList: Model[];
     colorList: ModelColor[];
+    modelIDsList: string[];
     selectedModel: Model;
     selectedColor: ModelColor;
     selectedModelID: number;
@@ -42,6 +43,7 @@ export class BarcodeComponent implements OnInit {
     constructor(private srvMdl: ModelService, private srvClr: ColorService,
         private router: Router, private fb: FormBuilder) {
         this.detform = fb.group({
+            autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
             BatchNo: ['', Validators.required],
@@ -54,6 +56,7 @@ export class BarcodeComponent implements OnInit {
     ngOnInit() {
         this.srvMdl.getModel().subscribe(mods => {
             this.modelsList = mods;
+            this.modelIDsList = this.modelsList.map(m => { return m.ModelCode })
             this.showTable = false;
             this.Detmodel = new Barcode();
             this.detform.reset();
@@ -66,6 +69,7 @@ export class BarcodeComponent implements OnInit {
         this.srvClr.getColor(value).subscribe(clrs => {
             this.colorList = clrs;
             this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
+            this.Detmodel.ModelCode = this.selectedModel.ModelCode
         });
     }
 
@@ -86,5 +90,12 @@ export class BarcodeComponent implements OnInit {
         // this.router.navigate(['printout/barcode/', { brand: this.visBrandName, model: this.visModelName, code: this.visColorCode, batch: this.Detmodel.BatchNo, rows: this.RowsCount }])
         this.router.navigate(['printout/barcode', this.selectedModel.BrandName, this.selectedColor.ModelName, this.selectedModel.ModelCode, this.Detmodel.BatchNo, RowsCount])
         // window.open(`#/printout/barcode/${this.selectedModel.BrandName}/${this.selectedColor.ModelName}/${this.selectedModel.ModelCode}/${this.Detmodel.BatchNo}/${RowsCount}`, '_blank')
+    }
+    IDSelected(selected) {
+        if (selected) {
+            this.selectedModelID = this.modelsList.filter(m=>m.ModelCode == selected.title)[0].ModelID
+        } else {
+            this.selectedModelID = null;
+        }
     }
 }

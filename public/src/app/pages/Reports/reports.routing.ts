@@ -4,14 +4,18 @@ import { AuthGuard } from '../../services/auth.guard';
 
 import {
   ReportsComponent, ReportHomeComponent, RptCustCountryComponent, RptCustAreaComponent, RptTopCustComponent,
-  RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent, 
-  RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent, RptSalesSummaryComponent
+  RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
+  RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
+  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptFinHistoryComponent,
+  RptFinRecPeriodComponent, RptFinDispPeriodComponent, RptFinEqzPeriodComponent, 
+  RptFinRetPeriodComponent, RptFinEmptyStockComponent
 } from './index';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
+  // { path: '', redirectTo: '/reports/home', pathMatch: 'full' },
   {
-    path: 'reports',
+    path: '',
     component: ReportsComponent,
     children: [
       { path: 'home', component: ReportHomeComponent, canActivate: [AuthGuard] },
@@ -25,6 +29,13 @@ const routes: Routes = [
       { path: 'lstProd', component: RptLeastSalesProdQtyComponent, canActivate: [AuthGuard] },
       { path: 'cmprMonth', component: RptSalesCompareComponent, canActivate: [AuthGuard] },
       { path: 'slsSmry', component: RptSalesSummaryComponent, canActivate: [AuthGuard] },
+      { path: 'slsincm', component: RptSalesIncomeTrackerComponent, canActivate: [AuthGuard] },
+      { path: 'finHst', component: RptFinHistoryComponent, canActivate: [AuthGuard] },
+      { path: 'rptfinRec', component: RptFinRecPeriodComponent, canActivate: [AuthGuard] },
+      { path: 'rptfinDisp', component: RptFinDispPeriodComponent, canActivate: [AuthGuard] },
+      { path: 'rptfinEqul', component: RptFinEqzPeriodComponent, canActivate: [AuthGuard] },
+      { path: 'rptfinRet', component: RptFinRetPeriodComponent, canActivate: [AuthGuard] },
+      { path: 'rptfinEmpty', component: RptFinEmptyStockComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

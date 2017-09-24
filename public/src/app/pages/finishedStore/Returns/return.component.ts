@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, FinReturnService, FinDetailService, ModelService } from '../../../services';
-import { CurrentUser, FinishedReturn, FinishedStoreDetail, Model } from '../../../Models';
+import { AuthenticationService, FinReturnService, FinDetailService, ModelService, SalesHeaderService } from '../../../services';
+import { CurrentUser, FinishedReturn, FinishedStoreDetail, SalesHeader, Model } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -24,22 +24,26 @@ import { Router } from '@angular/router';
 })
 export class FinReturnComponent implements OnInit {
     //RecYear ,SerialNo ,ReturnDate ,ReturnFrom ,ReturnReason ,UserID
-    constructor(public srvEqul: FinReturnService, private auth: AuthenticationService,
-        private srvDet: FinDetailService, private srvModel: ModelService, fb: FormBuilder, private router: Router) {
+    constructor(public srvRet: FinReturnService, private auth: AuthenticationService,
+        private srvDet: FinDetailService, private srvModel: ModelService, private srvSO: SalesHeaderService,
+        fb: FormBuilder, private router: Router) {
         this.basicform = fb.group({
             RecDate: ['', Validators.required],
+            soID: [''],
             RetFrom: ['', Validators.required],
             RetReason: ['', Validators.required]
         });
 
         this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
+        this.basicform.controls['soID'].valueChanges.subscribe(value => this.onSOIDchange(value));
         // this.basicform.controls['ReturnType'].valueChanges.subscribe(value => this.onchkchange(value));
     }
 
     currentUser: CurrentUser = this.auth.getUser();
     collection: FinishedReturn[] = [];
     finDetails: FinishedStoreDetail[] = [];
-    modelsList: Model[];
+    modelsList: any[];
+    SOList: SalesHeader[] = [];
     model: FinishedReturn = new FinishedReturn();
     Detmodel: FinishedStoreDetail = new FinishedStoreDetail();
     srchObj: FinishedReturn = new FinishedReturn();
@@ -54,10 +58,11 @@ export class FinReturnComponent implements OnInit {
     stillSaving: boolean
 
     ngOnInit() {
-        this.srvEqul.getReturn().subscribe(cols => {
+        this.srvRet.getReturn().subscribe(cols => {
             this.collection = cols;
             this.srvModel.getModel().subscribe(mod => {
                 this.modelsList = mod;
+                this.srvSO.getFinishedSalesHeader().subscribe(so => this.SOList = so);
                 this.TableBack();
             })
         });
@@ -84,7 +89,7 @@ export class FinReturnComponent implements OnInit {
         // })
     }
     LoadDetails(id, state) {
-        this.srvEqul.getReturn(id).subscribe(mat => {
+        this.srvRet.getReturn(id).subscribe(mat => {
             this.model = mat[0];
             this.srvDet.getFinRetDetail(id).subscribe(det => {
                 this.finDetails = det;
@@ -123,11 +128,12 @@ export class FinReturnComponent implements OnInit {
         this.model.RecYear = new Date().getFullYear();
         if (this.finDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
+            this.stillSaving = false
             return;
         }
         switch (this.Formstate) {
             case 'Create':
-                this.srvEqul.insertReturn(this.model, this.finDetails).subscribe(ret => {
+                this.srvRet.insertReturn(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
                         this.errorMessage = ret.error.message;
                     } else if (ret.affected > 0) {
@@ -136,7 +142,7 @@ export class FinReturnComponent implements OnInit {
                 }, err => this.errorMessage = err.message);
                 break;
             case 'Edit':
-                this.srvEqul.updateReturn(this.model.FinReturnID, this.model, this.finDetails).subscribe(ret => {
+                this.srvRet.updateReturn(this.model.FinReturnID, this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
                         this.errorMessage = ret.error.message;
                     } else if (ret.affected > 0) {
@@ -145,7 +151,7 @@ export class FinReturnComponent implements OnInit {
                 }, err => this.errorMessage = err.message);
                 break;
             case 'Delete':
-                this.srvEqul.deleteReturn(this.model.FinReturnID).subscribe(ret => {
+                this.srvRet.deleteReturn(this.model.FinReturnID).subscribe(ret => {
                     if (ret.error) {
                         this.errorMessage = ret.error.message;
                     } else if (ret.affected > 0) {
@@ -175,6 +181,15 @@ export class FinReturnComponent implements OnInit {
         if (value) {
             this.model.ReturnDate = value;
         }
+    }
+    onSOIDchange(value) {
+        if (!value) { return }
+        this.srvSO.getSalesModels(value).subscribe(mo => {
+            this.Detmodel = new FinishedStoreDetail()
+            this.modelsList = mo
+            var selSo = this.SOList.filter(so => so.SOID == value)[0]
+            this.model.ReturnFrom = selSo.CustName + ' ' + selSo.ContactPerson
+        })
     }
     DeleteDetail(i: number) {
         this.finDetails.splice(i, 1);

@@ -199,4 +199,10 @@
   .profile-toggle-link {
     cursor: pointer;
   }
+
+  @media print {
+    .no-print {
+    display: none
+    }
+  }
 }

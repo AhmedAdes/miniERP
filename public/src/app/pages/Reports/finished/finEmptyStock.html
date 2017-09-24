@@ -1,0 +1,58 @@
+<ba-card class="well no-print" style="width:100%">
+    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+        <div class="form-group row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                <button type="submit" class="btn btn-primary btn-block">View</button>
+            </div>
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+            </div>
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+            </div>
+        </div>
+    </form>
+</ba-card>
+
+<div class="panel panel-default">
+    <div class="panel-heading row">
+        <h2 class="text-center">{{reportHeader}}</h2>
+        <h3 class="text-center">{{subHeader}}</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover table-bordered table-responsive">
+            <colgroup>
+                <col width="15%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="15%" />
+                <col width="15%" />
+                <col width="15%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.ModelCode.Disp}}</th>
+                    <th> {{srchObj.DisplayNames.ModelName.Disp}}</th>
+                    <th> {{srchObj.DisplayNames.ColorName.Disp}}</th>
+                    <th> {{srchObj.DisplayNames.Stock.Disp}}</th>
+                    <th> First Receiving Date تاريخ أول استلام</th>
+                    <th> lstDispDate تاريخ آخر صرف</th>
+                    <th> Stay Period فترة البقاء</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of collection">
+                    <td>{{item.ModelCode}}</td>
+                    <td>{{item.ModelName}}</td>
+                    <td>{{item.ColorName}}</td>
+                    <td>{{item.StockQty}}</td>
+                    <td>{{item.frstReceivingDate | date:'mediumDate'}}</td>
+                    <td>{{item.lstDispDate | date:'mediumDate'}}</td>
+                    <td>{{item.StayPeriod}} Days</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

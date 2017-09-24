@@ -21,7 +21,11 @@ export class SalesHeaderService {
     return this.http.get(geturl, this.options).map(res => res.json());
   }
   getUnFinishedSalesHeader(id?: number) {
-    var geturl = this.url + 'ers/';
+    var geturl = this.url + 'unfinSales/';
+    return this.http.get(geturl, this.options).map(res => res.json());
+  }
+  getFinishedSalesHeader(id?: number) {
+    var geturl = this.url + 'finSales/';
     return this.http.get(geturl, this.options).map(res => res.json());
   }
   insertFullSalesHeader(sheader: SalesHeader, sdetail: SalesDetail[], spayment: SalesPayment[]) {
@@ -78,5 +82,11 @@ export class SalesHeaderService {
   }
   getPaidInvoices(){
     return this.http.get(this.url + 'paidInvoices/', this.options).map(res => res.json())
+  }
+  getSalesModels(soid: number){
+    return this.http.get(this.url + 'SlsHdModels/' + soid, this.options).map(res => res.json())
+  }
+  getSalesColor(modelID, soid: number){
+    return this.http.get(this.url + 'SlsHdColors/' + modelID + '.' + soid, this.options).map(res => res.json())
   }
 }

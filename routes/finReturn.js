@@ -46,6 +46,7 @@ router.post('/', function (req, res, next) {
                 request.input('ReturnDate', finRet.ReturnDate);
                 request.input('ReturnFrom', finRet.ReturnFrom);
                 request.input('ReturnReason', finRet.ReturnReason);
+                request.input('SOID', finRet.SOID);
                 request.input('UserID', finRet.UserID);
                 request.execute('FinishReturnInsert')
                     .then(function (recordset, returnValue, affected) {
@@ -117,6 +118,7 @@ router.put('/:id', function (req, res, next) {
                 request.input('ReturnDate', finRet.ReturnDate);
                 request.input('ReturnFrom', finRet.ReturnFrom);
                 request.input('ReturnReason', finRet.ReturnReason);
+                request.input('SOID', finRet.SOID);
                 request.input('UserID', finRet.UserID);
                 request.execute('FinishReturnUpdate').then(function (recordset, returnValue, affected) {
 

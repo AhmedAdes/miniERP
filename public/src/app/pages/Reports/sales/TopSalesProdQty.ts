@@ -27,6 +27,7 @@ export class RptTopSalesProdQtyComponent implements OnInit {
     fromDate: string
     toDate: string
     reportHeader: string
+    subHeader: string
     filterBy: string = 'Quantity'
 
     ngOnInit() {
@@ -39,6 +40,7 @@ export class RptTopSalesProdQtyComponent implements OnInit {
             this.pieChartData = ret.map(data => { return data.Quantity })
             this.pieChartLabels = ret.map(data => { return data.ModelName })
             this.reportHeader = `Top 10 Selling Products From ${this.fromDate} To ${this.toDate}`
+            this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.forceChartRefresh()
         })
     }

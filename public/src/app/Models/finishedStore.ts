@@ -135,6 +135,7 @@ export class FinishedReturn {
     ReturnReason: string;
     UserID: number;
     UserName: string;
+    SOID: number;
 
     DisplayNames = {
         FinReturnID: { Disp: "Code الكود" },
@@ -143,6 +144,7 @@ export class FinishedReturn {
         ReturnDate: { Disp: "Return Date تاريخ الارتجاع" },
         ReturnFrom: { Disp: "Return From مرتجع من" },
         ReturnReason: { Disp: "Return Reason سبب الارتجاع" },
+        SOID: { Disp: "Sales Order امرالبيع" },
         UserName: { Disp: "User Name" }
     }
 }

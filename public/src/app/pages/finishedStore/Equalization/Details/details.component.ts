@@ -16,6 +16,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
     @Input() BatchNo: string;
     colorList: ModelColor[];
     BatchList: BatchNo[];
+    modelIDsList: string[];
     colortext: string;
     selectedModel: Model;
     selectedModelID: number;
@@ -24,6 +25,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
 
     constructor(private srvClr: ColorService, private srvDet: FinDetailService, private fb: FormBuilder) {
         this.detform = fb.group({
+            autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
             BatchNo: ['', Validators.required],
@@ -36,6 +38,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
+        this.modelIDsList = this.modelsList.map(m => { return m.ModelCode })
         this.selectedModelID = this.Detmodel.ModelID;
         // this.selectedColor = this.Detmodel.ColorID;
     }
@@ -92,6 +95,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
         this.srvClr.getColor(value).subscribe(clrs => {
             this.colorList = clrs;
             this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
+            this.Detmodel.ModelCode = this.selectedModel.ModelCode
             if (this.Detmodel.ColorID && this.EditForm) {
                 this.onColorChange(this.Detmodel.ColorID)
                 if (this.Detmodel.BatchNo && this.EditForm) {
@@ -118,5 +122,12 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
         this.Detmodel.Stock = this.BatchList.find(c => c.BatchNo == value).Stock
         // this.detform.controls['Quantity'].setValidators([Validators.required, min(0), max(this.Detmodel.Stock)])
         // this.detform.controls['Quantity'].updateValueAndValidity()
+    }
+    IDSelected(selected) {
+        if (selected) {
+            this.selectedModelID = this.modelsList.filter(m=>m.ModelCode == selected.title)[0].ModelID
+        } else {
+            this.selectedModelID = null;
+        }
     }
 }

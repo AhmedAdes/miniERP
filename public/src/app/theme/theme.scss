@@ -13,3 +13,13 @@
 @import 'sass/preloader';
 @import 'sass/ionicons';
 // @import 'sass/fonts';
+
+
+:host >>> .completer-dropdown {
+    width: 100% !important;
+    overflow-y: auto;
+    max-height: 100px;
+  }
+  :host >>> .completer-input {
+    width: 100%!important;
+  }

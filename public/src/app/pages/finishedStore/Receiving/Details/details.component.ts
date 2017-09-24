@@ -3,6 +3,7 @@ import { CurrentUser, Model, ModelColor, FinishedStoreDetail } from '../../../..
 import { ModelService, ColorService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../../pipes/validators';
+import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
 
 @Component({
     selector: 'fin-rec-detail',
@@ -15,14 +16,17 @@ export class FinRecDetailsComponent implements OnInit, OnChanges {
     @Input() modelsList: Model[];
     @Input() BatchNo: string;
     colorList: ModelColor[];
+    modelIDsList: CompleterData;
     colortext: string;
     selectedModel: Model;
     selectedModelID: number;
     detform: FormGroup;
     EditForm: boolean = false;
 
-    constructor(private srvClr: ColorService, private srvDet: FinDetailService, private fb: FormBuilder) {
+    constructor(private srvClr: ColorService, private srvDet: FinDetailService,
+        private srvCmp: CompleterService, private fb: FormBuilder) {
         this.detform = fb.group({
+            autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
             Quantity: ['', [Validators.required, min(0)]],
@@ -32,6 +36,8 @@ export class FinRecDetailsComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
+        var IDs = this.modelsList.map(m => { return { ID: m.ModelID.toString(), Code: m.ModelCode } });
+        this.modelIDsList = this.srvCmp.local(IDs, "Code", "Code").descriptionField("ID");
         this.selectedModelID = this.Detmodel.ModelID;
         // this.selectedColor = this.Detmodel.ColorID;
     }
@@ -75,7 +81,7 @@ export class FinRecDetailsComponent implements OnInit, OnChanges {
     CancelEdit() {
         this.resetTheForm()
     }
-    
+
     resetTheForm() {
         this.detform.controls['ModelID'].enable()
         this.detform.controls['ColorID'].enable()
@@ -94,5 +100,12 @@ export class FinRecDetailsComponent implements OnInit, OnChanges {
 
     onColorChange(newObj) {
         this.colortext = newObj.target.selectedOptions[0].text;
+    }
+    IDSelected(selected: CompleterItem) {
+        if (selected) {
+            this.selectedModelID = parseInt(selected.description);
+        } else {
+            this.selectedModelID = null;
+        }
     }
 }

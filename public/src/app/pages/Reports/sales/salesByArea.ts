@@ -29,6 +29,7 @@ export class RptSalesByAreaComponent implements OnInit {
     fromDate: string
     toDate: string
     reportHeader: string 
+    subHeader: string
 
     ngOnInit() {
         this.srv.getSellingCountries().subscribe(cnt => this.cntryList = cnt)
@@ -39,7 +40,8 @@ export class RptSalesByAreaComponent implements OnInit {
             this.collection = ret
             this.barChartData = ret.map(data => { return data.Amount })//CustCount
             this.barChartLabels = ret.map(data => { return data.Area })
-            this.reportHeader= `Sales by Areas From ${this.fromDate} To ${this.toDate}`
+            this.reportHeader= `Sales by Areas`
+            this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.forceChartRefresh()
         })
     }

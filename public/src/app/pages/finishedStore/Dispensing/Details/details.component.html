@@ -4,10 +4,15 @@
     <div class="form-horizontal">
         <div class="form-group row">
             <label for="ModelID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
-            <div class="col-md-10">
+            <div class="col-md-5">
+                <ng2-completer name="ModelID" [(ngModel)]="Detmodel.ModelCode" [formControl]="detform.controls['autoModelID']" [datasource]="modelIDsList"
+                    [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
+                    [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
+            </div>
+            <div class="col-md-5">
                 <select class="form-control" name="ModelID" [(ngModel)]="Detmodel.ModelID" [formControl]="detform.controls['ModelID']">
                     <option value="">Select a Model ...</option>
-                    <option *ngFor="let i of modelsList" [ngValue]="i.ModelID">{{i.ModelName}}</option>
+                    <option *ngFor="let i of modelsList" [value]="i.ModelID">{{i.ModelName}}</option>
                 </select>
                 <div *ngIf="detform.controls['ModelID'].touched && !detform.controls['ModelID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
             </div>
@@ -37,7 +42,8 @@
 
             <label for="Stock" class="form-control-label col-md-2">{{Detmodel.DisplayNames.Stock.Disp}}</label>
             <div class="col-md-4">
-                <input class="form-control" type="number" name="Stock" [(ngModel)]="Detmodel.Stock" [formControl]="detform.controls['Stock']"/>
+                <input class="form-control" type="number" name="Stock" [(ngModel)]="Detmodel.Stock" [formControl]="detform.controls['Stock']"
+                />
             </div>
         </div>
 
@@ -45,7 +51,7 @@
             <label for="Quantity" class="control-label col-md-2">{{Detmodel.DisplayNames.Quantity.Disp}}</label>
             <div class="col-md-10">
                 <input class="form-control" type="number" name="Quantity" [(ngModel)]="Detmodel.Quantity" [formControl]="detform.controls['Quantity']"
-                    required min="0" [max]="Detmodel.Stock"/>
+                    required min="0" [max]="Detmodel.Stock" />
                 <div *ngIf="!detform.controls['Quantity'].valid" class="alert alert-danger">
                     <span *ngIf="detform.controls['Quantity'].hasError('required')">{{Detmodel.DisplayNames.Quantity.Disp}} is required.</span>
                     <span *ngIf="detform.controls['Quantity'].hasError('min')">{{Detmodel.DisplayNames.Quantity.Disp}} must be greater than or equal 0.</span>
@@ -56,7 +62,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add" class="btn btn-info" *ngIf="!EditForm" [disabled]="!detform.valid"/>
+                <input type="submit" value="Add" class="btn btn-info" *ngIf="!EditForm" [disabled]="!detform.valid" />
                 <button value="Edit" (click)="EditDetail()" class="btn btn-success" *ngIf="EditForm" [disabled]="!detform.valid">Edit</button>
                 <button value="Cancel" (click)="CancelEdit()" class="btn btn-danger" *ngIf="EditForm">Cancel</button>
             </div>

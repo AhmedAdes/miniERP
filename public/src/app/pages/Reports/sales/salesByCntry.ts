@@ -26,7 +26,8 @@ export class RptSalesByCntryComponent implements OnInit {
     collection: SlsCntryreport[] = []
     fromDate: string
     toDate: string
-    reportHeader: string 
+    reportHeader: string
+    subHeader: string
 
     ngOnInit() {
 
@@ -37,7 +38,8 @@ export class RptSalesByCntryComponent implements OnInit {
             this.collection = ret
             this.barChartData = ret.map(data => { return data.Amount })
             this.barChartLabels = ret.map(data => { return data.Country })
-            this.reportHeader= `Sales by Countries From ${this.fromDate} To ${this.toDate}`
+            this.reportHeader = `Sales by Countries`
+            this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.forceChartRefresh()
         })
     }

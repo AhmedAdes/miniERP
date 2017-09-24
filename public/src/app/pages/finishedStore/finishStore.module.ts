@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { Ng2CompleterModule } from "ng2-completer";
 
 import { routing } from './finishStore.routing';
 import { FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, FinReceivingComponent, FinRecDetailsComponent,
@@ -16,7 +16,7 @@ import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingSe
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule,
-    NgaModule, routing, NgxPaginationModule, NgxQRCodeModule
+    NgaModule, routing, NgxPaginationModule, Ng2CompleterModule
   ],
   declarations: [
       FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, 

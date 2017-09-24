@@ -1,74 +1,81 @@
-<form id="f1" [formGroup]="headerForm"  novalidate>
+<form id="f1" [formGroup]="headerForm" novalidate>
 
-<div class="form-horizontal">
-    <div class="form-group row">
-        <label for="SODate" class="control-label col-md-2">{{srchObj.DisplayNames.SODate.Disp}}</label>
-        <div class="col-md-10">
-            <input class="form-control" type="date" name="cnvSODate" [(ngModel)]="cnvSODate" 
-                    [formControl]="headerForm.controls['SODate']" required>
-            <div *ngIf="headerForm.controls['SODate'].touched && !headerForm.controls['SODate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.SODate.Disp}} is required.</div>
+    <div class="form-horizontal">
+        <div class="form-group row">
+            <label for="SODate" class="control-label col-md-2">{{srchObj.DisplayNames.SODate.Disp}}</label>
+            <div class="col-md-10">
+                <input class="form-control" type="date" name="cnvSODate" [(ngModel)]="cnvSODate" [formControl]="headerForm.controls['SODate']"
+                    required>
+                <div *ngIf="headerForm.controls['SODate'].touched && !headerForm.controls['SODate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.SODate.Disp}} is required.</div>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="CustID" class="form-control-label col-md-2">{{srchObj.DisplayNames.CustName.Disp}}</label>
-        <div class="col-md-10">
-            <select class="form-control" name="CustID" [(ngModel)]="model.CustID" 
-                    [formControl]="headerForm.controls['CustID']" required (change)="onCustChanged($event)">
+        <div class="form-group row">
+            <label for="CustID" class="form-control-label col-md-2">{{srchObj.DisplayNames.CustName.Disp}}</label>
+            <div class="col-md-10">
+                <select class="form-control" name="CustID" [(ngModel)]="model.CustID" [formControl]="headerForm.controls['CustID']" required
+                    (change)="onCustChanged($event)">
                 <option value="">Select a Customer ...</option>
                 <option *ngFor="let i of customerList" [ngValue]="i.CustID">{{i.CustName}} -- {{i.ContactPerson}}</option>
             </select>
-            <div *ngIf="headerForm.controls['CustID'].touched && !headerForm.controls['CustID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.CustName.Disp}} is required.</div>
+                <div *ngIf="headerForm.controls['CustID'].touched && !headerForm.controls['CustID'].valid" class="alert alert-danger">{{srchObj.DisplayNames.CustName.Disp}} is required.</div>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="SalesTax" class="control-label col-md-2">{{srchObj.DisplayNames.SalesTax.Disp}}</label>
-        <div class="col-md-4">
-            <input class="form-control" type="number" name="SalesTax" [formControl]="headerForm.controls['SalesTax']" [(ngModel)]="model.SalesTax" (change)="onTaxChange($event)">
+        <div class="form-group row">
+            <label for="SalesTax" class="control-label col-md-2">{{srchObj.DisplayNames.SalesTax.Disp}}</label>
+            <div class="col-md-4">
+                <input class="form-control" type="number" name="SalesTax" [formControl]="headerForm.controls['SalesTax']" [(ngModel)]="model.SalesTax"
+                    (change)="onTaxChange($event)">
+            </div>
+            <label for="Discount" class="control-label col-md-2">{{srchObj.DisplayNames.Discount.Disp}}</label>
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input class="form-control" type="number" name="Discount" [formControl]="headerForm.controls['Discount']" [(ngModel)]="model.Discount"
+                        (change)="onDiscountChange($event)">
+                    <span class="input-group-addon" id="basic-addon1">{{model.DiscountPrcnt ? '%' : '0.00'}}</span>
+                    <span class="input-group-addon" id="basic-addon1">
+                        <input type="checkbox" name="DiscountPrcnt" [(ngModel)]="model.DiscountPrcnt" (change)="onDiscountChange($event)" [formControl]="headerForm.controls['DiscountPrcnt']">
+                    </span>
+                </div>
+            </div>
         </div>
-
-        <label for="Discount" class="control-label col-md-2">{{srchObj.DisplayNames.Discount.Disp}}</label>
-        <div class="col-md-4">
-            <input class="form-control" type="number" name="Discount" [formControl]="headerForm.controls['Discount']" [(ngModel)]="model.Discount" (change)="onDiscountChange($event)">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="PayMethod" class="form-control-label col-md-2">{{srchObj.DisplayNames.PayMethod.Disp}}</label>
-        <div class="col-md-4">
-            <select class="form-control" name="PayMethod" [formControl]="headerForm.controls['PayMethod']" [(ngModel)]="model.PayMethod">
+        <div class="form-group row">
+            <label for="PayMethod" class="form-control-label col-md-2">{{srchObj.DisplayNames.PayMethod.Disp}}</label>
+            <div class="col-md-4">
+                <select class="form-control" name="PayMethod" [formControl]="headerForm.controls['PayMethod']" [(ngModel)]="model.PayMethod">
                 <option value="">Select a Method ...</option>
                 <option *ngFor="let i of PayList" [ngValue]="i.name">{{i.name}}</option>
             </select>
-            <!--<div *ngIf="pay.touched && !pay.valid" class="alert alert-danger">{{srchObj.DisplayNames.PayMethod.Disp}} is required.</div>-->
-        </div>
-        <label for="DeliveryType" class="form-control-label col-md-2">{{srchObj.DisplayNames.DeliveryType.Disp}}</label>
-        <div class="col-md-4">
-            <select class="form-control" name="DeliveryType" [formControl]="headerForm.controls['DeliveryType']" [(ngModel)]="model.DeliveryType">
+                <!--<div *ngIf="pay.touched && !pay.valid" class="alert alert-danger">{{srchObj.DisplayNames.PayMethod.Disp}} is required.</div>-->
+            </div>
+            <label for="DeliveryType" class="form-control-label col-md-2">{{srchObj.DisplayNames.DeliveryType.Disp}}</label>
+            <div class="col-md-4">
+                <select class="form-control" name="DeliveryType" [formControl]="headerForm.controls['DeliveryType']" [(ngModel)]="model.DeliveryType">
                 <option value="">Select a Type ...</option>
                 <option *ngFor="let i of DeliveryList" [ngValue]="i.name">{{i.name}}</option>
             </select>
-            <!--<div *ngIf="delivery.touched && !delivery.valid" class="alert alert-danger">{{srchObj.DisplayNames.DeliveryType.Disp}} is required.</div>-->
+                <!--<div *ngIf="delivery.touched && !delivery.valid" class="alert alert-danger">{{srchObj.DisplayNames.DeliveryType.Disp}} is required.</div>-->
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="DeliveryDate" class="control-label col-md-2">{{srchObj.DisplayNames.DeliveryDate.Disp}}</label>
-        <div class="col-md-10">
-            <input class="form-control" type="date" name="cnvDeliveryDate" [formControl]="headerForm.controls['DeliveryDate']" [(ngModel)]="cnvDeliveryDate">
+        <div class="form-group row">
+            <label for="DeliveryDate" class="control-label col-md-2">{{srchObj.DisplayNames.DeliveryDate.Disp}}</label>
+            <div class="col-md-10">
+                <input class="form-control" type="date" name="cnvDeliveryDate" [formControl]="headerForm.controls['DeliveryDate']" [(ngModel)]="cnvDeliveryDate">
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="SalesRepID" class="form-control-label col-md-2">{{srchObj.DisplayNames.SalesPerson.Disp}}</label>
-        <div class="col-md-10">
-            <select class="form-control" name="SalesRepID" [formControl]="headerForm.controls['SalesRepID']" [(ngModel)]="model.SalesRepID">
+        <div class="form-group row">
+            <label for="SalesRepID" class="form-control-label col-md-2">{{srchObj.DisplayNames.SalesPerson.Disp}}</label>
+            <div class="col-md-10">
+                <select class="form-control" name="SalesRepID" [formControl]="headerForm.controls['SalesRepID']" [(ngModel)]="model.SalesRepID">
                 <option value="">Select a Sales Person ...</option>
                 <option *ngFor="let i of repsList" [ngValue]="i.SalesRepID">{{i.SalesPerson}}</option>
             </select>
-            <!--<div *ngIf="salesRep.touched && !salesRep.valid" class="alert alert-danger">{{srchObj.DisplayNames.SalesPerson.Disp}} is required.</div>-->
+                <!--<div *ngIf="salesRep.touched && !salesRep.valid" class="alert alert-danger">{{srchObj.DisplayNames.SalesPerson.Disp}} is required.</div>-->
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Notes" class="control-label col-md-2">{{srchObj.DisplayNames.Notes.Disp}}</label>
+            <div class="col-md-10">
+                <textarea rows="2" cols="10" class="form-control" name="Notes" [formControl]="headerForm.controls['Notes']" [(ngModel)]="model.Notes"></textarea>
+            </div>
         </div>
     </div>
-    <div class="form-group row">
-        <label for="Notes" class="control-label col-md-2">{{srchObj.DisplayNames.Notes.Disp}}</label>
-        <div class="col-md-10">
-            <textarea rows="2" cols="10" class="form-control" name="Notes" [formControl]="headerForm.controls['Notes']" [(ngModel)]="model.Notes"></textarea>
-        </div>
-    </div>
-</div>

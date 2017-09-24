@@ -135,9 +135,10 @@ export class FinDispensingComponent implements OnInit {
         this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
-        this.model.SOID = this.basicform.controls['soID'].value
+        // this.model.SOID = this.basicform.controls['soID'].value
         if (this.finDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
+            this.stillSaving = false
             return;
         }
         this.RemoveSOIDfromtheList()

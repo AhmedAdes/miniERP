@@ -21,6 +21,7 @@ export class RptSalesCompareComponent implements OnInit {
     firstDate: string
     secondDate: string
     reportHeader: string 
+    subHeader: string 
 
     ngOnInit() {
         
@@ -33,7 +34,8 @@ export class RptSalesCompareComponent implements OnInit {
             this.collection = ret
             // this.barChartData = ret.map(data => { return data.Amount })//CustCount
             // this.barChartLabels = ret.map(data => { return data.Area })
-            this.reportHeader= `Sales Comparison Between ${this.firstDate} And ${this.secondDate}`
+            this.reportHeader= `Sales Comparison `
+            this.subHeader= `Between ${date1.getMonth()+1}/${date1.getFullYear()} And ${date2.getMonth()+1}/${date2.getFullYear()}`
             this.forceChartRefresh()
         })
     }

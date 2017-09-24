@@ -16,15 +16,15 @@ export class ReportHomeComponent implements OnInit {
         },
         {
             header: "Customer By Area",
-            link: "/reports/custarea"
+            link: "../custarea"
         },
         {
             header: "Customer By Country",
-            link: "/reports/custcntry"
+            link: "../custcntry"
         }, 
         {
             header: "Top Customer By Sales Amount",
-            link: "/reports/topCust"
+            link: "../topCust"
         }, 
         {
             header: "Sales Analysis",
@@ -32,32 +32,64 @@ export class ReportHomeComponent implements OnInit {
         },
         {
             header: "Sales By Customer",
-            link: "/reports/slsCust"
+            link: "../slsCust"
         }, 
         {
             header: "Sales By Country",
-            link: "/reports/slscntry"
+            link: "../slscntry"
         }, 
         {
             header: "Sales By Area",
-            link: "/reports/slsarea"
+            link: "../slsarea"
         }, 
         {
             header: "Top 10 Selling Products",
-            link: "/reports/topProd"
+            link: "../topProd"
         }, 
         {
             header: "Least 10 Selling Products",
-            link: "/reports/lstProd"
+            link: "../lstProd"
         }, 
         {
             header: "Compare with Last Month By Product",
-            link: "/reports/cmprMonth"
+            link: "../cmprMonth"
         }, 
         {
             header: "Sales Summary",
-            link: "/reports/slsSmry"
-        }
+            link: "../slsSmry"
+        }, 
+        {
+            header: "Sales Income Tracker",
+            link: "../slsincm"
+        }, 
+        {
+            header: "Finished Store",
+            heading: true
+        },
+        {
+            header: "Product History",
+            link: "../finHst"
+        },
+        {
+            header: "Product Receiving / Period",
+            link: "../rptfinRec"
+        },
+        {
+            header: "Product Dispensing / Period",
+            link: "../rptfinDisp"
+        },
+        {
+            header: "Product Equalization / Period",
+            link: "../rptfinEqul"
+        },
+        {
+            header: "Product Return / Period",
+            link: "../rptfinRet"
+        },
+        {
+            header: "Empty Stock Products",
+            link: "../rptfinEmpty"
+        }, 
     ]
     ngOnInit() { }
 }

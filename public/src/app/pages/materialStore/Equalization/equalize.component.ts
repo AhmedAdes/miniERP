@@ -135,6 +135,7 @@ export class MatEqualizeComponent implements OnInit {
         this.model.RecYear = new Date().getFullYear();
         if (this.matDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
+            this.stillSaving = false
             return;
         }
         switch (this.Formstate) {

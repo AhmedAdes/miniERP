@@ -1,12 +1,27 @@
 <ba-card class="well no-print">
+    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+        <div class="form-horizontal">
+            <div class="form-group row">
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+                    <button type="submit" class="btn btn-primary btn-block">View</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+                    <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+                    <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+    </form>
     <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="small-box alert-warning">
                 <div class="inner">
                     <h3>{{UnpaidA | number:'1.2-2'}}</h3>
                     <span>{{UnpaidQ}} OPEN INVOICES</span>
+                    <br><button type="button" (click)="ShowUnPaid()" class="btn btn-warning">Details</button>
                 </div>
-                <a (click)="ShowUnPaid()" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
             <!-- /.small-box -->
         </div>
@@ -16,8 +31,8 @@
                 <div class="inner">
                     <h3>{{OverDueA | number:'1.2-2'}}</h3>
                     <span>{{OverDueQ}} OVERDUE</span>
+                    <br><button type="button" (click)="ShowOverDue()" class="btn btn-danger">Details</button>
                 </div>
-                <a (click)="ShowOverDue()" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
             <!-- /.small-box -->
         </div>
@@ -27,29 +42,14 @@
                 <div class="inner">
                     <h3>{{PaidA | number:'1.2-2'}}</h3>
                     <span>{{PaidQ}} PAID last 30 Days</span>
+                    <br><button type="button" (click)="ShowPaid()" class="btn btn-success">Details</button>
                 </div>
-                <a (click)="ShowPaid()" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
             <!-- /.small-box -->
         </div>
         <!-- /.col -->
-        <div class="clearfix visible-sm-block"></div>
+        <br><br>
     </div>
-    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
-        <div class="form-horizontal">
-            <div class="form-group row">
-                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
-                    <button type="submit" class="btn btn-primary btn-block">View</button>
-                </div>
-                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
-                    <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
-                </div>
-                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
-                    <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
-                </div>
-            </div>
-        </div>
-    </form>
 </ba-card>
 <div class="panel panel-default">
     <div class="panel-heading row">

@@ -45,47 +45,96 @@
     </div>
     <div class="clearfix visible-sm-block"></div>
 </div>-->
-<div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="small-box alert-info">
-            <div class="inner">
-                <h3>{{FabricCount}}</h3>
-                <span>Fabric Materials</span>
+<ba-card title="General">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box alert-info">
+                    <div class="inner">
+                        <h3>{{FabricCount}}</h3>
+                        <span>Fabric Materials</span>
+                    </div>
+                    <div class="icon"><i class="fa fa-scissors"></i></div>
+                    <a [routerLink]="['/home/materials/fabrics']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
             </div>
-            <div class="icon"><i class="fa fa-scissors"></i></div>
-            <a [routerLink]="['/home/materials/fabrics']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div><!-- /.small-box -->
-    </div><!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="small-box alert-danger">
-            <div class="inner">
-                <h3>{{AccessoryCount}}</h3>
-                <span>Accessories</span>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box alert-danger">
+                    <div class="inner">
+                        <h3>{{AccessoryCount}}</h3>
+                        <span>Accessories</span>
+                    </div>
+                    <div class="icon"><i class="fa fa-bookmark-o"></i></div>
+                    <a [routerLink]="['/home/materials/Accessories']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
             </div>
-            <div class="icon"><i class="fa fa-bookmark-o"></i></div>
-            <a [routerLink]="['/home/materials/Accessories']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div><!-- /.small-box -->        
-    </div><!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="small-box alert-warning">
-            <div class="inner">
-                <h3>{{ModelCount}}</h3>
-                <span>Models Count To Date</span>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box alert-warning">
+                    <div class="inner">
+                        <h3>{{ModelCount}}</h3>
+                        <span>Models Count To Date</span>
+                    </div>
+                    <div class="icon"><i class="ion ion-pricetags"></i></div>
+                    <a [routerLink]="['/home/model']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
             </div>
-            <div class="icon"><i class="ion ion-pricetags"></i></div>
-            <a [routerLink]="['/home/model']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div><!-- /.small-box -->        
-    </div><!-- /.col -->
-    <div class="col-md-3 col-sm-6 col-xs-12">
-        <div class="small-box alert-success">
-            <div class="inner">
-                <h3>{{SalesCount}}</h3>
-                <span>Sales Count To Date</span>
+            <!-- /.col -->
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="small-box alert-success">
+                    <div class="inner">
+                        <h3>{{SalesCount}}</h3>
+                        <span>Sales Count To Date</span>
+                    </div>
+                    <div class="icon"><i class="ion ion-ios-cart-outline"></i></div>
+                    <a [routerLink]="['/home/sales/order']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
             </div>
-            <div class="icon"><i class="ion ion-ios-cart-outline"></i></div>
-            <a [routerLink]="['/home/sales/order']" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-        </div><!-- /.small-box --> 
-    </div><!-- /.col -->    
-    <!-- fix for small devices only -->
-    <div class="clearfix visible-sm-block"></div>
-</div><!-- /.row -->
+            <!-- /.col -->
+            <!-- fix for small devices only -->
+            <div class="clearfix visible-sm-block"></div>
+        </div>
+        <!-- /.row -->
+    </ba-card>
+    <ba-card title="Invoices">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="small-box alert-warning">
+                    <div class="inner">
+                        <h3>{{UnpaidA | number:'1.2-2'}}</h3>
+                        <span>{{UnpaidQ}} OPEN INVOICES</span>
+                    </div>
+                    <a class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="small-box alert-danger">
+                    <div class="inner">
+                        <h3>{{OverDueA | number:'1.2-2'}}</h3>
+                        <span>{{OverDueQ}} OVERDUE</span>
+                    </div>
+                    <a class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="small-box alert-success">
+                    <div class="inner">
+                        <h3>{{PaidA | number:'1.2-2'}}</h3>
+                        <span>{{PaidQ}} PAID last 30 Days</span>
+                    </div>
+                    <a class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+                <!-- /.small-box -->
+            </div>
+            <!-- /.col -->
+            <div class="clearfix visible-sm-block"></div>
+        </div>
+    </ba-card>

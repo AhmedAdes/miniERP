@@ -7,11 +7,11 @@ import { PAGES_MENU } from './pages.menu';
 @Component({
   selector: 'pages',
   template: `
-    <ba-sidebar></ba-sidebar>
-    <ba-page-top></ba-page-top>
+    <ba-sidebar class="no-print"></ba-sidebar>
+    <ba-page-top class="no-print"></ba-page-top>
     <div class="al-main">
       <div class="al-content">
-        <ba-content-top></ba-content-top>
+        <ba-content-top class="no-print"></ba-content-top>
         <router-outlet></router-outlet>
       </div>
     </div>    

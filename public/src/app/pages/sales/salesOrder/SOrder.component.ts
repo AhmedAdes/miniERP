@@ -111,14 +111,17 @@ export class SalesOrderComponent implements OnInit {
 
         if (this.SDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
+            this.stillSaving = false
             return;
         }
         if (this.SPayments.length == 0) {
             this.errorMessage = "Must Add some Payments First";
+            this.stillSaving = false
             return;
         }
         if (!this.headerValid) {
             this.errorMessage = "Please Validate Basic Data";
+            this.stillSaving = false
             return;
         }
         switch (this.Formstate) {
@@ -205,9 +208,9 @@ export class SalesOrderComponent implements OnInit {
         this.SDetails.forEach(element => {
             this.subtotal += element.Price * element.Quantity;
         });
+        let discnt = this.model.Discount ? this.model.DiscountPrcnt ? (this.model.Discount / 100 * this.subtotal) : this.model.Discount : 0
         this.model.GrandTotal = this.subtotal +
-            ((this.model.SalesTax ? this.model.SalesTax : 0) / 100 * this.subtotal) -
-            ((this.model.Discount ? this.model.Discount : 0) / 100 * this.subtotal)
+            ((this.model.SalesTax ? this.model.SalesTax : 0) / 100 * this.subtotal) - discnt
     }
 
     ValidateHeader(value) {

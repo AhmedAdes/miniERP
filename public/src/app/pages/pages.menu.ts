@@ -321,7 +321,7 @@ export const PAGES_MENU = [
         ]
       },
       {
-        path: 'reports',
+        path: ['reports','home'],
         data: {
           menu: {
             title: 'Reports التقارير',

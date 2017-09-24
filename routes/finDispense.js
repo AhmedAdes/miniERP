@@ -55,7 +55,7 @@ router.post('/', function (req, res, next) {
                         serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
-                            var request = trans.request();
+                            var request = trans.request();console.log(det);
                             request.input('RecYear', finDisp.RecYear);
                             request.input('SerialNo', serial);
                             request.input('RecordDate', det.RecordDate);

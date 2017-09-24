@@ -55,6 +55,18 @@ router.get('/ClrStock/:id', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); })
 });
+router.get('/ClrStockWOrders/:id', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.multiple = true;
+    request.query(`SELECT ISNULL(SUM(Quantity),0) OrderQty FROM dbo.SalesOrderDetails WHERE ColorID = ${req.params.id} AND 
+                SOID NOT IN (SELECT SOID FROM dbo.FinishedDispensing WHERE SOID IS NOT NULL);
+                SELECT ISNULL(SUM(Quantity),0) StockQty FROM dbo.FinishedStoreDetails Where ColorID = ${req.params.id}; `,
+        function (err, recordsets, affected) {
+            if (err) { res.json({ error: err }); console.log(err); }
+            res.json({ orders: recordsets[0], stock: recordsets[1] });
+        })
+});
 
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');

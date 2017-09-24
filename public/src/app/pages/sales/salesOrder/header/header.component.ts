@@ -29,6 +29,7 @@ export class SalesHeaderComponent implements OnInit {
             CustID: ['', Validators.required],
             SalesTax: [''],
             Discount: [''],
+            DiscountPrcnt: [true],
             PayMethod: [''],
             DeliveryType: [''],
             DeliveryDate: [''],
@@ -51,6 +52,7 @@ export class SalesHeaderComponent implements OnInit {
             this.cnvSODate = this.model.SODate ? this.HandleDate(new Date(this.model.SODate)) : this.HandleDate(new Date());
             this.cnvDeliveryDate = this.model.DeliveryDate ? this.HandleDate(new Date(this.model.DeliveryDate)) : this.HandleDate(new Date());
             this.srvRep.getSalesRep().subscribe(Reps => this.repsList = Reps)
+            this.model.DiscountPrcnt = true
         });
     }
 

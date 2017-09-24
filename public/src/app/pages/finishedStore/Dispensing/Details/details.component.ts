@@ -16,14 +16,16 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     @Input() BatchNo: string;
     colorList: ModelColor[];
     BatchList: BatchNo[];
+    modelIDsList: string[];
     colortext: string;
     selectedModel: Model;
-    selectedModelID: number;
+    // selectedModelID: number;
     detform: FormGroup;
     EditForm: boolean = false;
 
     constructor(private srvClr: ColorService, private srvDet: FinDetailService, private fb: FormBuilder) {
         this.detform = fb.group({
+            autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
             BatchNo: ['', Validators.required],
@@ -36,7 +38,8 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.selectedModelID = this.Detmodel.ModelID;
+        this.modelIDsList = this.modelsList.map(m => { return m.ModelCode })
+        // this.selectedModelID = this.Detmodel.ModelID;
         // this.selectedColor = this.Detmodel.ColorID;
     }
 
@@ -45,7 +48,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
             this.EditForm = true;
             this.detform.controls['ModelID'].disable()
             this.detform.controls['ColorID'].disable()
-            this.selectedModelID = this.Detmodel.ModelID;
+            // this.selectedModelID = this.Detmodel.ModelID;
         }
     }
 
@@ -96,6 +99,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
         this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
         this.srvClr.getColor(value).subscribe(clrs => {
             if (this.Detmodel.ModelID) {
+                this.Detmodel.ModelCode = this.selectedModel.ModelCode
                 this.colorList = clrs;
                 if (this.Detmodel.ColorID && this.EditForm) {
                     this.onColorChange(this.Detmodel.ColorID)
@@ -126,5 +130,13 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
         this.Detmodel.Stock = this.BatchList.find(c => c.BatchNo == value).Stock
         this.detform.controls['Quantity'].setValidators([Validators.required, min(0), max(this.Detmodel.Stock)])
         this.detform.controls['Quantity'].updateValueAndValidity()
+    }
+
+    IDSelected(selected) {
+        if (selected) {
+            this.Detmodel.ModelID = this.modelsList.filter(m=>m.ModelCode == selected.title)[0].ModelID
+        } else {
+            this.Detmodel.ModelID = null;
+        }
     }
 }

@@ -1,9 +1,20 @@
 <table class="table table-bordered">
     <tbody>
         <tr *ngFor="let itspan of createRange(RowsCount)">
+            <!-- <i *ngFor="let colspan of createRange(arr_length)"> -->
             <td class="Bimage">
-                <!-- <qrcode [value]="barcodeData" [size]="70" [level]="'M'"></qrcode> -->
-                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
+                <qr-code [data]="barcodeData" [size]="70" [level]="'M'"></qr-code>
+                <!-- <ngx-qr-code [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qr-code> -->
+            </td>
+            <td class="Btext">
+                <p>GBG</p>
+                <p>{{visBrandName}}</p>
+                <p>{{visModelName}}</p>
+                <p class="code"><strong>{{visColorCode}}</strong></p>
+            </td>
+            <!-- </i> -->
+            <td class="Bimage">
+                <qr-code [data]="barcodeData" [size]="70" [level]="'M'"></qr-code>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -12,7 +23,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
+                <qr-code [data]="barcodeData" [size]="70" [level]="'M'"></qr-code>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -21,7 +32,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
+                <qr-code [data]="barcodeData" [size]="70" [level]="'M'"></qr-code>
             </td>
             <td class="Btext">
                 <p>GBG</p>
@@ -30,16 +41,7 @@
                 <p class="code"><strong>{{visColorCode}}</strong></p>
             </td>
             <td class="Bimage">
-                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
-            </td>
-            <td class="Btext">
-                <p>GBG</p>
-                <p>{{visBrandName}}</p>
-                <p>{{visModelName}}</p>
-                <p class="code"><strong>{{visColorCode}}</strong></p>
-            </td>
-            <td class="Bimage">
-                <ngx-qrcode [qrc-value]="barcodeData" [qrc-element-type]="elementType" [qrc-errorCorrectionLevel] = '"M"'></ngx-qrcode>
+                <qr-code [data]="barcodeData" [size]="70" [level]="'M'"></qr-code>
             </td>
             <td class="Btext">
                 <p>GBG</p>

@@ -1,13 +1,18 @@
-<form id="f2" [formGroup]="detform"  novalidate (ngSubmit)="detform.valid && AddDetail($event)">
-<!--(change)="onProdChange($event)"
+<form id="f2" [formGroup]="detform" novalidate (ngSubmit)="detform.valid && AddDetail($event)">
+    <!--(change)="onProdChange($event)"
 (change)="onColorChange($event)"-->
     <div class="form-horizontal">
         <div class="form-group row">
             <label for="ModelID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
-            <div class="col-md-10">
+            <div class="col-md-5">
+                <ng2-completer name="ModelID" [(ngModel)]="Detmodel.ModelCode" [formControl]="ctrlModelauto" [datasource]="modelIDsList"
+                    [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
+                    [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
+            </div>
+            <div class="col-md-5">
                 <select class="form-control" name="ModelID" [(ngModel)]="selectedModelID" [formControl]="ctrlModelID" required>
                 <option value="">Select a Model ...</option>
-                <option *ngFor="let i of modelsList" [ngValue]="i.ModelID">{{i.ModelName}}</option>
+                <option *ngFor="let i of modelsList" [value]="i.ModelID">{{i.ModelName}}</option>
             </select>
                 <div *ngIf="ctrlModelID.touched && !ctrlModelID.valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
             </div>
@@ -15,8 +20,8 @@
         <div class="form-group row">
             <label for="ColorID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ColorName.Disp}}</label>
             <div class="col-md-10">
-                <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" 
-                        [formControl]="ctrlColorID" (change)="onColorChange($event)" required>
+                <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" [formControl]="ctrlColorID" (change)="onColorChange($event)"
+                    required>
                 <option value="">Select a Color ...</option>
                 <option *ngFor="let i of colorList" [ngValue]="i.ColorID">{{i.ColorName}}</option>
             </select>
@@ -24,12 +29,18 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="Stock" class="control-label col-md-2">{{Detmodel.DisplayNames.Stock.Disp}}</label>
+            <div class="col-md-10">
+                <input class="form-control" type="text" name="Stock" [(ngModel)]="Detmodel.Stock" [formControl]="ctrlStocks">
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="Quantity" class="control-label col-md-2">{{Detmodel.DisplayNames.Quantity.Disp}}</label>
             <div class="col-md-10">
                 <input class="form-control" type="number" name="Quantity" [(ngModel)]="Detmodel.Quantity" [formControl]="ctrlQuant" required>
                 <div *ngIf="ctrlQuant.touched && !ctrlQuant.valid" class="alert alert-danger">
-                    <span *ngIf="ctrlQuant.hasError('required')" >{{Detmodel.DisplayNames.Quantity.Disp}} is required.</span>
-                    <span *ngIf="ctrlQuant.hasError('min')" >{{Detmodel.DisplayNames.Quantity.Disp}} must be greater than or equal 0.</span>
+                    <span *ngIf="ctrlQuant.hasError('required')">{{Detmodel.DisplayNames.Quantity.Disp}} is required.</span>
+                    <span *ngIf="ctrlQuant.hasError('min')">{{Detmodel.DisplayNames.Quantity.Disp}} must be greater than or equal 0.</span>
                 </div>
             </div>
         </div>
@@ -38,8 +49,8 @@
             <div class="col-md-10">
                 <input class="form-control" type="number" name="Price" [(ngModel)]="Detmodel.Price" [formControl]="ctrlPrice" required>
                 <div *ngIf="ctrlPrice.touched && !ctrlPrice.valid" class="alert alert-danger">
-                    <span *ngIf="ctrlPrice.hasError('required')" >{{Detmodel.DisplayNames.Price.Disp}} is required.</span>                    
-                    <span *ngIf="ctrlPrice.hasError('min')" ><br>{{Detmodel.DisplayNames.Price.Disp}} must be greater than or equal 0.</span>
+                    <span *ngIf="ctrlPrice.hasError('required')">{{Detmodel.DisplayNames.Price.Disp}} is required.</span>
+                    <span *ngIf="ctrlPrice.hasError('min')"><br>{{Detmodel.DisplayNames.Price.Disp}} must be greater than or equal 0.</span>
                 </div>
             </div>
         </div>

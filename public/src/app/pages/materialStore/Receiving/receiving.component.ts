@@ -161,6 +161,7 @@ export class MatReceivingComponent implements OnInit {
         this.model.UserID = this.currentUser.userID;
         if (this.matDetails.length == 0) {
             this.errorMessage = "Must Add some Materials First";
+            this.stillSaving = false
             return;
         }
         switch (this.Formstate) {

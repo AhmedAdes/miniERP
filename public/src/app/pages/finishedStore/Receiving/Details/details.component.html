@@ -4,7 +4,12 @@
     <div class="form-horizontal">        
         <div class="form-group row">
             <label for="ModelID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
-            <div class="col-md-10">
+            <div class="col-md-5">
+                <ng2-completer name="ModelID" [(ngModel)]="Detmodel.ModelCode" [formControl]="detform.controls['autoModelID']" [datasource]="modelIDsList"
+                    [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
+                    [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
+            </div>
+            <div class="col-md-5">
                 <select class="form-control" name="ModelID" [(ngModel)]="selectedModelID" [formControl]="detform.controls['ModelID']">
                     <option value="">Select a Model ...</option>
                     <option *ngFor="let i of modelsList" [ngValue]="i.ModelID">{{i.ModelName}}</option>

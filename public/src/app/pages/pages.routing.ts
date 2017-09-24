@@ -22,13 +22,13 @@ export const routes: Routes = [
       { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
       { path: 'brand', component: BrandComponent, canActivate: [AuthGuard] },
       { path: 'model', component: ModelComponent, canActivate: [AuthGuard] },
-      { path: 'reports', component: ReportHomeComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: UserComponent },
       { path: 'materials', loadChildren: 'app/pages/Materials/materials.module#MaterialsModule' },
       { path: 'sales', loadChildren: 'app/pages/sales/sales.module#SalesModule' },
       { path: 'finish', loadChildren: 'app/pages/finishedStore/finishStore.module#FinStoreModule' },
       { path: 'purchase', loadChildren: 'app/pages/purchase/purchase.module#PurchaseModule' },
       { path: 'matstore', loadChildren: 'app/pages/materialStore/matStore.module#MatStoreModule' },
+      { path: 'reports', loadChildren: 'app/pages/Reports/reports.module#ReportsModule' },
     ]
   }
 ];

@@ -43,7 +43,7 @@ import {
   BaAppPicturePipe,
   BaKameleonPicturePipe,
   BaProfilePicturePipe,
-  ArrayFilterPipe, ArrayOrderByPipe
+  ArrayFilterPipe, ArrayOrderByPipe, AbsoluteValuePipe
 } from './pipes';
 
 import {
@@ -87,7 +87,7 @@ const NGA_PIPES = [
   BaAppPicturePipe,
   BaKameleonPicturePipe,
   BaProfilePicturePipe,
-  ArrayFilterPipe, ArrayOrderByPipe
+  ArrayFilterPipe, ArrayOrderByPipe, AbsoluteValuePipe
 ];
 
 const NGA_SERVICES = [

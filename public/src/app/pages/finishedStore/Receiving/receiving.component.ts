@@ -125,6 +125,7 @@ export class FinReceivingComponent implements OnInit {
         this.model.UserID = this.currentUser.userID;
         if (this.finDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
+            this.stillSaving = false
             return;
         }
         switch (this.Formstate) {

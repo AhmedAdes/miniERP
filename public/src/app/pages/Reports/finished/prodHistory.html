@@ -1,0 +1,301 @@
+<ba-card class="well no-print" style="width:100%">
+    <form id="f2" [formGroup]="detform" class="row" novalidate (submit)="detform.valid && viewReport()">
+        <div class="form-horizontal row">
+            <div class="form-group row">
+                <label for="ModelID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
+                <div class="col-md-5">
+                    <ng2-completer name="ModelCode" [(ngModel)]="Detmodel.ModelCode" [formControl]="detform.controls['autoModelID']" [datasource]="modelIDsList"
+                        [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
+                        [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-control" name="ModelID" [(ngModel)]="Detmodel.ModelID" [formControl]="detform.controls['ModelID']">
+                        <option value="">Select a Model ...</option>
+                        <option *ngFor="let i of modelsList" [value]="i.ModelID">{{i.ModelName}}</option>
+                    </select>
+                </div>
+                <div *ngIf="detform.controls['ModelID'].touched && !detform.controls['ModelID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
+            </div>
+            <div class="form-group row">
+                <label for="ColorID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ColorName.Disp}}</label>
+                <div class="col-md-10">
+                    <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" [formControl]="detform.controls['ColorID']">
+                        <option value="">Select a Color ...</option>
+                        <option *ngFor="let i of colorList" [ngValue]="i.ColorID">{{i.ColorName}}</option>
+                    </select>
+                    <div *ngIf="detform.controls['ColorID'].touched && !detform.controls['ColorID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ColorName.Disp}} is required.</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+                    <button class="btn btn-primary btn-block" type="submit">View</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+                    <button class="btn btn-primary btn-block" (click)="printReport()">Print</button>
+                </div>
+                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+                    <button class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</ba-card>
+
+<div class="row">
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-warning">
+                <div class="inner">
+                    <h4>Current Stock</h4>
+                    <h4>الرصيد الحالي</h4>
+                    <h3>{{stock | number:'1.2-2'}}</h3>
+                    <!-- <br><button type="button" (click)="ShowUnPaid()" class="btn btn-warning">Details</button> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-danger">
+                <div class="inner">
+                    <h4>Total Received</h4>
+                    <h4>إجمالي الاستلام</h4>
+                    <h3>{{totRec | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Receive'" class="btn btn-success">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-info">
+                <div class="inner">
+                    <h4>Total Sales Orders</h4>
+                    <h4>إجمالي اوامر البيع</h4>
+                    <h3>{{totSls | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Sales'" class="btn btn-info">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-primary">
+                <div class="inner">
+                    <h4>Total Dispensed</h4>
+                    <h4>إجمالي الصرف</h4>
+                    <h3>{{totDisp | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Dispense'" class="btn btn-primary">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-success">
+                <div class="inner">
+                    <h4>Total Equalized</h4>
+                    <h4>إجمالي التسويات</h4>
+                    <h3>{{totEqz | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Equalize'" class="btn btn-success">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-success">
+                <div class="inner">
+                    <h4>Total Returns</h4>
+                    <h4>إجمالي المرتجعات</h4>
+                    <h3>{{totRet | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Return'" class="btn btn-success">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-success">
+                <div class="inner">
+                    <h4>Total Rejected</h4>
+                    <h4>إجمالي المرفوضات</h4>
+                    <h3>{{totRej | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Reject'" class="btn btn-success">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+    </div>
+
+    <div class="col-md-12">
+        <div *ngIf="showTable == 'Receive'">
+            <table class="table table-hover table-bordered table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Year / Serial</th>
+                        <th>ReceivingDate</th>
+                        <th>BatchNo</th>
+                        <th>Received From</th>
+                        <th>Color Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finRecs">
+                        <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                        <td>{{item.ReceivingDate | date:'mediumDate'}}</td>
+                        <td>{{item.BatchNo}}</td>
+                        <td>{{item.ReceivedFrom}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="showTable == 'Sales'">
+            <table class="table table-hover table-bordered table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>SOID</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Color Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of slsOrds">
+                        <td>{{item.SOID}}</td>
+                        <td>{{item.SODate | date:'mediumDate'}}</td>
+                        <td>{{item.CustName}} -- {{item.ContactPerson}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.Quantity}}</td>
+                        <td>{{item.Price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="showTable == 'Dispense'">
+            <table class="table table-hover table-bordered table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Year / Serial</th>
+                        <th>Dispensing Date</th>
+                        <th>SOID</th>
+                        <th>Dispense To</th>
+                        <th>Color Name</th>
+                        <th>BatchNo</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finDisps">
+                        <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                        <td>{{item.DispensingDate | date:'mediumDate'}}</td>
+                        <td>{{item.SOID}}</td>
+                        <td>{{item.DispenseTo}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.BatchNo}}</td>
+                        <td>{{-item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="showTable == 'Equalize'">
+            <table class="table table-hover table-bordered table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Year / Serial</th>
+                        <th>Equalize Date</th>
+                        <th>EqualizeType</th>
+                        <th>Color Name</th>
+                        <th>BatchNo</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finEqzs">
+                        <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                        <td>{{item.EqualizeDate | date:'mediumDate'}}</td>
+                        <td>{{item.EqualizeType}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.BatchNo}}</td>
+                        <td>{{item.Quantity | absoluteValue}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="showTable == 'Return'">
+            <table class="table table-hover table-bordered table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Year / Serial</th>
+                        <th>Return Date</th>
+                        <th>Return From</th>
+                        <th>Color Name</th>
+                        <th>BatchNo</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finRets">
+                        <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                        <td>{{item.ReturnDate | date:'mediumDate'}}</td>
+                        <td>{{item.ReturnFrom}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.BatchNo}}</td>
+                        <td>{{item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

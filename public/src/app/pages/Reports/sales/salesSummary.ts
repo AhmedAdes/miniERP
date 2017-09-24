@@ -32,6 +32,7 @@ export class RptSalesSummaryComponent implements OnInit {
     fromDate: string
     toDate: string
     reportHeader: string
+    subHeader: string
 
     chartData = [{ data: [], label: '' }];
     lineChartLabels: Array<any> = [];
@@ -49,7 +50,8 @@ export class RptSalesSummaryComponent implements OnInit {
 
     ViewReport() {
         this.srv.getSalesSummary(this.fromDate, this.toDate).subscribe(ret => {
-            this.reportHeader = `Sales Summary From ${this.fromDate} To ${this.toDate}`
+            this.reportHeader = `Sales Summary`
+            this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.sumry = ret[0]
             this.srv.getSalesSummaryChart(this.fromDate, this.toDate).subscribe(chrt => {
                 this.collection = chrt

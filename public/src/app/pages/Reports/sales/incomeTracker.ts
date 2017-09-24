@@ -7,7 +7,7 @@ import { BaseChartDirective } from 'ng2-charts';
 @Component({
     selector: 'rpt-incom',
     templateUrl: './incomeTracker.html',
-    styleUrls: ['../../../Styles/PrintPortrait.css']
+    styleUrls: ['../../../Styles/PrintPortrait.css', '../../../Styles/dashboard.css']
 })
 export class RptSalesIncomeTrackerComponent implements OnInit {
     constructor(private srv: SalesHeaderService, private loc: Location) { }

@@ -7,7 +7,7 @@
             <div class="col-md-10">
                 <select class="form-control" name="ModelID" [(ngModel)]="selectedModelID" [formControl]="detform.controls['ModelID']">
                     <option value="">Select a Model ...</option>
-                    <option *ngFor="let i of modelsList" [ngValue]="i.ModelID">{{i.ModelName}}</option>
+                    <option *ngFor="let i of models" [ngValue]="i.ModelID">{{i.ModelName}}</option>
                 </select>
                 <div *ngIf="detform.controls['ModelID'].touched && !detform.controls['ModelID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
             </div>
@@ -18,7 +18,7 @@
                 <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" [formControl]="detform.controls['ColorID']"
                     required>
                     <option value="">Select a Color ...</option>
-                    <option *ngFor="let i of colorList" [ngValue]="i.ColorID">{{i.ColorName}}</option>
+                    <option *ngFor="let i of colorList" [value]="i.ColorID">{{i.ColorName}}</option>
                 </select>
                 <div *ngIf="detform.controls['ColorID'].touched && !detform.controls['ColorID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ColorName.Disp}} is required.</div>
             </div>
@@ -27,9 +27,9 @@
         <div class="form-group row">
             <label for="BatchNo" class="form-control-label col-md-2">{{Detmodel.DisplayNames.BatchNo.Disp}}</label>
             <div class="col-md-4">
-                <select class="form-control" id="BatchNo" name="BatchNo" [(ngModel)]="Detmodel.BatchNo" [formControl]="detform.controls['BatchNo']"
+                <select class="form-control" id="BatchNo" name="BatchNo" [(ngModel)]="bno" [formControl]="detform.controls['BatchNo']"
                     required>
-                    <option value="">Select a BatchNo ...</option>
+                    <option [value]="">Select a BatchNo ...</option>
                     <option *ngFor="let i of BatchList" [ngValue]="i.BatchNo">{{i.BatchNo}}</option>
                 </select>
                 <div *ngIf="detform.controls['BatchNo'].touched && !detform.controls['BatchNo'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.BatchNo.Disp}} is required.</div>

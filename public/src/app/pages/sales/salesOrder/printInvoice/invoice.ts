@@ -24,6 +24,8 @@ export class InvoicePrintComponent implements OnInit {
     SDetails: SalesDetail[] = [];
     SPayments: SalesPayment[] = [];
     subtotal: number;
+    subQuant: number;
+    sumPay: number;
 
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
@@ -35,10 +37,16 @@ export class InvoicePrintComponent implements OnInit {
                     this.srvPay.getSalesOrderPayment(id).subscribe(pay => {
                         this.SPayments = pay;
                         this.subtotal = 0;
+                        this.subQuant = 0;
+                        this.sumPay = 0;
                         this.SDetails.forEach(element => {
+                            this.subQuant += element.Quantity;
                             this.subtotal += element.Price * element.Quantity;
                             // this.AfterViewInit()
                         });
+                        this.SPayments.forEach(element => {
+                            this.sumPay += element.PayAmount
+                        })
                     })
                 })
             })

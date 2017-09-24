@@ -15,6 +15,7 @@ export class PrintBarcodeComponent implements OnInit, AfterViewInit {
     visModelName: string;
     visColorCode: string;
     BatchNo: string;    
+    arr_length = 5
     elementType = 'img';
 
     constructor(private route: ActivatedRoute, private router: Router) { }

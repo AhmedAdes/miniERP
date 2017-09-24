@@ -123,6 +123,7 @@ export class FinEqualizeComponent implements OnInit {
         this.model.RecYear = new Date().getFullYear();
         if (this.finDetails.length == 0) {
             this.errorMessage = "Must Add some Products First";
+            this.stillSaving = false
             return;
         }
         switch (this.Formstate) {

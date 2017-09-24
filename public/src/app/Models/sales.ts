@@ -6,6 +6,7 @@ export class SalesHeader {
     ContactPerson: string;
     SalesTax: number;
     Discount: number;
+    DiscountPrcnt: boolean;
     Notes: string;
     DeliveryDate: Date;
     Commisioner: string;
@@ -49,6 +50,7 @@ export class SalesDetail {
     ModelName: string;
     UserID: number;
     UserName: string;
+    Stock: string;
 
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
@@ -59,7 +61,8 @@ export class SalesDetail {
         ModelID: { Disp: "Model الموديل" },
         ModelName: { Disp: "Model الموديل" },
         ModelCode: { Disp: "Model Code كود الموديل" },
-        UserName: { Disp: "User Name" }
+        UserName: { Disp: "User Name" },
+        Stock: { Disp: "Store Stock رصيد المخزن" },
     }
 }
 export class SalesPayment {
