@@ -38,3 +38,23 @@ LEFT JOIN dbo.FinishedDispensing fd ON fd.FinDispensingID = det.FinDispensingID
 LEFT JOIN dbo.FinStoreEqualization fe ON fe.FinEqualizeID = det.FinEqualizeID
 LEFT JOIN dbo.FinishedReturn fn ON fn.FinReturnID = det.FinReturnID
 GO
+
+ALTER TABLE dbo.FinishedReturn ADD SOID INT
+ALTER TABLE dbo.FinishedReturn ADD CONSTRAINT FK_FinishedReturn_SOID FOREIGN KEY (SOID) REFERENCES dbo.SalesOrderHeader(SOID)
+GO
+
+ALTER PROC [dbo].[FinishReturnInsert]
+@RecYear INT,@SerialNo INT,@ReturnDate DATE ,@ReturnFrom NVARCHAR(200), @ReturnReason NVARCHAR(max), @SOID INT, @UserID INT
+AS
+INSERT dbo.FinishedReturn
+        ( RecYear ,SerialNo ,ReturnDate ,ReturnFrom ,ReturnReason ,SOID ,UserID )
+VALUES  ( @RecYear , (SELECT ISNULL(MAX(SerialNo), 0) +1 FROM dbo.FinishedReturn WHERE RecYear=@RecYear) ,@ReturnDate ,@ReturnFrom, @ReturnReason, @SOID, @UserID)
+SELECT @@IDENTITY AS FinReturnID, SerialNo FROM dbo.FinishedReturn WHERE FinReturnID = @@IDENTITY
+GO
+
+ALTER PROC [dbo].[FinishReturnUpdate]
+@FinReturnID INT, @RecYear INT,@SerialNo INT,@ReturnDate DATE ,@ReturnFrom NVARCHAR(200), @ReturnReason NVARCHAR(max), @SOID INT, @UserID INT
+AS
+UPDATE dbo.FinishedReturn SET RecYear=@RecYear ,SerialNo=@SerialNo ,ReturnDate=@ReturnDate ,ReturnFrom=@ReturnFrom, ReturnReason=@ReturnReason, SOID=@SOID ,UserID=@UserID 
+WHERE FinReturnID = @FinReturnID
+GO
