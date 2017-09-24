@@ -1,5 +1,5 @@
-// export const DBConStrng = '/api/';
-export const DBConStrng = 'http://localhost:5500/api/';
+export const DBConStrng = '/api/';
+// export const DBConStrng = 'http://localhost:5500/api/';
 export const CompanyName = 'Global Brands Group'
 
 export const provinces = [

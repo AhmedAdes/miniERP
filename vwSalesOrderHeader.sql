@@ -22,7 +22,7 @@ JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID
 GROUP BY d.ColorID, m.ModelID, ModelName, ModelCode, Color, ColorName, ProdColorCode, BatchNo
 GO
 
-Alter VIEW vwFinProductActivity
+Create VIEW vwFinProductActivity
 AS 
 SELECT FinStoreID ,det.RecYear ,det.SerialNo ,RecordDate ,det.ColorID ,Quantity ,det.BatchNo ,
        det.FinReceivingID ,det.FinDispensingID ,det.FinEqualizeID ,det.FinReturnID ,det.FinRejectID ,

@@ -58,4 +58,7 @@ export class StoreBalanceComponent implements OnInit {
             this.orderbyString = '';
         }
     }
+    printBalance(){
+        
+    }
 }

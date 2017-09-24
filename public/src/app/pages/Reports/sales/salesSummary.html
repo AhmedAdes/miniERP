@@ -44,19 +44,19 @@
             <tbody>
                 <tr>
                     <td class="rowHeader">Total Amount</td>
-                    <td>{{sumry.TotalAmount}}</td>
+                    <td>{{sumry.TotalAmount | number}}</td>
                 </tr>
                 <tr>
                     <td class="rowHeader">Total Customers</td>
-                    <td>{{sumry.TotalCustomers}}</td>
+                    <td>{{sumry.TotalCustomers | number}}</td>
                 </tr>
                 <tr>
                     <td class="rowHeader">Total Orders</td>
-                    <td>{{sumry.TotalOrders}}</td>
+                    <td>{{sumry.TotalOrders | number}}</td>
                 </tr>
                 <tr>
                     <td class="rowHeader">Total Products</td>
-                    <td>{{sumry.TotalProducts}}</td>
+                    <td>{{sumry.TotalProducts | number}}</td>
                 </tr>
             </tbody>
         </table>
@@ -75,7 +75,7 @@
             <tbody>
                 <tr *ngFor="let item of collection">
                     <td>{{item.MonthDate | date:'MM/yyyy'}}</td>
-                    <td>{{item.TotalAmount}}</td>
+                    <td>{{item.TotalAmount | number}}</td>
                 </tr>
             </tbody>
         </table>

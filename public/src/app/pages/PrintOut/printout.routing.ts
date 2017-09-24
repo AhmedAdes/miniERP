@@ -7,7 +7,7 @@ import {
   PrintBarcodeComponent, InvoicePrintComponent, PrintFinDispOrderComponent, 
   PrintFinRecOrderComponent, PrintFinEqulOrderComponent, PrintFinRtrnOrderComponent,
   PrintMatDispComponent, PrintMatRecComponent, PrintMatEqulComponent, PrintMatRetComponent,
-  PrintMatInspComponent
+  PrintMatInspComponent, PrintFinStoreBlncComponent
 } from './index';
 
 // noinspection TypeScriptValidateTypes
@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'finRec/:id', component: PrintFinRecOrderComponent, canActivate: [AuthGuard] },
       { path: 'finEqul/:id', component: PrintFinEqulOrderComponent, canActivate: [AuthGuard] },
       { path: 'finRet/:id', component: PrintFinRtrnOrderComponent, canActivate: [AuthGuard] },
+      { path: 'finBlnc', component: PrintFinStoreBlncComponent, canActivate: [AuthGuard] },
       { path: 'matDisp/:id', component: PrintMatDispComponent, canActivate: [AuthGuard] },
       { path: 'matRec/:id', component: PrintMatRecComponent, canActivate: [AuthGuard] },
       { path: 'matEqul/:id', component: PrintMatEqulComponent, canActivate: [AuthGuard] },

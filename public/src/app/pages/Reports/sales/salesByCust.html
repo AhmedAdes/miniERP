@@ -93,7 +93,7 @@
                     <td>{{item.ModelName}}</td>
                     <td>{{item.Quantity}}</td>
                     <td>{{item.UnitPrice}}</td>
-                    <td>{{item.SubTotal}}</td>
+                    <td>{{item.SubTotal | number}}</td>
                     <td>{{item.Discount | percent:'3.2-2'}}</td>
                 </tr>
             </tbody>

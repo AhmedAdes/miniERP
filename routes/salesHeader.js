@@ -71,7 +71,7 @@ router.get('/sellingCntry', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
-router.get('/TsellProd/:fltr.:fromDate.:toDate', function (req, res, next) {
+router.get('/TsellProdQty/:fltr.:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT TOP 10 m.ModelCode, m.ModelName, SUM(d.Quantity) Quantity, SUM(d.Quantity * d.Price) Amount
@@ -106,8 +106,10 @@ router.get('/compareSales/:month1.:year1.:month2.:year2', function (req, res, ne
 router.get('/salesSummary/:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query(`SELECT SUM(GrandTotal) TotalAmount, COUNT(DISTINCT h.SOID) TotalOrders, COUNT(DISTINCT CustID) TotalCustomers, SUM(d.Quantity) AS TotalProducts 
-                    FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
+    request.query(`SELECT SUM(GrandTotal) TotalAmount, COUNT(DISTINCT h.SOID) TotalOrders, COUNT(DISTINCT CustID) TotalCustomers, 
+    (SELECT SUM(Quantity) From dbo.SalesOrderDetails d join dbo.SalesOrderHeader h on d.SOID = h.SOID 
+    And h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}') AS TotalProducts 
+    FROM dbo.SalesOrderHeader h WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });

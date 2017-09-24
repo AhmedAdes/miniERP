@@ -60,7 +60,7 @@
                 <tr *ngFor="let item of collection">
                     <td>{{item.Area}}</td>
                     <td>{{item.Quantity}}</td>
-                    <td>{{item.Amount}}</td>
+                    <td>{{item.Amount | number}}</td>
                 </tr>
             </tbody>
         </table>

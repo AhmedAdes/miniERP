@@ -1,41 +1,39 @@
 <ba-card class="well no-print" style="width:100%">
-    <form id="f2" [formGroup]="detform" class="row" novalidate (submit)="detform.valid && viewReport()">
-        <div class="form-horizontal row">
-            <div class="form-group row">
-                <label for="ModelID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
-                <div class="col-md-5">
-                    <ng2-completer name="ModelCode" [(ngModel)]="Detmodel.ModelCode" [formControl]="detform.controls['autoModelID']" [datasource]="modelIDsList"
-                        [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
-                        [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
-                </div>
-                <div class="col-md-5">
-                    <select class="form-control" name="ModelID" [(ngModel)]="Detmodel.ModelID" [formControl]="detform.controls['ModelID']">
+    <form id="f2" [formGroup]="detform" novalidate (submit)="detform.valid && viewReport()">
+        <div class="form-group row">
+            <label for="ModelID" class="col-sm-4 col-md-2 control-label">{{Detmodel.DisplayNames.ModelName.Disp}}</label>
+            <div class="col-md-5 col-sm-4">
+                <ng2-completer name="ModelCode" [(ngModel)]="Detmodel.ModelCode" [formControl]="detform.controls['autoModelID']" [datasource]="modelIDsList"
+                    [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
+                    [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
+            </div>
+            <div class="col-md-5 col-sm-4">
+                <select class="form-control" name="ModelID" [(ngModel)]="Detmodel.ModelID" [formControl]="detform.controls['ModelID']">
                         <option value="">Select a Model ...</option>
                         <option *ngFor="let i of modelsList" [value]="i.ModelID">{{i.ModelName}}</option>
                     </select>
-                </div>
-                <div *ngIf="detform.controls['ModelID'].touched && !detform.controls['ModelID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
             </div>
-            <div class="form-group row">
-                <label for="ColorID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.ColorName.Disp}}</label>
-                <div class="col-md-10">
-                    <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" [formControl]="detform.controls['ColorID']">
+            <div *ngIf="detform.controls['ModelID'].touched && !detform.controls['ModelID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ModelName.Disp}} is required.</div>
+        </div>
+        <div class="form-group row">
+            <label for="ColorID" class="col-sm-4 col-md-2 control-label">{{Detmodel.DisplayNames.ColorName.Disp}}</label>
+            <div class="col-md-10 col-sm-8">
+                <select class="form-control" id="ColorID" name="ColorID" [(ngModel)]="Detmodel.ColorID" [formControl]="detform.controls['ColorID']">
                         <option value="">Select a Color ...</option>
                         <option *ngFor="let i of colorList" [ngValue]="i.ColorID">{{i.ColorName}}</option>
                     </select>
-                    <div *ngIf="detform.controls['ColorID'].touched && !detform.controls['ColorID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ColorName.Disp}} is required.</div>
-                </div>
+                <div *ngIf="detform.controls['ColorID'].touched && !detform.controls['ColorID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ColorName.Disp}} is required.</div>
             </div>
-            <div class="form-group row">
-                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
-                    <button class="btn btn-primary btn-block" type="submit">View</button>
-                </div>
-                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
-                    <button class="btn btn-primary btn-block" (click)="printReport()">Print</button>
-                </div>
-                <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
-                    <button class="btn btn-danger btn-block" (click)="goBack()">Back</button>
-                </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+                <button class="btn btn-primary btn-block" type="submit">View</button>
+            </div>
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+                <button class="btn btn-primary btn-block" (click)="printReport()">Print</button>
+            </div>
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10 no-print">
+                <button class="btn btn-danger btn-block" (click)="goBack()">Back</button>
             </div>
         </div>
     </form>

@@ -61,10 +61,10 @@
                 <tr *ngFor="let item of collection; let i = index">
                     <td>{{item.ModelCode}}</td>
                     <td>{{item.ModelName}}</td>
-                    <td>{{item.M1Quantity}}</td>
-                    <td>{{item.M1Amount}}</td>
-                    <td>{{item.M2Quantity}}</td>
-                    <td>{{item.M2Amount}}</td>
+                    <td>{{item.M1Quantity | number}}</td>
+                    <td>{{item.M1Amount | number}}</td>
+                    <td>{{item.M2Quantity | number}}</td>
+                    <td>{{item.M2Amount | number}}</td>
                 </tr>
             </tbody>
         </table>
