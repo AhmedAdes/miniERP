@@ -55,3 +55,12 @@ JOIN dbo.ProductColorCoding c ON c.ColorID = d.ColorID
 JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID
 GO
 
+ALTER VIEW dbo.vwSalesOrderDetail
+AS
+SELECT  SODetID , SOID , Quantity , Price , sod.UserID , u.UserName , sod.ColorID , c.ColorName , m.ModelID, m.ModelCode, m.ModelName, 
+	sod.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=sod.StoreTypeID) StoreType
+FROM dbo.SalesOrderDetails sod
+JOIN dbo.ProductColorCoding c ON sod.ColorID = c.ColorID
+JOIN dbo.ProductModelCoding m ON c.ModelID = m.ModelID
+JOIN dbo.SystemUsers u ON sod.UserID = u.UserID
+GO
