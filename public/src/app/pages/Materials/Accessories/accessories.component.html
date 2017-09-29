@@ -18,28 +18,28 @@
 			</colgroup>
 			<thead>
 				<tr>
-					<th> {{srchMat.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-					<th> {{srchMat.DisplayNames.Unit.Disp}} <i (click)="SortTable('Unit')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Unit') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-					<th> {{srchMat.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+					<th> {{srchObj.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+					<th> {{srchObj.DisplayNames.Unit.Disp}} <i (click)="SortTable('Unit')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Unit') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+					<th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
 					<th></th>
 				</tr>
 				<tr>
 					<th>
 						<div class="input-group">
 							<span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
-							<input  class="form-control" type="text" id="srchMaterialName" name="MaterialName" [(ngModel)]="srchMat.MaterialName">
+							<input  class="form-control" type="text" id="srchMaterialName" name="MaterialName" [(ngModel)]="srchObj.MaterialName">
 						</div>
 					</th>
 					<th>
 						<div class="input-group">
 							<span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
-							<input  class="form-control" type="text" id="srchUnit" name="Unit" [(ngModel)]="srchMat.Unit">
+							<input  class="form-control" type="text" id="srchUnit" name="Unit" [(ngModel)]="srchObj.Unit">
 						</div>
 					</th>
 					<th>
 						<div class="input-group">
 							<span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
-							<input  class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchMat.UserName">
+							<input  class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
 						</div>
 					</th>
 					<th></th>
@@ -70,13 +70,13 @@
 				<br>
 
 				<div class="form-group row">
-					<label for="MaterialName" class="control-label col-md-2">{{srchMat.DisplayNames.MaterialName.Disp}}</label>
+					<label for="MaterialName" class="control-label col-md-2">{{srchObj.DisplayNames.MaterialName.Disp}}</label>
 					<div class="col-md-10">
 						<input class="form-control" type="text" name="MaterialName" [(ngModel)]="model.MaterialName">
 					</div>
 				</div>
 				<div class="form-group  row">
-					<label for="Unit" class="control-label col-md-2">{{srchMat.DisplayNames.Unit.Disp}}</label>
+					<label for="Unit" class="control-label col-md-2">{{srchObj.DisplayNames.Unit.Disp}}</label>
 					<div class="col-md-10">
 						<input class="form-control" type="text" name="Unit" [(ngModel)]="model.Unit">
 					</div>

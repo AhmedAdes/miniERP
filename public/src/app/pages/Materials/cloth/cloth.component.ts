@@ -27,7 +27,7 @@ export class ClothComponent implements OnInit {
   currentUser: CurrentUser = this.auth.getUser(); 
   collection: Material[] = [];
   model: Material;
-  srchMat: Material = new Material();
+  srchObj: Material = new Material();
   showTable: boolean;
   Formstate: string;
   headerText: string;
