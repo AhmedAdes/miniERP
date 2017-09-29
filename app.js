@@ -103,15 +103,15 @@ app.use('/api/matequl', matequl);
 app.use('/api/matret', matret);
 app.use('/api/expnse', expnse);
 
-connection.connect().then(function() {
-  console.log('Connection pool open for duty');
-  http.createServer(app).listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
-    });  
-}).catch(function(err) {
-  console.error('Error creating connection pool', err);
+connection.connect(err => {
+    if (err) {
+        console.log('Failed to open a SQL Database connection.', err.stack);
+    }
+    http.createServer(app).listen(app.get('port'), function () {
+        console.log('Express server listening on port ' + app.get('port'));
+    });
 });
 
-connection.on('connect', function(err) {
-    if (err) return console.error(err);
+connection.on('error', function (err) {
+    console.log('Sql Connection Error.', err);
 });
