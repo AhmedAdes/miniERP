@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
-import { User, CurrentUser, CurrentLoggedUser ,JobClass, DBConStrng } from '../Models';
+import { User, CurrentUser, CurrentLoggedUser, JobClass, DBConStrng } from '../Models';
 import 'rxjs/add/operator/map'
 
 @Injectable()
@@ -34,8 +34,16 @@ export class AuthenticationService {
                 if (token) {
                     // set token property
                     this.token = token;
+                    let base64String
+                    let photo
 
-                    this.currentUser = { userID: arrRet[0].UserID, userName: arrRet[0].UserName, photo: arrRet[0].Photo, isAdmin: arrRet[0].isAdmin, token: token }
+                    if (arrRet[0].Photo != null) {
+                        base64String = btoa([].reduce.call(new Uint8Array(arrRet[0].Photo.data), function (p, c) { return p + String.fromCharCode(c) }, ''))
+                        photo = "data:image/PNG;base64," + base64String
+                    } else {
+                        photo = './assets/img/app/profile/avatar5.png'
+                    }
+                    this.currentUser = { userID: arrRet[0].UserID, userName: arrRet[0].UserName, photo: photo, isAdmin: arrRet[0].isAdmin, token: token }
 
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
