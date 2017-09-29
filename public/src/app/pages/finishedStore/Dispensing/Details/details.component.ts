@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHeader } from '../../../../Models';
+import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHeader, StoreProductTypes } from '../../../../Models';
 import { ModelService, ColorService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../../pipes/validators';
@@ -22,18 +22,23 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     // selectedModelID: number;
     detform: FormGroup;
     EditForm: boolean = false;
+    submitted: boolean = false;
+    AllStock: any[]
+    prodTypes: any[]
 
     constructor(private srvClr: ColorService, private srvDet: FinDetailService, private fb: FormBuilder) {
         this.detform = fb.group({
             autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
+            strProdType: ['', Validators.required],
             BatchNo: ['', Validators.required],
             Stock: [''],
             Quantity: ['', [Validators.required, min(0)]],
         });
         this.detform.controls['ModelID'].valueChanges.subscribe(value => this.onProdChange(value));
         this.detform.controls['ColorID'].valueChanges.subscribe(value => this.onColorChange(value));
+        this.detform.controls['strProdType'].valueChanges.subscribe(value => this.onstrProdTypeChange(value));
         this.detform.controls['BatchNo'].valueChanges.subscribe(value => this.onBatchChange(value));
     }
 
@@ -46,6 +51,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     ngOnChanges() {
         if (this.Detmodel.ColorID) {
             this.EditForm = true;
+            this.detform.controls['autoModelID'].disable()
             this.detform.controls['ModelID'].disable()
             this.detform.controls['ColorID'].disable()
             // this.selectedModelID = this.Detmodel.ModelID;
@@ -55,13 +61,16 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     prepareDetail() {
         // this.Detmodel.ModelID = this.selectedModelID;
         // this.Detmodel.ModelName = this.selectedModel.ModelName;
-        this.Detmodel.ModelName = this.modelsList.filter(obj => obj.ModelID == this.Detmodel.ModelID)[0].ModelName
+        this.Detmodel.ModelName = this.selectedModel.ModelName;
         this.Detmodel.ColorName = this.colortext == null ? this.colorList.find(c => c.ColorID == this.Detmodel.ColorID).ColorName : this.colortext;
         this.Detmodel.UserID = this.currentUser.userID;
         this.Detmodel.RecordDate = new Date();
+        this.Detmodel.StoreType = this.prodTypes.find(st => st.ID == this.Detmodel.StoreTypeID).name
     }
     AddDetail(event) {
         event.preventDefault();
+        this.submitted = true
+        if (!this.detform.valid) { return }
         this.prepareDetail();
         if (this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID) > -1) {
             var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID)
@@ -73,6 +82,8 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     }
 
     EditDetail() {
+        this.submitted = true
+        if (!this.detform.valid) { return }
         this.prepareDetail();
         var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID)
         this.Details.fill(this.Detmodel, indx, indx + 1)
@@ -84,6 +95,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     }
 
     resetTheForm() {
+        this.detform.controls['autoModelID'].enable()
         this.detform.controls['ModelID'].enable()
         this.detform.controls['ColorID'].enable()
         this.EditForm = false
@@ -92,6 +104,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
         this.colorList = null
         this.BatchList = null
         this.detform.reset();
+        this.submitted = false
     }
     onProdChange(value) {
         //newObj.target.value.split(":")[0]
@@ -103,28 +116,37 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
                 this.colorList = clrs;
                 if (this.Detmodel.ColorID && this.EditForm) {
                     this.onColorChange(this.Detmodel.ColorID)
-                    if (this.Detmodel.BatchNo && this.EditForm) {
-                        this.onBatchChange(this.Detmodel.BatchNo)
+                    if (this.Detmodel.StoreTypeID && this.EditForm) {
+                        this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
+                        if (this.Detmodel.BatchNo && this.EditForm) {
+                            this.onBatchChange(this.Detmodel.BatchNo)
+                        }
                     }
                 }
             }
         });
     }
-
     onColorChange(value) {
         if (!value || !this.colorList) { this.BatchList = null; return; }
         // this.colortext = this.colorList.find(c => c.ColorID == value).ColorName
         this.srvDet.getFinStock(value).subscribe(btc => {
             if (this.Detmodel.ColorID) {
-                this.BatchList = btc
-                this.Detmodel.Stock = null
-                if (this.Detmodel.BatchNo && this.EditForm) {
-                    this.onBatchChange(this.Detmodel.BatchNo)
+                this.AllStock = btc
+                this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
+                if (this.Detmodel.StoreTypeID && this.EditForm) {
+                    this.onstrProdTypeChange(this.Detmodel.BatchNo)
                 }
             }
         })
     }
-
+    onstrProdTypeChange(value) {
+        if (!value || !this.prodTypes) { return; }
+        this.BatchList = this.AllStock.filter(s => s.StoreTypeID == value)
+        this.Detmodel.Stock = null
+        if (this.Detmodel.BatchNo && this.EditForm) {
+            this.onBatchChange(this.Detmodel.BatchNo)
+        }
+    }
     onBatchChange(value) {
         if (!value || !this.BatchList || value == 'Edit TO Fill This') { return }
         this.Detmodel.Stock = this.BatchList.find(c => c.BatchNo == value).Stock
@@ -134,7 +156,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
 
     IDSelected(selected) {
         if (selected) {
-            this.Detmodel.ModelID = this.modelsList.filter(m=>m.ModelCode == selected.title)[0].ModelID
+            this.Detmodel.ModelID = this.modelsList.filter(m => m.ModelCode == selected.title)[0].ModelID
         } else {
             this.Detmodel.ModelID = null;
         }

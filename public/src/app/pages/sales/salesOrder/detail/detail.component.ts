@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { SalesDetail, CurrentUser, Customer, CustTypes, DeliveryTypes, PayMethods, Model, ModelColor } from '../../../../Models';
+import { SalesDetail, CurrentUser, Customer, CustTypes, DeliveryTypes, PayMethods, Model, ModelColor, StoreProductTypes } from '../../../../Models';
 import { ModelService, ColorService, CustomerService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../../pipes/validators';
@@ -22,10 +22,13 @@ export class SalesDetailComponent implements OnInit {
     colortext: string;
     selectedModel: Model;
     selectedModelID: number;
+    submitted: boolean = false;
+    prodTypes = StoreProductTypes
     detform: FormGroup;
     ctrlModelID: AbstractControl;
     ctrlModelauto: AbstractControl;
     ctrlColorID: AbstractControl;
+    ctrlType: AbstractControl;
     ctrlQuant: AbstractControl;
     ctrlPrice: AbstractControl;
     ctrlStocks: AbstractControl;
@@ -36,6 +39,7 @@ export class SalesDetailComponent implements OnInit {
             modelId: ['', Validators.required],
             modelauto: [''],
             colorId: ['', Validators.required],
+            strProdType: ['', Validators.required],
             quant: ['', [Validators.required, min(0)]],
             price: ['', [Validators.required, min(0)]],
             stk: ['']
@@ -44,12 +48,14 @@ export class SalesDetailComponent implements OnInit {
         this.ctrlModelID = this.detform.controls['modelId'];
         this.ctrlModelauto = this.detform.controls['modelauto'];
         this.ctrlColorID = this.detform.controls['colorId'];
+        this.ctrlType = this.detform.controls['strProdType'];
         this.ctrlQuant = this.detform.controls['quant'];
         this.ctrlPrice = this.detform.controls['price'];
         this.ctrlStocks = this.detform.controls['stk'];
 
         this.ctrlModelID.valueChanges.subscribe(value => this.onProdChange(value));
-        // this.ctrlColorID.valueChanges.subscribe(value => this.onColorChange(value));
+        this.ctrlColorID.valueChanges.subscribe(value => this.onColorChange(value));
+        this.ctrlType.valueChanges.subscribe(value => this.onstrProdTypeChange(value));
     }
 
     ngOnInit() {
@@ -60,16 +66,20 @@ export class SalesDetailComponent implements OnInit {
     }
 
     AddDetail(event) {
+        this.submitted = true
+        if (!this.detform.valid) { return }
         this.Detmodel.ModelID = this.selectedModelID;
         this.Detmodel.ModelName = this.selectedModel.ModelName;
         this.Detmodel.ModelCode = this.selectedModel.ModelCode;
-        this.Detmodel.ColorName = this.colortext;
+        this.Detmodel.ColorName = this.colortext == null ? this.colorList.find(c => c.ColorID == this.Detmodel.ColorID).ColorName : this.colortext;
         this.Detmodel.UserID = this.currentUser.userID;
+        this.Detmodel.StoreType = this.prodTypes.find(st => st.ID == this.Detmodel.StoreTypeID).name
         this.Details.push(this.Detmodel);
         this.Detmodel = new SalesDetail();
         this.selectedModelID = null;
         this.CalculateTotal.emit();
         this.detform.reset();
+        this.submitted = false
         // event.preventDefault();
     }
 
@@ -80,6 +90,7 @@ export class SalesDetailComponent implements OnInit {
         this.Detmodel.ModelID = this.selectedModelID;
         this.srvClr.getColor(value).subscribe(clrs => {
             this.colorList = clrs;
+            this.Detmodel.StoreTypeID = null
             this.Detmodel.Stock = ''
             this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
             if (this.CustomerID) {
@@ -102,11 +113,13 @@ export class SalesDetailComponent implements OnInit {
             }
         });
     }
-
-    onColorChange(newObj) {
-        let clrid = newObj.target.selectedOptions[0].value.split(":")[1].trim()
-        this.srvFin.getFinStockwithOrders(clrid).subscribe(stk => {
-            this.colortext = newObj.target.selectedOptions[0].text;
+    onColorChange(value) {
+        if (!value || this.colorList.length <= 0) { return }
+        this.Detmodel.ColorName = this.colorList.find(c => c.ColorID == value).ColorName
+    }
+    onstrProdTypeChange(value) {
+        if (!value || !this.prodTypes) { return; }
+        this.srvFin.getFinStockwithOrders(this.Detmodel.ColorID, value).subscribe(stk => {
             this.Detmodel.Stock = stk.stock[0].StockQty.toString() + ' in Stock with ' +
                 stk.orders[0].OrderQty.toString() + ' on Orders /-/-/ Total of ' +
                 (stk.stock[0].StockQty - stk.orders[0].OrderQty);

@@ -216,9 +216,9 @@ export class MaterialReturn {
         MatReturnID: { Disp: "Code الكود" },
         RecYear: { Disp: "Year السنة" },
         SerialNo: { Disp: "SerialNo مسلسل" },
-        ReturnDate: { Disp: "Return Date تاريخ الارتجاع" },
+        ReturnDate: { Disp: "Return Date تاريخ المرتجع" },
         ReturnFrom: { Disp: "Return From مرتجع من" },
-        ReturnReason: { Disp: "Return Reason سبب الارتجاع" },
+        ReturnReason: { Disp: "Return Reason سبب المرتجع" },
         UserName: { Disp: "User Name" }
     }
 }

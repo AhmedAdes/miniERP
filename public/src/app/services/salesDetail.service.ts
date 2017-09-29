@@ -22,8 +22,11 @@ export class SalesDetailService {
     }
     return this.http.get(geturl, this.options).map(res => res.json());
   }
-
-  InsertSalesDetails(SOID: number,UserID: number,clrs: SalesDetail[]) {
+  getSalesFinishDetail(soid) {
+    return this.http.get(this.url + 'salesFinDet/' + soid, this.options).map(res => res.json());
+  }
+  
+  InsertSalesDetails(SOID: number, UserID: number, clrs: SalesDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + SOID, this.options).map(res => res.json()));
     clrs.forEach(element => {

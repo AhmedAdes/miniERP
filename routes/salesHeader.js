@@ -164,7 +164,8 @@ router.get('/paidInvoices', function (req, res, next) {
 router.get('/SlsHdModels/:soid', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query(`SELECT m.ModelID, m.ModelCode,m.ModelName, c.ColorName ,c.ColorID , fdet.BatchNo, ABS(fdet.Quantity) Quantity, 
+    request.query(`SELECT m.ModelID, m.ModelCode,m.ModelName, c.ColorName ,c.ColorID , fdet.BatchNo, 
+	fdet.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=fdet.StoreTypeID) StoreType, ABS(fdet.Quantity) Quantity, 
     (SELECT SUM(Quantity)  FROM dbo.FinishedStoreDetails Where ColorID = c.ColorID AND BatchNo = fdet.BatchNo GROUP BY BatchNo) Stock
     FROM dbo.ProductModelCoding m 
     JOIN dbo.ProductColorCoding c ON c.ModelID = m.ModelID 
@@ -215,6 +216,7 @@ router.post('/', function (req, res, next) {
                             request.input('Price', det.Price);
                             request.input('ColorID', det.ColorID);
                             request.input('UserID', det.UserID);
+                            request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('SalesDetailInsert')
                         }));
 
@@ -304,6 +306,7 @@ router.put('/:id', function (req, res, next) {
                             request.input('Price', det.Price);
                             request.input('ColorID', det.ColorID);
                             request.input('UserID', det.UserID);
+                            request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('SalesDetailInsert')
                         }));
 

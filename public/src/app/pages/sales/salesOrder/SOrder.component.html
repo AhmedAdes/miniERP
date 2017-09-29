@@ -117,19 +117,21 @@
 
                             <table class="table table-hover table-striped table-responsive">
                                 <colgroup>
+                                    <col width="10%" />
                                     <col width="15%" />
-                                    <col width="20%" />
+                                    <col width="15%" />
                                     <col width="15%" />
                                     <col width="10%" />
                                     <col width="10%" />
                                     <col width="15%" />
-                                    <col width="15%" />
+                                    <col width="10%" />
                                 </colgroup>
                                 <thead>
                                     <tr>
                                         <th>{{Detmodel.DisplayNames.ModelCode.Disp}}</th>
                                         <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>
                                         <th>{{Detmodel.DisplayNames.ColorName.Disp}}</th>
+                                        <th>{{Detmodel.DisplayNames.StoreType.Disp}}</th>
                                         <th>{{Detmodel.DisplayNames.Quantity.Disp}}</th>
                                         <th>{{Detmodel.DisplayNames.Price.Disp}}</th>
                                         <th>Total Price</th>
@@ -141,6 +143,7 @@
                                         <td>{{item.ModelCode}}</td>
                                         <td>{{item.ModelName}}</td>
                                         <td>{{item.ColorName}}</td>
+                                        <td>{{item.StoreType}}</td>
                                         <td>{{item.Quantity}}</td>
                                         <td>{{item.Price}}</td>
                                         <td>{{item.Price * item.Quantity}}</td>

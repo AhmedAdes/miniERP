@@ -202,7 +202,7 @@ export class FinDispensingComponent implements OnInit {
     }
     onSOIDchange(value) {
         if (!value || this.basicform.controls['chkSOID'].value == null) { return }
-        this.srvSODet.getSalesDetail(value).subscribe(sd => {
+        this.srvSODet.getSalesFinishDetail(value).subscribe(sd => {
             this.finDetails = sd
             var selSo = this.SOList.filter(so => so.SOID == value)[0]
             this.model.DispenseTo = selSo.CustName + ' ' + selSo.ContactPerson
@@ -210,7 +210,7 @@ export class FinDispensingComponent implements OnInit {
                 det.RecordDate = new Date()
                 // det.FinDispensingID = this.model.FinDispensingID
                 det.UserID = this.currentUser.userID
-                det.BatchNo = 'Edit TO Fill This'
+                // det.BatchNo = 'Edit TO Fill This'
             })
         })
     }
@@ -228,6 +228,8 @@ export class FinDispensingComponent implements OnInit {
         this.Detmodel.Quantity = this.finDetails[i].Quantity;
         this.Detmodel.BatchNo = this.finDetails[i].BatchNo;
         this.Detmodel.ColorID = this.finDetails[i].ColorID;
+        this.Detmodel.StoreTypeID = this.finDetails[i].StoreTypeID;
+        this.Detmodel.StoreType = this.finDetails[i].StoreType;
     }
     PrintOrder(orderID) {
         this.router.navigate(['printout/finDisp', orderID])

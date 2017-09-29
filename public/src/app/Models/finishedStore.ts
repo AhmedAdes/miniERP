@@ -43,7 +43,8 @@ export class FinishedStoreDetail {
     ModelName: string;
     SOID: number;
     Stock: number;
-    
+    StoreType: string;
+    StoreTypeID: number;
 
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
@@ -57,6 +58,7 @@ export class FinishedStoreDetail {
         ModelName: { Disp: "Model الموديل" },
         ColorName: { Disp: "Color اللون" },
         Stock: { Disp: "Store Stock رصيد المخزن" },
+        StoreType: { Disp: "Store Type نوع مخزن المنتج" },
         UserName: { Disp: "User Name" }
     }
 }
@@ -141,9 +143,9 @@ export class FinishedReturn {
         FinReturnID: { Disp: "Code الكود" },
         RecYear: { Disp: "Year السنة" },
         SerialNo: { Disp: "SerialNo مسلسل" },
-        ReturnDate: { Disp: "Return Date تاريخ الارتجاع" },
+        ReturnDate: { Disp: "Return Date تاريخ المرتجع" },
         ReturnFrom: { Disp: "Return From مرتجع من" },
-        ReturnReason: { Disp: "Return Reason سبب الارتجاع" },
+        ReturnReason: { Disp: "Return Reason سبب المرتجع" },
         SOID: { Disp: "Sales Order امرالبيع" },
         UserName: { Disp: "User Name" }
     }

@@ -34,8 +34,8 @@ export class FinDetailService {
   getFinStock(clrid: number){
     return this.http.get(this.url + 'ClrStock/' + clrid, this.options).map(res => res.json());
   }  
-  getFinStockwithOrders(clrid: number){
-    return this.http.get(this.url + 'ClrStockWOrders/' + clrid, this.options).map(res => res.json());
+  getFinStockwithOrders(clrid: number, strType: number){
+    return this.http.get(this.url + 'ClrStockWOrders/' + clrid + '.' + strType, this.options).map(res => res.json());
   }
 
   InsertFinRecDetails(rec: FinishedReceiving,UserID: number,fdetail: FinishedStoreDetail[]) {

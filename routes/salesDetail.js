@@ -19,6 +19,16 @@ router.get('/:id(\\d+)', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); })
 });
+router.get('/salesFinDet/:id(\\d+)', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT s.*, CAST(GETDATE() AS DATE) RecordDate, 
+                (SELECT TOP 1 BatchNo FROM dbo.FinishedStoreDetails f WHERE f.ColorID = s.ColorID GROUP BY ColorID,BatchNo HAVING SUM(Quantity)>=s.Quantity) BatchNo
+                FROM dbo.vwSalesOrderDetail s 
+                WHERE SOID =  ${req.params.id}`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); })
+});
 
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');

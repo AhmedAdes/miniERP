@@ -147,3 +147,10 @@ export const EqualizeTypes = [
 	{ name: 'Increase' },
 	{ name: 'Decrease' }
 ];
+
+export const StoreProductTypes = [
+	{ ID: 1, name: 'Pack سرية' },
+	{ ID: 2, name: 'Individuel تكسير' },
+	{ ID: 3, name: 'Défaut ديفوه' },
+	{ ID: 4, name: 'Sample عينات' },
+];

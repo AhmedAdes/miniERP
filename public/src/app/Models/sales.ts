@@ -51,6 +51,8 @@ export class SalesDetail {
     UserID: number;
     UserName: string;
     Stock: string;
+    StoreType: string;
+    StoreTypeID: number;
 
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
@@ -63,6 +65,7 @@ export class SalesDetail {
         ModelCode: { Disp: "Model Code كود الموديل" },
         UserName: { Disp: "User Name" },
         Stock: { Disp: "Store Stock رصيد المخزن" },
+        StoreType: { Disp: "Store Type نوع مخزن المنتج" },
     }
 }
 export class SalesPayment {

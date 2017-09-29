@@ -129,6 +129,7 @@ export class SalesOrderComponent implements OnInit {
                 this.srvHead.insertFullSalesHeader(this.model, this.SDetails, this.SPayments).subscribe(ret => {
                     if (ret.error) {
                         this.errorMessage = ret.error.message;
+                        this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -138,22 +139,27 @@ export class SalesOrderComponent implements OnInit {
                 this.srvHead.updateFullSalesHeader(this.model.SOID, this.model, this.SDetails, this.SPayments).subscribe(ret => {
                     if (ret.error) {
                         this.errorMessage = ret.error.message;
+                        this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
                 }, err => this.errorMessage = err.message);
                 break;
             case 'Delete':
-                this.srvHead.deleteSalesHeader(this.model.CustID).subscribe(ret => {
+                this.srvHead.deleteSalesHeader(this.model.SOID).subscribe(ret => {
                     if (ret.error) {
                         this.errorMessage = ret.error.message;
+                        this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => {
+                    this.stillSaving = false; this.errorMessage = err.message
+                });
                 break;
 
             default:
+                this.stillSaving = false
                 break;
         }
     }

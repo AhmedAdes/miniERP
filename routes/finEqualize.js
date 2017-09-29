@@ -65,6 +65,7 @@ router.post('/', function (req, res, next) {
                             request.input('FinReturnID', det.FinReturnID);
                             request.input('FinRejectID', det.FinRejectID);
                             request.input('UserID', det.UserID);
+                            request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('FinishDetailInsert')
                         }));
 
@@ -144,6 +145,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
                                 request.input('UserID', det.UserID);
+                                request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailInsert');
                             }));
                             promises.push(Promise.map(editedList, function (det) {
@@ -161,6 +163,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
                                 request.input('UserID', det.UserID);
+                                request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailUpdate');
                             }));
                             promises.push(Promise.map(deletedList, function (det) {

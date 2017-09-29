@@ -24,19 +24,6 @@ import { Router } from '@angular/router';
 })
 export class FinReceivingComponent implements OnInit {
 
-    constructor(public srvRec: FinReceivingService, private auth: AuthenticationService,
-        private srvDet: FinDetailService, private srvModel: ModelService, fb: FormBuilder, private router: Router) {
-        this.basicform = fb.group({
-            RecDate: ['', Validators.required],
-            ManfDate: ['', Validators.required],
-            BatchNo: ['', Validators.required],
-            ReceivedFrom: ['', Validators.required]
-        });
-
-        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
-        this.basicform.controls['ManfDate'].valueChanges.subscribe(value => this.onManfDatechange(value));
-    }
-
     currentUser: CurrentUser = this.auth.getUser();
     collection: FinishedReceiving[] = [];
     finDetails: FinishedStoreDetail[] = [];
@@ -54,6 +41,19 @@ export class FinReceivingComponent implements OnInit {
     cnvManfDate: string;
     basicform: FormGroup;
     stillSaving: boolean
+
+    constructor(public srvRec: FinReceivingService, private auth: AuthenticationService,
+        private srvDet: FinDetailService, private srvModel: ModelService, fb: FormBuilder, private router: Router) {
+        this.basicform = fb.group({
+            RecDate: ['', Validators.required],
+            ManfDate: ['', Validators.required],
+            BatchNo: ['', Validators.required],
+            ReceivedFrom: ['', Validators.required]
+        });
+
+        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
+        this.basicform.controls['ManfDate'].valueChanges.subscribe(value => this.onManfDatechange(value));
+    }
 
     ngOnInit() {
         this.srvRec.getReceiving().subscribe(cols => {
@@ -199,6 +199,8 @@ export class FinReceivingComponent implements OnInit {
         this.Detmodel.ModelID = this.finDetails[i].ModelID;
         this.Detmodel.ColorID = this.finDetails[i].ColorID;
         this.Detmodel.Quantity = this.finDetails[i].Quantity;
+        this.Detmodel.StoreTypeID = this.finDetails[i].StoreTypeID;
+        this.Detmodel.StoreType = this.finDetails[i].StoreType;
     }
     PrintOrder(orderID) {
         this.router.navigate(['printout/finRec', orderID])

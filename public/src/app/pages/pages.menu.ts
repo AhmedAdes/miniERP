@@ -162,7 +162,7 @@ export const PAGES_MENU = [
             path: 'matret',
             data: {
               menu: {
-                title: 'Return الارتجاع',
+                title: 'Return المرتجعات',
                 icon: 'fa fa-circle-o'
               }
             }
@@ -230,7 +230,7 @@ export const PAGES_MENU = [
             path: 'finret',
             data: {
               menu: {
-                title: 'Return الارتجاع',
+                title: 'Return المرتجعات',
                 icon: 'fa fa-circle-o'
               }
             }
