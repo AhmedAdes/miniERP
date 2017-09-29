@@ -16,7 +16,7 @@ sql.globalConnection = connection;
 var app = express();
 
 // all environments
-app.set('port', 5500);
+app.set('port', 3000);
 app.set('views', path.join(__dirname, 'public/dist'));
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
