@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
     var details = req.body.details;
     var matRetID, serial;
 
-    var conf = require('../SQLconfig');
+    var conf = require('../SQLConfig');
     var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
@@ -106,7 +106,7 @@ router.put('/:id', function (req, res, next) {
     var matRet = req.body.master;
     var details = req.body.details;
 
-    var conf = require('../SQLconfig');
+    var conf = require('../SQLConfig');
     var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
@@ -209,7 +209,7 @@ router.put('/:id', function (req, res, next) {
 
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
-    var conf = require('../SQLconfig');
+    var conf = require('../SQLConfig');
     var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);

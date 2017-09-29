@@ -182,7 +182,7 @@ router.post('/', function (req, res, next) {
     var sod = req.body.details;
     var pays = req.body.payments;
     var SOrderID;
-    var conf = require('../SQLconfig');
+    var conf = require('../SQLConfig');
     var connection = new sql.Connection(conf.config);
 
     connection.connect().then(function () {
@@ -266,7 +266,7 @@ router.put('/:id', function (req, res, next) {
     var sod = req.body.details;
     var pays = req.body.payments;
     var SOrderID;
-    var conf = require('../SQLconfig');
+    var conf = require('../SQLConfig');
     var connection = new sql.Connection(conf.config);
 
     connection.connect().then(function () {

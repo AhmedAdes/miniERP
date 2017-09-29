@@ -8,7 +8,7 @@ var cors = require('cors');
 var favicon = require('serve-favicon');
 
 var sql = require('mssql');
-var con = require('./SQLconfig');
+var con = require('./SQLConfig.js');
 var connection = new sql.Connection(con.config);
 //store the connection
 sql.globalConnection = connection;
