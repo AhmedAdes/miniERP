@@ -5,6 +5,7 @@ import { FinishedStore, CurrentUser } from '../../../Models';
 @Component({
     selector: 'fin-balance',
     templateUrl: './balance.component.html',
+    styleUrls: ['../../../Styles/dashboard.css'],
     animations: [
         trigger(
             'myAnimation', [
