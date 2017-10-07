@@ -7,11 +7,11 @@ import { Injectable, Pipe, PipeTransform } from "@angular/core";
 @Injectable()
 export class ArrayFilterPipe implements PipeTransform {
 
-    transform(items: any[], conditions: {[field: string]: any}): any[] {
+    transform(items: any[], conditions: { [field: string]: any }): any[] {
         return items.filter(item => {
             for (let field in conditions) {
-                if ((typeof item[field] === 'string' || item[field] instanceof String) && 
-                    (item[field].toLowerCase().indexOf( conditions[field].toLowerCase() ) == -1)) {
+                if ((typeof item[field] === 'string' || item[field] instanceof String) &&
+                    (item[field].toLowerCase().indexOf(conditions[field].toLowerCase()) == -1)) {
                     return false;
                 }
             }

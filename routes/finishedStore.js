@@ -35,6 +35,22 @@ router.get('/storeBalanceReport/:all', function (req, res, next) {
             if (err) { res.json({ error: err }); console.log(err); }
         })
 });
+router.get('/BalanceSubDet/:all', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.multiple = true;
+    request.query(`Select ABS(SUM(s.Quantity * ISNULL(m.PricePiece, 0))) SumPiecePrice FROM dbo.vwFinishStore s JOIN dbo.ProductModelCoding m ON m.ModelID = s.ModelID;
+                    Select ABS(SUM(s.Quantity * ISNULL(m.PriceStores,0))) SumStoresPrice FROM dbo.vwFinishStore s JOIN dbo.ProductModelCoding m ON m.ModelID = s.ModelID;
+                    SELECT ABS(SUM(s.Quantity * ISNULL(m.PriceWholeSale,0))) SumWholeSalePrice FROM dbo.vwFinishStore s JOIN dbo.ProductModelCoding m ON m.ModelID = s.ModelID;`,
+        function (err, recordsets, affected) {
+            if (err) { res.json({ error: err }); console.log(err); }
+            res.json({
+                piece: recordsets[0],
+                store: recordsets[1],
+                whole: recordsets[2]
+            });
+        })
+});
 router.get('/ProdHistoryMod/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);

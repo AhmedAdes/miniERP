@@ -116,12 +116,6 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
                 this.colorList = clrs;
                 if (this.Detmodel.ColorID && this.EditForm) {
                     this.onColorChange(this.Detmodel.ColorID)
-                    if (this.Detmodel.StoreTypeID && this.EditForm) {
-                        this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
-                        if (this.Detmodel.BatchNo && this.EditForm) {
-                            this.onBatchChange(this.Detmodel.BatchNo)
-                        }
-                    }
                 }
             }
         });
@@ -134,7 +128,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
                 this.AllStock = btc
                 this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
                 if (this.Detmodel.StoreTypeID && this.EditForm) {
-                    this.onstrProdTypeChange(this.Detmodel.BatchNo)
+                    this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
                 }
             }
         })

@@ -12,6 +12,7 @@ export class SalesHeader {
     Commisioner: string;
     CommisionerTel: string;
     GrandTotal: number;
+    SumQty: number;
     DeliveryType: string;
     PayMethod: string;
     SalesRepID: number;
@@ -32,6 +33,7 @@ export class SalesHeader {
         Commisioner: { Disp: "Sales Rep. مندوب البيع" },
         CommisionerTel: { Disp: "Sales Rep. Tel. تليفون مندوب البيع" },
         GrandTotal: { Disp: "Grand Total المبلغ الاجمالي" },
+        SumQty: { Disp: "Total Quantity اجمالي الكمية" },
         DeliveryType: { Disp: "Delivery Type طريقة التسليم" },
         PayMethod: { Disp: "Payment Method طريقة الدفع" },
         SalesPerson: { Disp: "Sales Rep. مندوب البيع" },

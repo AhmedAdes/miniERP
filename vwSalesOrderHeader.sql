@@ -64,3 +64,15 @@ JOIN dbo.ProductColorCoding c ON sod.ColorID = c.ColorID
 JOIN dbo.ProductModelCoding m ON c.ModelID = m.ModelID
 JOIN dbo.SystemUsers u ON sod.UserID = u.UserID
 GO
+
+ALTER VIEW dbo.vwSalesOrderHeader
+AS
+SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , Notes , DeliveryDate ,
+        Commisioner , CommisionerTel , soh.UserID , u.UserName, DeliveryType , PayMethod , GrandTotal ,
+        soh.SalesRepID , r.SalesPerson, c.ContactPerson, 
+		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty
+FROM dbo.SalesOrderHeader soh 
+JOIN dbo.Customers c ON soh.CustID = c.CustID
+LEFT JOIN dbo.SalesRep r ON soh.SalesRepID = r.SalesRepID
+JOIN dbo.SystemUsers u ON soh.UserID = u.UserID
+GO

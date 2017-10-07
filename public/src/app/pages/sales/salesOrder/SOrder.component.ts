@@ -45,6 +45,7 @@ export class SalesOrderComponent implements OnInit {
     orderbyClass: string = "fa fa-sort";
     today = new Date();
     subtotal: number;
+    subQty: number;
     headerValid: boolean;
     SalesRepExist: boolean;
     stillSaving: boolean
@@ -210,9 +211,11 @@ export class SalesOrderComponent implements OnInit {
     }
 
     CalculateTotal() {
-        this.subtotal = 0;
+        this.subtotal = 0
+        this.subQty = 0
         this.SDetails.forEach(element => {
-            this.subtotal += element.Price * element.Quantity;
+            this.subQty += element.Quantity
+            this.subtotal += element.Price * element.Quantity
         });
         let discnt = this.model.Discount ? this.model.DiscountPrcnt ? (this.model.Discount / 100 * this.subtotal) : this.model.Discount : 0
         this.model.GrandTotal = this.subtotal +

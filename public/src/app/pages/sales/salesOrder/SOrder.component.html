@@ -9,13 +9,14 @@
     <div [@myAnimation]="showTable" class="tableslide panel-body table-responsive" *ngIf="showTable">
         <table id="tblCustomers" class="table table-hover table-striped table-responsive">
             <colgroup>
-                <col width="15%" />
+                <col width="20%" />
                 <col width="10%" />
                 <col width="10%" />
                 <col width="10%" />
                 <col width="10%" />
                 <col width="10%" />
-                <col width="15%" />
+                <col width="10%" />
+                <col width="20%" />
             </colgroup>
             <thead>
                 <tr>
@@ -28,6 +29,8 @@
                             [ngClass]="(orderbyString.indexOf('SalesPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchHeadObj.DisplayNames.GrandTotal.Disp}} <i (click)="SortTable('GrandTotal')" class="btn btn-default"
                             [ngClass]="(orderbyString.indexOf('GrandTotal') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchHeadObj.DisplayNames.SumQty.Disp}} <i (click)="SortTable('SumQty')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('SumQty') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchHeadObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
                             [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th></th>
@@ -66,6 +69,12 @@
                     <th>
                         <div class="input-group">
                             <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchSumQty" name="SumQty" [(ngModel)]="srchHeadObj.SumQty">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
                             <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchHeadObj.UserName">
                         </div>
                     </th>
@@ -79,6 +88,7 @@
                     <td>{{item.DeliveryDate | date:'mediumDate'}}</td>
                     <td>{{item.SalesPerson}}</td>
                     <td>{{item.GrandTotal | number:'1.2-2'}}</td>
+                    <td>{{item.SumQty | number}}</td>
                     <td>{{item.UserName}}</td>
                     <td>
                         <button (click)="PrintInvoice(item.SOID)" class="btn btn-warning" title="Print Invoice"><i class="icon ion-printer"></i></button>
@@ -158,7 +168,8 @@
                                         <td></td>
                                         <td></td>
                                         <td colspan="2">
-                                            Total Sum: <span id="SumTotal">{{subtotal | number:'1.2-2'}}</span>
+                                            Total Quantity: <span id="SumQty">{{subQty | number}}</span>
+                                            <br> Total Sum: <span id="SumTotal">{{subtotal | number:'1.2-2'}}</span>
                                             <br> Grand Total: <span id="GrandTotal">{{model.GrandTotal | number:'1.2-2'}}</span>
                                         </td>
                                     </tr>

@@ -19,6 +19,9 @@ export class FinStoreService {
   getStoreZeroBalance() {
     return this.http.get(this.url + 'storeBalanceReport/all', this.options).map(res => res.json());
   }
+  getBalanceSubDetails(){
+    return this.http.get(this.url + 'BalanceSubDet/all', this.options).map(res => res.json());
+  }
   getProdHistory(modelID: number, clrID?: number) {
     if (clrID != null) {
       return this.http.get(this.url + 'ProdHistoryClr/' + clrID, this.options).map(res => res.json());
@@ -26,7 +29,6 @@ export class FinStoreService {
       return this.http.get(this.url + 'ProdHistoryMod/' + modelID, this.options).map(res => res.json());
     }
   }
-
   getReceivingPeriod(fromdate: string, todate: string) {
     return this.http.get(this.url + 'ReceiveByPeriod/' + fromdate + '.' + todate, this.options).map(res => res.json())
   }

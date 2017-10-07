@@ -34,18 +34,33 @@ export class StoreBalanceComponent implements OnInit {
     errorMessage: string;
     orderbyString: string = "";
     orderbyClass: string = "fa fa-sort";
+    piecePrices: number
+    storePrices: number
+    wholePrices: number
+    sumQuantity: number
 
     ngOnInit() {
-        this.serv.getStoreBalance().subscribe(cols => this.collection = cols);
+        this.serv.getStoreBalance().subscribe(cols => {
+            this.collection = cols
+            this.sumQuantity = 0
+            this.serv.getBalanceSubDetails().subscribe(ret => {
+                this.piecePrices = ret.piece[0].SumPiecePrice
+                this.storePrices = ret.store[0].SumStoresPrice
+                this.wholePrices = ret.whole[0].SumWholeSalePrice
+                this.collection.forEach(element => {
+                    this.sumQuantity += element.Quantity
+                });
+            })
+        });
         this.TableBack();
     }
-    
+
     TableBack() {
         this.showTable = true;
         this.Formstate = null;
         this.errorMessage = null;
     }
-    
+
     SortTable(column: string) {
         if (this.orderbyString.indexOf(column) == -1) {
             this.orderbyClass = "fa fa-sort-amount-asc";
@@ -58,7 +73,7 @@ export class StoreBalanceComponent implements OnInit {
             this.orderbyString = '';
         }
     }
-    printBalance(){
-        
+    printBalance() {
+
     }
 }

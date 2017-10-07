@@ -14,10 +14,49 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <div *ngIf="currentUser.isAdmin === ture" class="row">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="small-box alert-warning">
+                    <div class="inner text-center">
+                        <h4>Total Stock</h4>
+                        <h4>اجمالي الرصيد الحالي</h4>
+                        <h3>{{sumQuantity | number}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="small-box alert-danger">
+                    <div class="inner text-center">
+                        <h4>Total Pieces Price</h4>
+                        <h4>-إجمالي السعر -قطع</h4>
+                        <h3>{{piecePrices | number:'1.2-2'}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="small-box alert-info">
+                    <div class="inner text-center">
+                        <h4>Total Store Price</h4>
+                        <h4>-إجمالي السعر -محلات</h4>
+                        <h3>{{storePrices | number:'1.2-2'}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="small-box alert-primary">
+                    <div class="inner text-center">
+                        <h4>Total Wholesales Price</h4>
+                        <h4>-إجمالي السعر -جملة</h4>
+                        <h3>{{wholePrices | number:'1.2-2'}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
         <table id="tblBrands" class="table table-hover table-striped table-responsive">
             <colgroup>
                 <col width="20%" />
-                <col width="40%" />
+                <col width="20%" />
+                <col width="20%" />
                 <col width="20%" />
                 <col width="20%" />
             </colgroup>
@@ -25,7 +64,6 @@
                 <tr>
                     <th> {{srchObj.DisplayNames.ModelCode.Disp}} <i (click)="SortTable('ModelCode')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelCode') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.ModelName.Disp}} <i (click)="SortTable('ModelName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchObj.DisplayNames.Color.Disp}} <i (click)="SortTable('Color')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Color') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.ColorName.Disp}} <i (click)="SortTable('ColorName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ColorName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.ProdColorCode.Disp}} <i (click)="SortTable('ProdColorCode')" class="btn btn-default"
                             [ngClass]="(orderbyString.indexOf('ProdColorCode') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>

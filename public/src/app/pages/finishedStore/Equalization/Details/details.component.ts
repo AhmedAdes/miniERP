@@ -129,7 +129,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
             this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
             this.Detmodel.StoreTypeID = null
             if (this.Detmodel.StoreTypeID && this.EditForm) {
-                this.onstrProdTypeChange(this.Detmodel.BatchNo)
+                this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
             }
         })
     }

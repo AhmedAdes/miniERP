@@ -205,6 +205,8 @@ export class FinReturnComponent implements OnInit {
         this.Detmodel.ColorID = this.finDetails[i].ColorID;
         this.Detmodel.Quantity = this.finDetails[i].Quantity;
         this.Detmodel.BatchNo = this.finDetails[i].BatchNo;
+        this.Detmodel.StoreTypeID = this.finDetails[i].StoreTypeID;
+        this.Detmodel.StoreType = this.finDetails[i].StoreType;
     }
     PrintOrder(orderID) {
         this.router.navigate(['printout/finRec', orderID])

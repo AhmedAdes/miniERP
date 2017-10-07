@@ -1,134 +1,162 @@
-// export const DBConStrng = '/api/';
-export const DBConStrng = 'http://localhost:3000/api/';
+export const DBConStrng = '/api/';
+// export const DBConStrng = 'http://localhost:3000/api/';
 export const CompanyName = 'Global Brands Group'
 
 export const provinces = [
 	{
-		'name': 'Ad Daqahliyah',
-		'code': 'EG-DK'
+	  'name': 'الدقهلية',
+	  'engName': 'Ad Daqahliyah',
+	  'code': 'EG-DK'
 	},
 	{
-		'name': 'Al Bahr al Ahmar',
-		'code': 'EG-BA'
+	  'name': 'البحر الأحمر',
+	  'engName': 'Al Bahr al Ahmar',
+	  'code': 'EG-BA'
 	},
 	{
-		'name': 'Al Buhayrah',
-		'code': 'EG-BH'
+	  'name': 'البحيرة',
+	  'engName': 'Al Buhayrah',
+	  'code': 'EG-BH'
 	},
 	{
-		'name': 'Al Fayyum',
-		'code': 'EG-FYM'
+	  'name': 'الفيوم',
+	  'engName': 'Al Fayyum',
+	  'code': 'EG-FYM'
 	},
 	{
-		'name': 'Al Gharbiyah',
-		'code': 'EG-GH'
+	  'name': 'الغربية',
+	  'engName': 'Al Gharbiyah',
+	  'code': 'EG-GH'
 	},
 	{
-		'name': 'Alexandria',
-		'code': 'EG-ALX'
+	  'name': 'الإسكندرية',
+	  'engName': 'Alexandria',
+	  'code': 'EG-ALX'
 	},
 	{
-		'name': 'Al Ismailiyah',
-		'code': 'EG-IS'
+	  'name': 'الإسماعيلية',
+	  'engName': 'Al Ismailiyah',
+	  'code': 'EG-IS'
 	},
 	{
-		'name': 'Al Jizah',
-		'code': 'EG-GZ'
+	  'name': 'الجيزة',
+	  'engName': 'Al Jizah',
+	  'code': 'EG-GZ'
 	},
 	{
-		'name': 'Al Minya',
-		'code': 'EG-MN'
+	  'name': 'المنيا',
+	  'engName': 'Al Minya',
+	  'code': 'EG-MN'
 	},
 	{
-		'name': 'Al Minufiyah',
-		'code': 'EG-MNF'
+	  'name': 'المنوفية',
+	  'engName': 'Al Minufiyah',
+	  'code': 'EG-MNF'
 	},
 	{
-		'name': 'Al Qalyubiyah',
-		'code': 'EG-KB'
+	  'name': 'القليوبية',
+	  'engName': 'Al Qalyubiyah',
+	  'code': 'EG-KB'
 	},
 	{
-		'name': 'Al Qahirah',
-		'code': 'EG-C'
+	  'name': 'القاهرة',
+	  'engName': 'Al Qahirah',
+	  'code': 'EG-C'
 	},
 	{
-		'name': 'Luxur',
-		'code': 'EG-LX'
+	  'name': 'الأقصر',
+	  'engName': 'Luxur',
+	  'code': 'EG-LX'
 	},
 	{
-		'name': 'Al Wadi al Jadid',
-		'code': 'EG-WAD'
+	  'name': 'الوادي الجديد',
+	  'engName': 'Al Wadi al Jadid',
+	  'code': 'EG-WAD'
 	},
 	{
-		'name': 'Suez',
-		'code': 'EG-SUZ'
+	  'name': 'السويس',
+	  'engName': 'Suez',
+	  'code': 'EG-SUZ'
 	},
 	{
-		'name': '6th of October',
-		'code': 'EG-SU'
+	  'name': 'السادس من أكتوبر',
+	  'engName': '6th of October',
+	  'code': 'EG-SU'
 	},
 	{
-		'name': 'Ash Sharqiyah',
-		'code': 'EG-SHR'
+	  'name': 'الشرقية',
+	  'engName': 'Ash Sharqiyah',
+	  'code': 'EG-SHR'
 	},
 	{
-		'name': 'Aswan',
-		'code': 'EG-ASN'
+	  'name': 'أسوان',
+	  'engName': 'Aswan',
+	  'code': 'EG-ASN'
 	},
 	{
-		'name': 'Asyuţ',
-		'code': 'EG-AST'
+	  'name': 'أسيوط',
+	  'engName': 'Asyut',
+	  'code': 'EG-AST'
 	},
 	{
-		'name': 'Bani Suwayf',
-		'code': 'EG-BNS'
+	  'name': 'بني سويف',
+	  'engName': 'Bani Suwayf',
+	  'code': 'EG-BNS'
 	},
 	{
-		'name': 'Port Said',
-		'code': 'EG-PTS'
+	  'name': 'بورسعيد',
+	  'engName': 'Port Said',
+	  'code': 'EG-PTS'
 	},
 	{
-		'name': 'Damietta',
-		'code': 'EG-DT'
+	  'name': 'دمياط',
+	  'engName': 'Damietta',
+	  'code': 'EG-DT'
 	},
 	{
-		'name': 'Kafr ash Shaykh',
-		'code': 'EG-KFS'
+	  'name': 'كفر الشيخ',
+	  'engName': 'Kafr ash Shaykh',
+	  'code': 'EG-KFS'
 	},
 	{
-		'name': 'Maţruh',
-		'code': 'EG-MT'
+	  'name': 'مطروح',
+	  'engName': 'Matruh',
+	  'code': 'EG-MT'
 	},
 	{
-		'name': 'North Sinai',
-		'code': 'EG-SIN'
+	  'name': 'شمال سيناء',
+	  'engName': 'North Sinai',
+	  'code': 'EG-SIN'
 	},
 	{
-		'name': 'Qina',
-		'code': 'EG-KN'
+	  'name': 'قنا',
+	  'engName': 'Qina',
+	  'code': 'EG-KN'
 	},
 	{
-		'name': 'South Sinai',
-		'code': 'EG-JS'
+	  'name': 'جنوب سيناء',
+	  'engName': 'South Sinai',
+	  'code': 'EG-JS'
 	},
 	{
-		'name': 'Suhaj',
-		'code': 'EG-SHG'
+	  'name': 'سوهاج',
+	  'engName': 'Suhaj',
+	  'code': 'EG-SHG'
 	},
 	{
-		'name': 'Hulwan',
-		'code': 'EG-HU'
+	  'name': 'حلوان',
+	  'engName': 'Hulwan',
+	  'code': 'EG-HU'
 	}
-];
+  ];
 
 export const JobClass = [
 	{ class: 0, name: 'SysAdmin' },
-	{ class: 1, name: 'Line Manager' },
-	{ class: 2, name: 'Marketing Manager' },
-	{ class: 3, name: 'Supervisor' },
+	{ class: 1, name: 'Warehouse Mng' },
+	{ class: 2, name: 'Sales & Marketing Mng' },
+	{ class: 3, name: 'Manufacture Mng' },
 	{ class: 4, name: 'Representative' }
 ];
-
 export const CustTypes = [
 	{ name: 'WholeSale جملة' },
 	{ name: 'Store محل' },
@@ -147,7 +175,6 @@ export const EqualizeTypes = [
 	{ name: 'Increase' },
 	{ name: 'Decrease' }
 ];
-
 export const StoreProductTypes = [
 	{ ID: 1, name: 'Pack سرية' },
 	{ ID: 2, name: 'Individuel تكسير' },
