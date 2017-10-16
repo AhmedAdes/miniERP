@@ -7,7 +7,7 @@ body {
 }
 
 table {
-        width: 718.11px !important;
+    width: 19cm !important;
         margin: 0px !important;
         padding: 0px !important;
         table-layout: fixed !important;
@@ -22,7 +22,7 @@ table {
     tr {
         padding: 0px !important;
         margin: 0px !important;
-        height: 80.4px !important;
+        height: 2.1cm !important;
         min-height: 75px !important;
         width: 100% !important;
     }
@@ -35,18 +35,21 @@ table {
         text-align: center !important;
         vertical-align: middle !important;
         border: 0 !important;
+        /* border: 1px black solid !important; */
     }
     td.Bimage {
-        width: 70px !important;
+        width: 1.9cm !important;
+        min-width: 1.9cm !important;
         padding: 1px !important;
     }
 
     td.Btext {
-        width: 70px !important;
+        width: 1.9cm !important;
+        min-width: 1.9cm !important;
         padding: 0px !important;
         font-size: 13px !important;
         font-family: Arial !important;
-        box-sizing: unset;
+        /* box-sizing: unset; */
     }
     .code {
         font-size: 16px !important;
@@ -55,8 +58,9 @@ table {
     p {
         padding: 0px !important;
         margin: 0px !important;
-        display: block !important;
+        width: 100%;
         vertical-align: middle !important;
+        /* display: block !important; */
         font-size: 13px !important;
         font-family: Arial !important;
     }
@@ -73,10 +77,10 @@ table {
         display: inline-block !important;
         vertical-align: middle !important;
     }
-    span {
+    /* span {
         margin: 0px!important;
         padding: 0px!important;
-    }
+    } */
 
 /*td .Bimage {float: left;}*/
 /*td .Btext {float: right;}*/
@@ -94,7 +98,7 @@ table {
     }
     
     table {
-        width: 718.11px !important;
+        width: 19cm !important;
         margin: 0px !important;
         padding: 0px !important;
         table-layout: fixed !important;
@@ -109,7 +113,7 @@ table {
     tr {
         padding: 0px !important;
         margin: 0px !important;
-        height: 80px !important;
+        height: 2.1cm !important;
         min-height: 75px !important;
         width: 100% !important;
     }
@@ -122,18 +126,21 @@ table {
         text-align: center !important;
         vertical-align: middle !important;
         border: 0 !important;
+        /* border: 1px black solid !important; */
     }
     td.Bimage {
-        width: 70px !important;
+        width: 1.9cm !important;
+        min-width: 1.9cm !important;
         padding: 1px !important;
     }
 
     td.Btext {
-        width: 70px !important;
+        width: 1.9cm !important;
+        min-width: 1.9cm !important;
         padding: 0px !important;
         font-size: 13px !important;
         font-family: Arial !important;
-        box-sizing: unset;
+        /* box-sizing: unset; */
     }
     .code {
         font-size: 16px !important;
@@ -142,7 +149,8 @@ table {
     p {
         padding: 0px !important;
         margin: 0px !important;
-        display: block !important;
+        width: 100%;
+        /* display: block !important; */
         vertical-align: middle !important;
         font-size: 13px !important;
         font-family: Arial !important;

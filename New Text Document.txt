@@ -3,6 +3,6 @@ print customers report after search
 customer by country chart 
 customer by country separate customers to category level
 sales by area and country to show customers and quantity and amount
-sales order view add Total Qty 
-sales order detailed models add total quantity
+**sales order view add Total Qty 
+**sales order detailed models add total quantity
 change print out font to overcome the (9,G) problem

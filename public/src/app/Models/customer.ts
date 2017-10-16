@@ -26,9 +26,10 @@ export class Customer {
         ContactPerson: { Disp: "Contact Person المسئول" },
         UserName: { Disp: "User Name" }
     }
+    
 }
 
-export class rptTopCustomers{
+export class rptTopCustomers {
     CustID: number;
     CustName: string;
     Quantity: number;

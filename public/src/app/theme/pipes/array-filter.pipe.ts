@@ -14,6 +14,8 @@ export class ArrayFilterPipe implements PipeTransform {
                     (item[field].toLowerCase().indexOf(conditions[field].toLowerCase()) == -1)) {
                     return false;
                 }
+                if (conditions[field] === null || conditions[field] === '') { break; }
+                if (item[field] === null || item[field] === '') { return false }
             }
             return true;
         });

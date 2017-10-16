@@ -96,7 +96,7 @@ router.post('/', function (req, res, next) {
 
 router.put('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
-    var brand = req.body;
+    var cust = req.body;
     var request = new sql.Request(sqlcon);
     request.input('CustID', req.params.id);
     request.input('CustName', cust.CustName);

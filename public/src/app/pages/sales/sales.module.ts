@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2CompleterModule } from "ng2-completer";
+import { FilterPipeModule } from 'ngx-filter-pipe';
 // import { CustomMaterialModule } from '../customMaterial.module'
 
 import { routing } from './sales.routing';
@@ -18,7 +19,7 @@ import { PipeModule } from '../../pipes/pipes.module';
 @NgModule({
 	imports: [
 		CommonModule, FormsModule, ReactiveFormsModule,
-		NgaModule, routing, NgxPaginationModule, Ng2CompleterModule
+		NgaModule, routing, NgxPaginationModule, Ng2CompleterModule, FilterPipeModule
 	],
 	declarations: [
 		Sales, SalesOrderComponent, SalesHeaderComponent,
