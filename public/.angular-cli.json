@@ -19,17 +19,17 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "../node_modules/normalize.css/normalize.css",
+        "../node_modules/bootstrap/scss/bootstrap.scss",
         "../node_modules/font-awesome/scss/font-awesome.scss",
         "../node_modules/ionicons/scss/ionicons.scss",
-        "../node_modules/bootstrap/scss/bootstrap.scss",
+        "../node_modules/normalize.css/normalize.css",
         "app/theme/theme.scss",
         "styles.scss"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/popper.js/dist/umd/popper.min.js",
-        "../node_modules/jquery-slimscroll/jquery.slimscroll.js",
+        "../node_modules/jquery-slimscroll/jquery.slimscroll.min.js",
         "../node_modules/bootstrap/dist/js/bootstrap.min.js",
         "../node_modules/chart.js/dist/Chart.bundle.min.js"
       ],

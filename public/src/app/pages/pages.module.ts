@@ -8,7 +8,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { routing } from './pages.routing';
 import { NgaModule } from '../theme/nga.module';
-import { AppTranslationModule } from '../app.translation.module';
+// import { AppTranslationModule } from '../app.translation.module';
 
 import { Pages } from './pages.component';
 

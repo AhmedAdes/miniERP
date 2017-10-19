@@ -1,8 +1,8 @@
 import { Injectable, Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-    name: "filter",
-    pure: false
+    name: 'filter',
+    pure: false,
 })
 @Injectable()
 export class ArrayFilterPipe implements PipeTransform {
@@ -15,7 +15,7 @@ export class ArrayFilterPipe implements PipeTransform {
                     return false;
                 }
                 if (conditions[field] === null || conditions[field] === '') { break; }
-                if (item[field] === null || item[field] === '') { return false }
+                if (item[field] === null || item[field] === '') { return false; }
             }
             return true;
         });

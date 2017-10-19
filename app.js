@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
 var favicon = require('serve-favicon');
+var compression = require('compression');
 
 var sql = require('mssql');
 var con = require('./SQLConfig.js');
@@ -22,6 +23,7 @@ app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 app.use(cors());
+app.use(compression());
 
 app.use(logger('dev'));
 app.use(bodyParser.json());

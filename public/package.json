@@ -49,8 +49,6 @@
     "@angular/platform-browser": "^4.4.0-RC.0",
     "@angular/platform-browser-dynamic": "^4.4.0-RC.0",
     "@angular/router": "^4.4.0-RC.0",
-    "@ngx-translate/core": "^8.0.0",
-    "@ngx-translate/http-loader": "^2.0.0",
     "admin-lte": "^2.4.0",
     "angular2-qrcode-generator": "^1.0.1",
     "animate.css": "^3.5.2",
