@@ -36,7 +36,8 @@
     "clean:dist": "npm run rimraf -- dist",
     "clean:coverage": "npm run rimraf -- coverage",
     "docs:deploy": "wintersmith build -C docs && gh-pages -d docs/build",
-    "docs:serve": "wintersmith preview -C docs"
+    "docs:serve": "wintersmith preview -C docs",
+    "sw": "node generate-service-worker.js"
   },
   "private": true,
   "dependencies": {
@@ -98,6 +99,7 @@
     "rimraf": "2.6.1",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "^2.5.2"
+    "typescript": "^2.5.2",
+    "workbox-build": "^2.1.0"
   }
 }
