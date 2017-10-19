@@ -7,8 +7,8 @@ import {
   RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
   RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptFinHistoryComponent,
-  RptFinRecPeriodComponent, RptFinDispPeriodComponent, RptFinEqzPeriodComponent, 
-  RptFinRetPeriodComponent, RptFinEmptyStockComponent
+  RptFinRecPeriodComponent, RptFinDispPeriodComponent, RptFinEqzPeriodComponent,
+  RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent
 } from './index';
 
 // noinspection TypeScriptValidateTypes
@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'custcntry', component: RptCustCountryComponent, canActivate: [AuthGuard] },
       { path: 'custarea', component: RptCustAreaComponent, canActivate: [AuthGuard] },
       { path: 'topCust', component: RptTopCustComponent, canActivate: [AuthGuard] },
+      { path: 'allCust', component: RptAllCustomersComponent, canActivate: [AuthGuard] },
       { path: 'slsCust', component: RptSalesByCustComponent, canActivate: [AuthGuard] },
       { path: 'slscntry', component: RptSalesByCntryComponent, canActivate: [AuthGuard] },
       { path: 'slsarea', component: RptSalesByAreaComponent, canActivate: [AuthGuard] },

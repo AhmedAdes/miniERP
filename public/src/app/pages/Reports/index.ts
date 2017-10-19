@@ -4,6 +4,7 @@ export * from './reportHome/rptHome.component'
 export * from './customer/custByCountry'
 export * from './customer/custByArea'
 export * from './customer/topCust'
+export * from './customer/allCust'
 
 export * from './sales/salesByCust'
 export * from './sales/salesByCntry'

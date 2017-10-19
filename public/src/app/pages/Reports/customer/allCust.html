@@ -1,0 +1,160 @@
+<ba-card class="well no-print" style="width:100%">
+    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+        <div class="form-group row">
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                <button type="submit" class="btn btn-primary btn-block">View</button>
+            </div>
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+            </div>
+            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-3 col-sm-10 col-xs-10">
+                <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+            </div>
+        </div>
+    </form>
+</ba-card>
+
+<div class="panel panel-default">
+  <div class="panel-heading row">
+    <h2 class="text-center">{{reportHeader}}</h2>
+    <h3 class="text-center">{{subHeader}}</h3>
+  </div>
+  <div class="panel-body">
+    <table id="tblCustomers" class="table table-hover table-striped table-responsive">
+      <colgroup>
+        <col width="15%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th> {{srchObj.DisplayNames.CustName.Disp}}
+            <i (click)="SortTable('CustName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('CustName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.ContactPerson.Disp}}
+            <i (click)="SortTable('ContactPerson')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ContactPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.CustType.Disp}}
+            <i (click)="SortTable('CustType')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('CustType') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.Country.Disp}}
+            <i (click)="SortTable('Country')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Country') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.Area.Disp}}
+            <i (click)="SortTable('Area')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Area') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.Address.Disp}}
+            <i (click)="SortTable('Address')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Address') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.Tel.Disp}}
+            <i (click)="SortTable('Tel')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Tel') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.UserName.Disp}}
+            <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th></th>
+        </tr>
+        <tr>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchObj.CustName">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchContactPerson" name="ContactPerson" [(ngModel)]="srchObj.ContactPerson">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <select class="form-control" id="srchCustType" name="CustType" [(ngModel)]="srchObj.CustType">
+                <option value="">Select a Type ...</option>
+                <option *ngFor="let i of CustTypeList" [ngValue]="i.name">{{i.name}}</option>
+              </select>
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchCountry" name="Country" [(ngModel)]="srchObj.Country">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchArea" name="Area" [(ngModel)]="srchObj.Area">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchAddress" name="Address" [(ngModel)]="srchObj.Address">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchTel" name="Tel" [(ngModel)]="srchObj.Tel">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
+            </div>
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString)">
+          <td>{{item.CustName}}</td>
+          <td>{{item.ContactPerson}}</td>
+          <td>{{item.CustType}}</td>
+          <td>{{item.Country}}</td>
+          <td>{{item.Area}}</td>
+          <td>{{item.Address}}</td>
+          <td>{{item.Tel}}</td>
+          <td>{{item.UserName}}</td>
+          <td>
+            <button (click)="EditThis(item.CustID)" class="btn btn-info btn-icon" title="Edit">
+              <i class="icon ion-edit"></i>
+            </button>
+            <button (click)="ShowDetails(item.CustID)" class="btn btn-success btn-icon" title="Details">
+              <i class="icon ion-eye"></i>
+            </button>
+            <button (click)="Delete(item.CustID)" class="btn btn-danger btn-icon" title="Delete">
+              <i class="icon ion-trash-a"></i>
+            </button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

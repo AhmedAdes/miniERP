@@ -1,7 +1,8 @@
 <div class="row">
     <ng-template ngFor let-rpt [ngForOf]="reports" class="row">
         <div class="col-xs-12 col-md-12" *ngIf="rpt.heading">
-            <h2>{{rpt.header}}</h2>
+            <h2>{{rpt.header_en}}</h2>
+            <h2>{{rpt.header_ar}}</h2>
         </div>
         <div class="col-xs-6 col-md-3" *ngIf="!rpt.heading">
             <div class="card">
@@ -10,7 +11,8 @@
                         <img class="card-img-top" src="./assets/img/ReportIcon.svg" alt="Report" style="max-height: 150px; max-width: 100px">
                     </div>
                     <div class="card-body">
-                        <h4 class="card-title text-center">{{rpt.header}}</h4>
+                        <h4 class="card-title text-center">{{rpt.header_en}}</h4>
+                        <h4 class="card-title text-center">{{rpt.header_ar}}</h4>
                     </div>
                 </a>
             </div>

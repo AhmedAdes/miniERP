@@ -13,7 +13,7 @@ import {
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
   RptSalesSummaryComponent, RptSalesIncomeTrackerComponent,
   RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
-  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent
+  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent
 } from './index';
 import {
   CustomerService, SalesHeaderService, SalesDetailService, FinStoreService, FinDetailService, FinReceivingService, FinDispensingService,
@@ -21,7 +21,7 @@ import {
 } from '../../services';
 import { PipeModule } from '../../pipes/pipes.module'
 
-let cust_Rpts = [RptCustCountryComponent, RptCustAreaComponent, RptTopCustComponent]
+let cust_Rpts = [RptCustCountryComponent, RptCustAreaComponent, RptTopCustComponent, RptAllCustomersComponent]
 let sls_Rpts = [
   RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
