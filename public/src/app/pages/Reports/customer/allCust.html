@@ -23,14 +23,12 @@
     <table id="tblCustomers" class="table table-hover table-striped table-responsive">
       <colgroup>
         <col width="15%" />
-        <col width="10%" />
-        <col width="10%" />
-        <col width="10%" />
-        <col width="10%" />
-        <col width="10%" />
-        <col width="10%" />
-        <col width="10%" />
         <col width="15%" />
+        <col width="15%" />
+        <col width="15%" />
+        <col width="15%" />
+        <col width="15%" />
+        <col width="10%" />
       </colgroup>
       <thead>
         <tr>
@@ -55,10 +53,6 @@
           <th> {{srchObj.DisplayNames.Tel.Disp}}
             <i (click)="SortTable('Tel')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Tel') == 1) ? orderbyClass : 'fa fa-sort'"></i>
           </th>
-          <th> {{srchObj.DisplayNames.UserName.Disp}}
-            <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
-          </th>
-          <th></th>
         </tr>
         <tr>
           <th>
@@ -120,15 +114,6 @@
               <input class="form-control" type="text" id="srchTel" name="Tel" [(ngModel)]="srchObj.Tel">
             </div>
           </th>
-          <th>
-            <div class="input-group">
-              <span class="input-group-addon addon-left" id="basic-addon1">
-                <i class="icon ion-android-search"></i>
-              </span>
-              <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
-            </div>
-          </th>
-          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -140,18 +125,6 @@
           <td>{{item.Area}}</td>
           <td>{{item.Address}}</td>
           <td>{{item.Tel}}</td>
-          <td>{{item.UserName}}</td>
-          <td>
-            <button (click)="EditThis(item.CustID)" class="btn btn-info btn-icon" title="Edit">
-              <i class="icon ion-edit"></i>
-            </button>
-            <button (click)="ShowDetails(item.CustID)" class="btn btn-success btn-icon" title="Details">
-              <i class="icon ion-eye"></i>
-            </button>
-            <button (click)="Delete(item.CustID)" class="btn btn-danger btn-icon" title="Delete">
-              <i class="icon ion-trash-a"></i>
-            </button>
-          </td>
         </tr>
 
       </tbody>
