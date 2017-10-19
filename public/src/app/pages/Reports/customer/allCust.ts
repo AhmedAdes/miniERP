@@ -13,7 +13,7 @@ export class RptAllCustomersComponent implements OnInit {
 
   collection: Customer[] = [];
   srchObj: Customer = new Customer();
-  reportHeader: string
+  reportHeader: string = "Customers Report"
   subHeader: string
   orderbyString: string = "";
   orderbyClass: string = "fa fa-sort";
