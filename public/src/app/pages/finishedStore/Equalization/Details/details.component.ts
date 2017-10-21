@@ -70,8 +70,10 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
         this.submitted = true
         if (!this.detform.valid) { return }
         this.prepareDetail();
-        if (this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID) > -1) {
-            var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID)
+        if (this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID &&
+            x.StoreTypeID == this.Detmodel.StoreTypeID && x.BatchNo == this.Detmodel.BatchNo) > -1) {
+            var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID &&
+                x.StoreTypeID == this.Detmodel.StoreTypeID && x.BatchNo == this.Detmodel.BatchNo)
             this.Details.fill(this.Detmodel, indx, indx + 1)
         } else {
             this.Details.push(this.Detmodel);
@@ -83,7 +85,8 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
         this.submitted = true
         if (!this.detform.valid) { return }
         this.prepareDetail();
-        var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID)
+        var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID &&
+            x.StoreTypeID == this.Detmodel.StoreTypeID && x.BatchNo == this.Detmodel.BatchNo)
         this.Details.fill(this.Detmodel, indx, indx + 1)
         this.resetTheForm()
     }
@@ -148,7 +151,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
     }
     onBatchChange(value) {
         if (!value || !this.BatchList) {
-            this.Detmodel.Stock = null; 
+            this.Detmodel.Stock = null;
             return
         }
         this.Detmodel.Stock = this.BatchList.find(c => c.BatchNo == value).Stock

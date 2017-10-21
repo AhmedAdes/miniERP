@@ -76,3 +76,13 @@ JOIN dbo.Customers c ON soh.CustID = c.CustID
 LEFT JOIN dbo.SalesRep r ON soh.SalesRepID = r.SalesRepID
 JOIN dbo.SystemUsers u ON soh.UserID = u.UserID
 GO
+
+ALTER VIEW dbo.vwFinishStore
+AS
+SELECT  ModelName, ModelCode, Color, ColorName, ProdColorCode, d.ColorID , SUM(Quantity) Quantity, BatchNo, m.ModelID, d.StoreTypeID, 
+(SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType
+FROM dbo.FinishedStoreDetails d
+JOIN dbo.ProductColorCoding c ON c.ColorID = d.ColorID
+JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID
+GROUP BY d.ColorID, m.ModelID, ModelName, ModelCode, Color, ColorName, ProdColorCode, d.StoreTypeID, BatchNo
+GO

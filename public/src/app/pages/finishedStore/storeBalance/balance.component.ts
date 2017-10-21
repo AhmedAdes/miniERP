@@ -27,6 +27,7 @@ export class StoreBalanceComponent implements OnInit {
 
     currentUser: CurrentUser = this.auth.getUser();
     collection: FinishedStore[] = [];
+    VisibleBalance: FinishedStore[] = [];
     model: FinishedStore;
     srchObj: FinishedStore = new FinishedStore();
     showTable: boolean;
@@ -44,6 +45,7 @@ export class StoreBalanceComponent implements OnInit {
         this.serv.getStoreBalance().subscribe(cols => {
             this.collection = cols
             this.sumQuantity = 0
+            this.ZeroBalance(true)
             this.serv.getBalanceSubDetails().subscribe(ret => {
                 this.piecePrices = ret.piece[0].SumPiecePrice
                 this.storePrices = ret.store[0].SumStoresPrice
@@ -74,7 +76,11 @@ export class StoreBalanceComponent implements OnInit {
             this.orderbyString = '';
         }
     }
-    printBalance() {
-
+    ZeroBalance(active) {
+        if (active) {
+            this.VisibleBalance = this.collection.filter(c => c.Quantity > 0)
+        } else {
+            this.VisibleBalance = this.collection
+        }
     }
 }

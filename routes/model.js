@@ -30,6 +30,22 @@ router.get('/:id', function (req, res, next) {
             if (err) { res.json({ error: err }); console.log(err); }
         })
 });
+router.get('/withColors/all', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT DISTINCT m.ModelID, m.ModelCode,m.ModelName, c.ColorName ,c.ColorID , fdet.BatchNo, 
+                    fdet.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=fdet.StoreTypeID) StoreType, 0 Quantity, 
+                    (SELECT SUM(Quantity)  FROM dbo.FinishedStoreDetails Where ColorID = c.ColorID AND BatchNo = fdet.BatchNo GROUP BY BatchNo) Stock
+                FROM dbo.ProductModelCoding m JOIN dbo.ProductColorCoding c ON c.ModelID = m.ModelID
+                JOIN dbo.FinishedStoreDetails fdet ON fdet.ColorID = c.ColorID
+                GROUP BY m.ModelID, m.ModelCode,m.ModelName, c.ColorName ,c.ColorID , fdet.BatchNo, fdet.StoreTypeID`)
+        .then(function (recordset) {
+            res.json(recordset);
+        }).catch(function (err) {
+            if (err) { res.json({ error: err }); console.log(err); }
+        })
+});
+
 
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');

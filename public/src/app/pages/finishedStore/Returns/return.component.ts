@@ -60,7 +60,7 @@ export class FinReturnComponent implements OnInit {
     ngOnInit() {
         this.srvRet.getReturn().subscribe(cols => {
             this.collection = cols;
-            this.srvModel.getModel().subscribe(mod => {
+            this.srvModel.getModelwithColors().subscribe(mod => {
                 this.modelsList = mod;
                 this.srvSO.getFinishedSalesHeader().subscribe(so => this.SOList = so);
                 this.TableBack();

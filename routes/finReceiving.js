@@ -60,7 +60,7 @@ router.post('/', function (req, res, next) {
                             request.input('RecordDate', det.RecordDate);
                             request.input('ColorID', det.ColorID);
                             request.input('Quantity', det.Quantity);
-                            request.input('BatchNo', det.BatchNo);
+                            request.input('BatchNo', finrec.BatchNo);
                             request.input('FinReceivingID', finRecID);
                             request.input('FinDispensingID', det.FinDispensingID);
                             request.input('FinEqualizeID', det.FinEqualizeID);

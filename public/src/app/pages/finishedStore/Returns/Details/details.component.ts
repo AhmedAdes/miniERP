@@ -82,8 +82,10 @@ export class FinReturnDetailsComponent implements OnInit, OnChanges {
         this.submitted = true
         if (!this.detform.valid) { return }
         this.prepareDetail();
-        if (this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID) > -1) {
-            var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID)
+        if (this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID &&
+            x.StoreTypeID == this.Detmodel.StoreTypeID && x.BatchNo == this.Detmodel.BatchNo) > -1) {
+            var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID &&
+                x.StoreTypeID == this.Detmodel.StoreTypeID && x.BatchNo == this.Detmodel.BatchNo)
             this.Details.fill(this.Detmodel, indx, indx + 1)
         } else {
             this.Details.push(this.Detmodel);
@@ -95,7 +97,8 @@ export class FinReturnDetailsComponent implements OnInit, OnChanges {
         this.submitted = true
         if (!this.detform.valid) { return }
         this.prepareDetail();
-        var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID)
+        var indx = this.Details.findIndex(x => x.ModelID == this.Detmodel.ModelID && x.ColorID == this.Detmodel.ColorID &&
+            x.StoreTypeID == this.Detmodel.StoreTypeID && x.BatchNo == this.Detmodel.BatchNo)
         this.Details.fill(this.Detmodel, indx, indx + 1)
         this.resetTheForm()
     }
@@ -111,7 +114,6 @@ export class FinReturnDetailsComponent implements OnInit, OnChanges {
         this.colorList = null
         this.BatchList = null
         this.EditForm = false
-        this.Detmodel.ModelID = null
         this.Detmodel = new FinishedStoreDetail();
         this.detform.reset();
         this.onReset = false
@@ -121,13 +123,13 @@ export class FinReturnDetailsComponent implements OnInit, OnChanges {
         //newObj.target.value.split(":")[0]
         if (!value || this.onReset) { return }
         // this.srvSO.getSalesColor(value, this.SOID).subscribe(clrs => {
-        this.colorList = this.modelsList.map(m => {
+        this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
+        this.colorList = this.modelsList.filter(obj => obj.ModelID == value).map(m => {
             return {
                 ColorID: m.ColorID, ColorName: m.ColorName, Quantity: m.Quantity, BatchNo: m.BatchNo, Stock: m.Stock,
                 StoreTypeID: m.StoreTypeID, StoreType: m.StoreType
             }
         });
-        this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
         if (this.Detmodel.ColorID && this.EditForm) {
             this.onColorChange(this.Detmodel.ColorID)
             if (this.Detmodel.StoreTypeID && this.EditForm) {

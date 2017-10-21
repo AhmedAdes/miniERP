@@ -21,6 +21,9 @@ export class ModelService {
     return this.http.get(geturl, this.options).map(res => res.json());
   }
 
+  getModelwithColors(){
+    return this.http.get(this.url + '/withColors/all', this.options).map(res => res.json());
+  }
   insertModel(model: Model, clrs: ModelColor[], sizs: ModelSize[]) {
     return this.http.post(this.url, { model: model, clrs: clrs, sizes: sizs }, this.options).map(res => res.json());
   }
