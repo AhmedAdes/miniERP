@@ -72,6 +72,8 @@ var matdisp = require('./routes/matDispensing');
 var matequl = require('./routes/matEqualize');
 var matret = require('./routes/matReturn');
 var expnse = require('./routes/expanses');
+var prov = require('./routes/provinces');
+var regn = require('./routes/regions');
 
 app.use('/', index);
 app.use('/api/fabrics', fabrics);
@@ -104,6 +106,8 @@ app.use('/api/matdisp', matdisp);
 app.use('/api/matequl', matequl);
 app.use('/api/matret', matret);
 app.use('/api/expnse', expnse);
+app.use('/api/provnc', prov);
+app.use('/api/region', regn);
 
 connection.connect(err => {
     if (err) {

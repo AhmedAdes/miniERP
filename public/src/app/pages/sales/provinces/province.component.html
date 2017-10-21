@@ -1,0 +1,86 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+
+        <h2> {{headerText}} </h2>
+        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+        <br><br>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+        <table id="tblProvinces" class="table table-hover table-striped table-responsive">
+            <colgroup>
+                <col width="40%" />
+                <col width="40%" />
+                <col width="20%" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th> {{srchObj.DisplayNames.ProvinceName.Disp}} <i (click)="SortTable('ProvinceName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ProvinceName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.engName.Disp}} <i (click)="SortTable('engName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('engName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchProvinceName" name="ProvinceName" [(ngModel)]="srchObj.ProvinceName">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <input class="form-control" type="text" id="srchengName" name="engName" [(ngModel)]="srchObj.engName">
+                        </div>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                    <td>{{item.ProvinceName}}</td>
+                    <td>{{item.engName}}</td>
+                    <td>
+                        <button (click)="EditThis(item.ProvinceID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
+                        <button (click)="ShowDetails(item.ProvinceID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
+                        <button (click)="Delete(item.ProvinceID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate">
+        <form (submit)="f.valid && HandleForm($event)" #f="ngForm" novalidate>
+            <div class="form-horizontal">
+
+                <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this province ?</h2>
+                <br>
+
+                <div class="form-group row" [ngClass]="{ 'has-error': f.submitted && !prvName.valid }">
+                    <label for="ProvinceName" class="control-label col-md-2">{{srchObj.DisplayNames.ProvinceName.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="ProvinceName" [(ngModel)]="model.ProvinceName" #prvName="ngModel" required>
+                        <div *ngIf="prvName.touched && !prvName.valid" class="alert alert-danger">{{srchObj.DisplayNames.ProvinceName.Disp}} is required</div>
+                    </div>
+                </div>
+                <div class="form-group row" [ngClass]="{ 'has-error': f.submitted && !eName.valid }">
+                    <label for="engName" class="control-label col-md-2">{{srchObj.DisplayNames.engName.Disp}}</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="text" name="engName" [(ngModel)]="model.engName" #eName="ngModel">
+                        <div *ngIf="eName.touched && !eName.valid" class="alert alert-danger">{{srchObj.DisplayNames.engName.Disp}} is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group no-print col-md-offset-2 col-md-10">
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>                    |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

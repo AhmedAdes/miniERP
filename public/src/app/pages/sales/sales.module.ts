@@ -11,9 +11,12 @@ import { routing } from './sales.routing';
 import {
 	Sales, CustomerComponent, SalesOrderComponent, SalesHeaderComponent,
 	SalesRepComponent, SalesDetailComponent, SalesPaymentComponent,
-	PaymentComponent, CommissionComponent
+	PaymentComponent, CommissionComponent, ProvinceComponent, RegionComponent
 } from './index';
-import { CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService, SalesRepService, FinDetailService } from '../../services';
+import {
+	CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService,
+	SalesRepService, FinDetailService, ProvinceService, RegionService
+} from '../../services';
 import { PipeModule } from '../../pipes/pipes.module';
 
 @NgModule({
@@ -24,7 +27,8 @@ import { PipeModule } from '../../pipes/pipes.module';
 	declarations: [
 		Sales, SalesOrderComponent, SalesHeaderComponent,
 		CustomerComponent, SalesRepComponent, SalesDetailComponent,
-		SalesPaymentComponent, PaymentComponent, CommissionComponent
+		SalesPaymentComponent, PaymentComponent, CommissionComponent,
+		ProvinceComponent, RegionComponent
 	],
 	providers: [
 		CustomerService, SalesDetailService, SalesHeaderService,

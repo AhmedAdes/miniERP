@@ -29,3 +29,5 @@ export * from './matDispensing.service';
 export * from './matEqualize.service';
 export * from './matReturn.service';
 export * from './expanses.service';
+export * from './provinces.service';
+export * from './regions.service';

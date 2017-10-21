@@ -37,3 +37,29 @@ export class rptTopCustomers {
     Perc: number;
     AllQty: number;
 }
+
+export class Province {
+    ProvinceID: number;
+    Province: string;
+    engName: string;
+
+    DisplayNames = {
+        ProvinceID: { Disp: "Province المحافظة" },
+        Province: { Disp: "Province اسم المحافظة" },
+        engName: { Disp: "English Name الاسم بالانجليزية" },
+    }
+}
+
+export class Region {
+    RegionID: number;
+    Region: string;
+    ProvinceID: number;
+    Province: string;
+
+    DisplayNames = {
+        RegionID: { Disp: "Region المنطقة" },
+        Region: { Disp: "Region اسم المنطقة" },
+        ProvinceID: { Disp: "Province المحافظة" },
+        Province: { Disp: "Province اسم المحافظة" },
+    }
+}

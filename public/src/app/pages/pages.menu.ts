@@ -293,6 +293,24 @@ export const PAGES_MENU = [
                 icon: 'fa fa-dollar'
               }
             }
+          },
+          {
+            path: 'provnc',
+            data: {
+              menu: {
+                title: 'Provinces المحافظات',
+                icon: 'fa fa-map'
+              }
+            }
+          },
+          {
+            path: 'region',
+            data: {
+              menu: {
+                title: 'Regions المناطق',
+                icon: 'fa fa-map-marker'
+              }
+            }
           }
         ]
       },

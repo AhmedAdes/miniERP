@@ -7,3 +7,5 @@ export * from './salesOrder/payment/payment.component';
 export * from './salesReps/salesRep.component';
 export * from './salesPayment/payment.component';
 export * from './commission/commission.component';
+export * from './provinces/province.component';
+export * from './regions/region.component';
