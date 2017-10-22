@@ -192,6 +192,35 @@ ALTER TABLE dbo.Customers ADD RegionID INT
 ALTER TABLE dbo.Customers ADD CONSTRAINT FK_Customers_Regions FOREIGN KEY (RegionID) REFERENCES dbo.Regions(RegionID)
 GO
 
-UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
+UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.ProvinceID, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
 WHERE qry.Region = Area AND qry.Province = Country
+GO
+
+CREATE PROC ProvinceInsert 
+@Province NVARCHAR(100), @engName NVARCHAR(100) AS
+INSERT dbo.Provinces ( Province, engName )
+VALUES  ( @Province, @engName)
+GO
+CREATE PROC ProvinceUpdate 
+@ProvinceID INT, @Province NVARCHAR(100), @engName NVARCHAR(100) AS 
+UPDATE dbo.Provinces SET Province = @Province, engName=@engName WHERE ProvinceID=@ProvinceID
+GO
+CREATE PROC ProvinceDelete
+@ProvinceID INT AS 
+DELETE	dbo.Provinces WHERE ProvinceID = @ProvinceID
+GO
+
+CREATE PROC RegionInsert 
+@Region NVARCHAR(200), @ProvinceID INT AS 
+INSERT dbo.Regions ( Region, ProvinceID )
+VALUES  ( @Region, @ProvinceID)
+GO
+CREATE PROC RegionUpdate
+@RegionID INT, @Region NVARCHAR(200), @ProvinceID INT AS 
+UPDATE dbo.Regions SET Region=@Region, ProvinceID=@ProvinceID WHERE RegionID=@RegionID
+GO
+CREATE PROC RegionDelete
+@RegionID INT AS
+DELETE dbo.Regions WHERE RegionID=@RegionID
+GO
 
