@@ -118,7 +118,6 @@ export class SalesRep {
         Tel: { Disp: "Tel التليفون" }
     }
 }
-
 export class rptSalesByCust {
     CustID: number;
     CustName: string;
@@ -130,6 +129,21 @@ export class rptSalesByCust {
     Discount: number;
     SubTotal: number;
     SODate: Date;
+    SOID: number;
+}
+export class rptSalesByProd {
+    CustID: number;
+    CustName: string;
+    Region: string;
+    ColorID: number;
+    ModelCode: string;
+    ModelName: string;
+    Quantity: number;
+    UnitPrice: number;
+    Discount: number;
+    SubTotal: number;
+    SODate: Date;
+    SOID: number;
 }
 export class rptCompareSales{
     ModelCode: string;

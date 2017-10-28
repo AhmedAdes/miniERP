@@ -13,7 +13,8 @@ import {
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
   RptSalesSummaryComponent, RptSalesIncomeTrackerComponent,
   RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
-  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent
+  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent,
+  RptFinStoreBlncDateComponent, RptSalesByProdComponent
 } from './index';
 import {
   CustomerService, SalesHeaderService, SalesDetailService, FinStoreService, FinDetailService, FinReceivingService, FinDispensingService,
@@ -25,10 +26,10 @@ let cust_Rpts = [RptCustCountryComponent, RptCustAreaComponent, RptTopCustCompon
 let sls_Rpts = [
   RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
-  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent
+  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptSalesByProdComponent
 ]
 let fin_Rpts = [RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
-  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent]
+  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptFinStoreBlncDateComponent]
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,

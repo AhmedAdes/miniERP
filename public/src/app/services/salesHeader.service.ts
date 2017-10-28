@@ -43,19 +43,21 @@ export class SalesHeaderService {
   getSalesByCustReport(custID: number, fromdate: string, todate: string) {
     return this.http.get(this.url + 'salesByCust/' + custID + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
   }
-
+  getSalesByProductReport(modelID: number, fromdate: string, todate: string) {
+    return this.http.get(this.url + 'salesByProduct/' + modelID + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
+  }
+  getSalesByProductMonthsReport(modelID: number, fromdate: string, todate: string) {
+    return this.http.get(this.url + 'salesByProductMonths/' + modelID + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
+  }
   getSalesByCntryReport(fromdate: string, todate: string) {
     return this.http.get(this.url + 'salesByCntry/' + fromdate + '.' + todate, this.options).map(res => res.json())
   }
-
   getSalesByAreaReport(cntry: string, fromdate: string, todate: string) {
     return this.http.get(this.url + 'salesByArea/' + cntry + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
   }
-
   getSellingCountries() {
     return this.http.get(this.url + 'sellingCntry', this.options).map(res => res.json())
   }
-
   getTopSellingProd(fType: string, fromdate: string, todate: string) {
     return this.http.get(this.url + 'TsellProdQty/' + fType + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
   }

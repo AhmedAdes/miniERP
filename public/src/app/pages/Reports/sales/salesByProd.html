@@ -15,11 +15,16 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="CustID" class="col-sm-3 text-right control-label">Customer</label>
-            <div class="col-sm-9">
-                <select class="form-control" name="CustID" [(ngModel)]="custID" #cstId="ngModel" required>
-                    <option [ngValue]="null">Select a Customer...</option>
-                        <option *ngFor="let i of custList" [ngValue]="i.CustID">{{i.CustName}} - {{i.CustType}}</option> 
+            <label for="ModelID" class="form-control-label col-md-2">Model Name</label>
+            <div class="col-md-5" [ngClass]="{'has-error': (f.submitted && !modID.valid)}">
+                <ng2-completer name="ModelID" [(ngModel)]="modelCode" [datasource]="modelIDsList" [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true'
+                    [clearUnselected]='true' [placeholder]="'Search Model Codes'" [textNoResults]="'No Models found'" [inputClass]="'form-control'"
+                    (selected)="IDSelected($event)"></ng2-completer>
+            </div>
+            <div class="col-md-5" [ngClass]="{'has-error': (f.submitted && !modID.valid)}">
+                <select class="form-control" name="ModelID" [(ngModel)]="modelID" #modID="ngModel" required>
+                    <option value="">Select a Model ...</option>
+                    <option *ngFor="let i of prodList" [value]="i.ModelID">{{i.ModelName}}</option>
                 </select>
             </div>
         </div>
@@ -42,34 +47,30 @@
         <h3 class="text-center">{{subHeader}}</h3>
     </div>
     <div class="panel-body">
-        <table class="table table-hover table-striped table-responsive table-bordered">
+        <table class="table table-hover table-bordered table-responsive col-md-12 col-sm-12">
             <colgroup>
-                <col width="20%" />
-                <col width="30%" />
-                <col width="20%" />
-                <col width="30%" />
+                <col width="40%" />
+                <col width="60%" />
             </colgroup>
-            <tbody>
+            <thead>
                 <tr>
-                    <td>Customer</td>
-                    <td>{{selCust.CustName}}</td>
-                    <td>Contact</td>
-                    <td>{{selCust.ContactPerson}}</td>
+                    <th>Month</th>
+                    <th>Amount</th>
                 </tr>
-                <tr>
-                    <td>Country</td>
-                    <td>{{selCust.Country}}</td>
-                    <td>Area</td>
-                    <td>{{selCust.Area}}</td>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of Months">
+                    <td>{{item.MonthDate | date:'MM/yyyy'}}</td>
+                    <td>{{item.TotalAmount | number}}</td>
                 </tr>
             </tbody>
         </table>
-        <br>
         <table id="tblReps" class="table table-hover table-striped table-responsive table-bordered">
             <colgroup>
                 <col width="10%" />
+                <col width="10%" />
                 <col width="15%" />
-                <col width="30%" />
+                <col width="20%" />
                 <col width="10%" />
                 <col width="10%" />
                 <col width="15%" />
@@ -77,9 +78,10 @@
             </colgroup>
             <thead>
                 <tr>
+                    <th> SOID </th>
                     <th> Date </th>
-                    <th> Model Code </th>
-                    <th> Model </th>
+                    <th> Customer </th>
+                    <th> Region </th>
                     <th> Quantity </th>
                     <th> Unit Price </th>
                     <th> SubTotal </th>
@@ -88,9 +90,10 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of collection">
+                    <td>{{item.SOID}}</td>
                     <td>{{item.SODate | date:'dd/MM/yyyy'}}</td>
-                    <td>{{item.ModelCode}}</td>
-                    <td>{{item.ModelName}}</td>
+                    <td>{{item.CustName}}</td>
+                    <td>{{item.Region}}</td>
                     <td>{{item.Quantity}}</td>
                     <td>{{item.UnitPrice}}</td>
                     <td>{{item.SubTotal | number}}</td>
@@ -99,11 +102,26 @@
             </tbody>
             <tfoot>
                 <tr style="font-weight: bold; background-color: palegreen">
+                    <td colspan="5" class="text-center">Totals</td>
+                    <td colspan="2">{{subTotals}}</td>
+                </tr>
+                <tr style="font-weight: bold; background-color: palegreen">
+                    <td colspan="5" class="text-center">Discount</td>
+                    <td colspan="2">{{sumDiscount}}</td>
+                </tr>
+                <tr style="font-weight: bold; background-color: palegreen">
                     <td colspan="5" class="text-center">Totals after Discount</td>
                     <td colspan="2">{{sumTotals}}</td>
                 </tr>
             </tfoot>
         </table>
         <!--<pagination-controls class="no-print" (pageChange)="p = $event" maxSize="10"></pagination-controls>-->
+    </div>
+
+    <div class="panel-body">
+        <div style="display: block;">
+            <canvas class="print-chart PrintnewPage" baseChart [datasets]="chartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                [colors]="colorsEmpty" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+        </div>
     </div>
 </div>

@@ -46,6 +46,11 @@ export class ReportHomeComponent implements OnInit {
             link: "../slsCust"
         },
         {
+            header_en: "Sales By Product",
+            header_ar: "المبيعات بالمنتج",
+            link: "../slsProd"
+        },
+        {
             header_en: "Sales By Country",
             header_ar: "المبيعات بالمحافظة",
             link: "../slscntry"
@@ -84,6 +89,11 @@ export class ReportHomeComponent implements OnInit {
             header_en: "Finished Store",
             header_ar: "مخزن المنتج النهائي",
             heading: true
+        },
+        {
+            header_en: "Store Balance in Date",
+            header_ar: "رصيد المخزن في يوم محدد",
+            link: "../blncDate"
         },
         {
             header_en: "Product History",

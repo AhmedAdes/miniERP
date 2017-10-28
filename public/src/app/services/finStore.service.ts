@@ -19,6 +19,12 @@ export class FinStoreService {
   getStoreZeroBalance() {
     return this.http.get(this.url + 'storeBalanceReport/all', this.options).map(res => res.json());
   }
+  getStoreBalanceinDate(indt: string) {
+    return this.http.get(this.url + '/strBlncByDate/' + indt, this.options).map(res => res.json());
+  }
+  getStoreZeroBalanceinDate(indt: string) {
+    return this.http.get(this.url + '/strBlncByDateZero/' + indt, this.options).map(res => res.json());
+  }
   getBalanceSubDetails(){
     return this.http.get(this.url + 'BalanceSubDet/all', this.options).map(res => res.json());
   }

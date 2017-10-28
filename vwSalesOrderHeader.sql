@@ -224,3 +224,14 @@ CREATE PROC RegionDelete
 DELETE dbo.Regions WHERE RegionID=@RegionID
 GO
 
+CREATE FUNCTION fncFinishStoreByDate(@RecordDate DATE)
+RETURNS TABLE
+RETURN
+SELECT  ModelName, ModelCode, Color, ColorName, ProdColorCode, d.ColorID , SUM(Quantity) Quantity, BatchNo, m.ModelID, d.StoreTypeID, 
+(SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType
+FROM dbo.FinishedStoreDetails d
+JOIN dbo.ProductColorCoding c ON c.ColorID = d.ColorID
+JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID
+--WHERE d.RecordDate <= @RecordDate
+GROUP BY d.ColorID, m.ModelID, ModelName, ModelCode, Color, ColorName, ProdColorCode, BatchNo, d.StoreTypeID
+GO

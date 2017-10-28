@@ -8,6 +8,8 @@ export class FinishedStore {
     Quantity: number;
     BatchNo: string;
     Entryno: string;
+    StoreType: string;
+    StoreTypeID: number;
 
     DisplayNames = {
         ModelCode: { Disp: "Model Code كود الموديل" },
@@ -18,6 +20,7 @@ export class FinishedStore {
         ProdColorCode: { Disp: "ProdCode كود المنتج" },
         Quantity: { Disp: "Quantity الكمية" },
         BatchNo: { Disp: "BatchNo رقم التشغيلة" },
+        StoreType: { Disp: "Store Type نوع مخزن المنتج" },
         Entryno: { Disp: "User Name" }
     }
 }

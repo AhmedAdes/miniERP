@@ -44,6 +44,32 @@ router.get('/salesByCust/:id(\\d+).:fromDate.:toDate', function (req, res, next)
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
+router.get('/salesByProduct/:id(\\d+).:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, (d.Quantity * d.Price) SubTotal, ISNULL(h.Discount, 0) Discount, 
+                    m.ModelCode, h.SODate, c.Country + ' - ' + c.Area AS Region, h.SOID
+                    FROM dbo.SalesOrderDetails d JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
+                    JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
+                    JOIN dbo.Customers c ON c.CustID = h.CustID
+                    WHERE m.ModelID = ${req.params.id} AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
+router.get('/salesByProductMonths/:id(\\d+).:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`;with  MonthRecursive as (
+                select CAST('${req.params.fromDate}' as DATE) as MonthDate ,1 as [level]
+                union all
+                select DATEADD(MONTH,level, CAST('${req.params.fromDate}' as DATE)),[level]+1 from  
+                MonthRecursive where DATEADD(MONTH,level, CAST('${req.params.fromDate}' as DATE))<=CAST('${req.params.toDate}' as DATE))
+                SELECT MonthDate, (SELECT SUM(d.Quantity * d.Price)  FROM dbo.SalesOrderDetails d JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
+                JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
+                WHERE m.ModelID=${req.params.id} AND h.SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalAmount from MonthRecursive d`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
 router.get('/salesByCntry/:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
