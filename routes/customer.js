@@ -50,7 +50,7 @@ router.get('/ByPeriod/:fromDate.:toDate', function (req, res, next) {
 router.get('/topCust/:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query(`SELECT TOP 5 CustID, Custname, SUM(GrandTotal) GT, SUM(SumQty) Qty
+    request.query(`SELECT TOP 5 CustID, CustName, SUM(GrandTotal) GT, SUM(SumQty) Quantity
                 FROM vwSalesOrderHeader h 
                 WHERE SODate Between '${req.params.fromDate}' And '${req.params.toDate}'
                 GROUP BY CustID, Custname ORDER BY GT DESC`)
