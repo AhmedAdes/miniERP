@@ -142,13 +142,18 @@ router.get('/salesSummary/:fromDate.:toDate', function (req, res, next) {
 router.get('/salesSummaryChrt/:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
+    request.input('fromDate', req.params.fromDate)
+    request.input('toDate', req.params.toDate)
     request.query(`;with  MonthRecursive as (
-                    select CAST('${req.params.fromDate}' as DATE) as MonthDate ,1 as [level]
-                    union all
-                    select DATEADD(MONTH,level, CAST('${req.params.fromDate}' as DATE)),[level]+1 from  
-                    MonthRecursive where DATEADD(MONTH,level, CAST('${req.params.fromDate}' as DATE))<=CAST('${req.params.toDate}' as DATE))
-                    SELECT MonthDate, (SELECT SUM(GrandTotal)  FROM dbo.SalesOrderHeader h 
-                    WHERE SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalAmount from MonthRecursive d`)
+                select CAST(@fromDate as DATE) as MonthDate ,1 as [level]
+                union all
+                select DATEADD(MONTH,level, CAST(@fromDate as DATE)),[level]+1 from  
+                MonthRecursive where DATEADD(MONTH,level, CAST(@fromDate as DATE))<=CAST(@toDate as DATE))
+                SELECT MonthDate, (SELECT SUM(GrandTotal)  FROM dbo.vwSalesOrderHeader h 
+                WHERE SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalAmount, 
+                (SELECT SUM(SumQty)  FROM dbo.vwSalesOrderHeader h 
+                WHERE SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalQty
+                from MonthRecursive d`)
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });

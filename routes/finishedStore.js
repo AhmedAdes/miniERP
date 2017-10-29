@@ -7,7 +7,7 @@ var sqlcon = sql.globalConnection;
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query("Select * From dbo.vwFinishStore  ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
+    request.query("Select * From dbo.vwFinishStore ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
         .then(function (recordset) {
             res.json(recordset);
         }).catch(function (err) {
@@ -28,7 +28,7 @@ router.get('/:id', function (req, res, next) {
 router.get('/strBlncByDate/:indate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query(`Select * From dbo.fncFinishStoreByDate('${req.params.indate}') ORDER BY  ModelCode, ColorName, StoreTypeID, BatchNo`)
+    request.query(`Select * From dbo.fncFinishStoreByDate('${req.params.indate}') ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo`)
         .then(function (recordset) {
             res.json(recordset);
         }).catch(function (err) {
@@ -48,7 +48,7 @@ router.get('/strBlncByDateZero/:indate', function (req, res, next) {
 router.get('/storeBalanceReport/:all', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query("Select * From dbo.vwFinishStore where Quantity > 0  ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
+    request.query("Select * From dbo.vwFinishStore where Quantity > 0 ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
         .then(function (recordset) {
             res.json(recordset);
         }).catch(function (err) {
