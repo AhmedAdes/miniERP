@@ -1,7 +1,9 @@
 <div class="panel panel-default zz">
     <div class="panel-heading">
+        <h2> {{headerText}} </h2>
         <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
-        <br><br>
+        <br>
+        <br>
         <div class="alert alert-danger" *ngIf="errorMessage">
             <p>{{errorMessage}}</p>
         </div>
@@ -16,29 +18,39 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th> {{srchObj.DisplayNames.SalesRepID.Disp}} <i (click)="SortTable('SalesRepID')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('SalesRepID') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchObj.DisplayNames.SalesPerson.Disp}} <i (click)="SortTable('SalesPerson')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('SalesPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchObj.DisplayNames.Tel.Disp}} <i (click)="SortTable('Tel')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Tel') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.SalesRepID.Disp}}
+                        <i (click)="SortTable('SalesRepID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SalesRepID') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th> {{srchObj.DisplayNames.SalesPerson.Disp}}
+                        <i (click)="SortTable('SalesPerson')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SalesPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th> {{srchObj.DisplayNames.Tel.Disp}}
+                        <i (click)="SortTable('Tel')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Tel') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
                     <th></th>
                 </tr>
                 <tr>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchSalesRepID" name="SalesRepID" [(ngModel)]="srchObj.SalesRepID">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchSalesPerson" name="SalesPerson" [(ngModel)]="srchObj.SalesPerson">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left" id="basic-addon1">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchTel" name="Tel" [(ngModel)]="srchObj.Tel">
                         </div>
                     </th>
@@ -51,9 +63,18 @@
                     <td>{{item.SalesPerson}}</td>
                     <td>{{item.Tel}}</td>
                     <td>
-                        <button (click)="EditThis(item.SalesRepID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
-                        <button (click)="ShowDetails(item.SalesRepID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
-                        <button (click)="Delete(item.SalesRepID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
+                        <button (click)="ShowTarget(item.SalesRepID)" class="btn btn-warning btn-icon" title="Target">
+                            <i class="icon ion-flag"></i>
+                        </button>
+                        <button (click)="EditThis(item.SalesRepID)" class="btn btn-info btn-icon" title="Edit">
+                            <i class="icon ion-edit"></i>
+                        </button>
+                        <button (click)="ShowDetails(item.SalesRepID)" class="btn btn-success btn-icon" title="Details">
+                            <i class="icon ion-eye"></i>
+                        </button>
+                        <button (click)="Delete(item.SalesRepID)" class="btn btn-danger btn-icon" title="Delete">
+                            <i class="icon ion-trash-a"></i>
+                        </button>
                     </td>
                 </tr>
 
@@ -86,11 +107,17 @@
                 </div>
 
                 <div class="form-group no-print col-md-offset-2 col-md-10">
-                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>                    |
-                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button> |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button> |
                     <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
                 </div>
             </div>
         </form>
+    </div>
+
+    <div [@myAnimation]="!showTable" class="panel-body" *ngIf="showTarget">
+        <ba-card title="Sales Plan" baCardClass="with-scroll">
+            <sales-rep-target [salesRep]="selSalesRep" (backHit)="TableBack()"></sales-rep-target>
+        </ba-card>
     </div>
 </div>

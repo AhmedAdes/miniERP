@@ -8,6 +8,7 @@ import { BaseChartDirective, Color } from 'ng2-charts';
 interface MonthChart {
     MonthDate: Date
     TotalAmount: number
+    TotalQty: number
 }
 
 interface slsSummary {

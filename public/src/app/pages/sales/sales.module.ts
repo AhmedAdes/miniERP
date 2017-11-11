@@ -11,7 +11,8 @@ import { routing } from './sales.routing';
 import {
 	Sales, CustomerComponent, SalesOrderComponent, SalesHeaderComponent,
 	SalesRepComponent, SalesDetailComponent, SalesPaymentComponent,
-	PaymentComponent, CommissionComponent, ProvinceComponent, RegionComponent
+	PaymentComponent, CommissionComponent, ProvinceComponent, RegionComponent,
+	SalesRepTargetComponent
 } from './index';
 import {
 	CustomerService, SalesDetailService, SalesHeaderService, SalesPaymentService,
@@ -28,11 +29,12 @@ import { PipeModule } from '../../pipes/pipes.module';
 		Sales, SalesOrderComponent, SalesHeaderComponent,
 		CustomerComponent, SalesRepComponent, SalesDetailComponent,
 		SalesPaymentComponent, PaymentComponent, CommissionComponent,
-		ProvinceComponent, RegionComponent
+		ProvinceComponent, RegionComponent, SalesRepTargetComponent
 	],
 	providers: [
 		CustomerService, SalesDetailService, SalesHeaderService,
-		SalesPaymentService, SalesRepService, FinDetailService
+		SalesPaymentService, SalesRepService, FinDetailService,
+		ProvinceService, RegionService
 	]
 })
 export class SalesModule { }

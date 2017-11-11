@@ -22,18 +22,20 @@ import { SalesRep, CurrentUser } from '../../../Models';
 })
 export class SalesRepComponent implements OnInit {
 
-  constructor(public serv: SalesRepService, private auth: AuthenticationService) { }
-
   currentUser: CurrentUser = this.auth.getUser();
   collection: SalesRep[] = [];
   model: SalesRep;
   srchObj: SalesRep = new SalesRep();
   showTable: boolean;
+  showTarget: boolean;
   Formstate: string;
   headerText: string;
+  selSalesRep: number;
   errorMessage: string;
   orderbyString: string = "";
   orderbyClass: string = "fa fa-sort";
+
+  constructor(public serv: SalesRepService, private auth: AuthenticationService) { }
 
   ngOnInit() {
     this.serv.getSalesRep().subscribe(cols => this.collection = cols);
@@ -73,9 +75,17 @@ export class SalesRepComponent implements OnInit {
   }
   TableBack() {
     this.showTable = true;
+    this.showTarget = null;
     this.Formstate = null;
     this.headerText = 'SalesReps';
     this.errorMessage = null;
+  }
+  ShowTarget(id: number){
+    this.showTable = false;
+    this.showTarget = true;
+    this.Formstate = "target";
+    this.selSalesRep = id
+    this.Formstate = null;
   }
   HandleForm(event) {
     event.preventDefault();

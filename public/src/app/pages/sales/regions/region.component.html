@@ -18,9 +18,9 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th> {{srchObj.DisplayNames.RegionName.Disp}}
-                        <i (click)="SortTable('RegionName')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('RegionName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    <th> {{srchObj.DisplayNames.Region.Disp}}
+                        <i (click)="SortTable('Region')" class="btn btn-default"
+                            [ngClass]="(orderbyString.indexOf('Region') == 1) ? orderbyClass : 'fa fa-sort'"></i>
                     </th>
                     <th> {{srchObj.DisplayNames.Province.Disp}}
                         <i (click)="SortTable('Province')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Province') == 1) ? orderbyClass : 'fa fa-sort'"></i>
@@ -33,7 +33,7 @@
                             <span class="input-group-addon addon-left" id="basic-addon1">
                                 <i class="icon ion-android-search"></i>
                             </span>
-                            <input class="form-control" type="text" id="srchRegionName" name="RegionName" [(ngModel)]="srchObj.RegionName">
+                            <input class="form-control" type="text" id="srchRegion" name="Region" [(ngModel)]="srchObj.Region">
                         </div>
                     </th>
                     <th>
@@ -48,8 +48,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
-                    <td>{{item.RegionName}}</td>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 25, currentPage: p })">
+                    <td>{{item.Region}}</td>
                     <td>{{item.Province}}</td>
                     <td>
                         <button (click)="EditThis(item.RegionID)" class="btn btn-info btn-icon" title="Edit">
@@ -77,10 +77,10 @@
                 <br>
 
                 <div class="form-group row" [ngClass]="{ 'has-error': f.submitted && !regionName.valid }">
-                    <label for="RegionName" class="control-label col-md-2">{{srchObj.DisplayNames.RegionName.Disp}}</label>
+                    <label for="Region" class="control-label col-md-2">{{srchObj.DisplayNames.Region.Disp}}</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="text" name="RegionName" [(ngModel)]="model.RegionName" #regionName="ngModel" required>
-                        <div *ngIf="regionName.touched && !regionName.valid" class="alert alert-danger">{{srchObj.DisplayNames.RegionName.Disp}} is required</div>
+                        <input class="form-control" type="text" name="Region" [(ngModel)]="model.Region" #regionName="ngModel" required>
+                        <div *ngIf="regionName.touched && !regionName.valid" class="alert alert-danger">{{srchObj.DisplayNames.Region.Disp}} is required</div>
                     </div>
                 </div>
 

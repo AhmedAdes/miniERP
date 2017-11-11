@@ -1,7 +1,8 @@
 <div class="panel panel-default zz">
     <div class="panel-heading">
         <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
-        <br><br>
+        <br>
+        <br>
         <div class="alert alert-danger" *ngIf="errorMessage">
             <p>{{errorMessage | json}}</p>
         </div>
@@ -9,72 +10,106 @@
     <div [@myAnimation]="showTable" class="tableslide panel-body table-responsive" *ngIf="showTable">
         <table id="tblCustomers" class="table table-hover table-striped table-responsive">
             <colgroup>
-                <col width="20%" />
-                <col width="10%" />
-                <col width="10%" />
-                <col width="10%" />
-                <col width="10%" />
-                <col width="10%" />
                 <col width="10%" />
                 <col width="20%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
+                <col width="10%" />
             </colgroup>
             <thead>
                 <tr>
-                    <th> {{srchHeadObj.DisplayNames.CustName.Disp}} <i (click)="SortTable('CustName')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('CustName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchHeadObj.DisplayNames.SODate.Disp}} <i (click)="SortTable('SODate')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SODate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchHeadObj.DisplayNames.DeliveryDate.Disp}} <i (click)="SortTable('DeliveryDate')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('DeliveryDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchHeadObj.DisplayNames.SalesPerson.Disp}} <i (click)="SortTable('SalesPerson')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('SalesPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchHeadObj.DisplayNames.GrandTotal.Disp}} <i (click)="SortTable('GrandTotal')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('GrandTotal') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchHeadObj.DisplayNames.SumQty.Disp}} <i (click)="SortTable('SumQty')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('SumQty') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                    <th> {{srchHeadObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
-                            [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.SOID.Disp}}
+                        <i (click)="SortTable('SOID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SOID') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.CustName.Disp}}
+                        <i (click)="SortTable('CustName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('CustName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.SODate.Disp}}
+                        <i (click)="SortTable('SODate')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SODate') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.DeliveryDate.Disp}}
+                        <i (click)="SortTable('DeliveryDate')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('DeliveryDate') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.SalesPerson.Disp}}
+                        <i (click)="SortTable('SalesPerson')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SalesPerson') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.GrandTotal.Disp}}
+                        <i (click)="SortTable('GrandTotal')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('GrandTotal') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.SumQty.Disp}}
+                        <i (click)="SortTable('SumQty')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SumQty') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
+                    <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.UserName.Disp}}
+                        <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+                    </th>
                     <th></th>
                 </tr>
                 <tr>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
+                            <input class="form-control" type="text" id="srchSOID" name="SOID" [(ngModel)]="srchHeadObj.SOID">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group">
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchCustName" name="CustName" [(ngModel)]="srchHeadObj.CustName">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchSODate" name="SODate" [(ngModel)]="srchHeadObj.SODate">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchDeliveryDate" name="DeliveryDate" [(ngModel)]="srchHeadObj.DeliveryDate">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchSalesPerson" name="SalesPerson" [(ngModel)]="srchHeadObj.SalesPerson">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchGrandTotal" name="GrandTotal" [(ngModel)]="srchHeadObj.GrandTotal">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchSumQty" name="SumQty" [(ngModel)]="srchHeadObj.SumQty">
                         </div>
                     </th>
                     <th>
                         <div class="input-group">
-                            <span class="input-group-addon addon-left"><i class="icon ion-android-search"></i></span>
+                            <span class="input-group-addon addon-left">
+                                <i class="icon ion-android-search"></i>
+                            </span>
                             <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchHeadObj.UserName">
                         </div>
                     </th>
@@ -82,7 +117,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of (collection | filter:srchHeadObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+                <tr *ngFor="let item of (collection | filter:srchHeadObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })"
+                    [ngClass]="item.haveReturn? 'alert-danger' : ''">
+                    <td>{{item.SOID}}</td>
                     <td>{{item.CustName}}</td>
                     <td>{{item.SODate | date:'mediumDate'}}</td>
                     <td>{{item.DeliveryDate | date:'mediumDate'}}</td>
@@ -91,10 +128,18 @@
                     <td>{{item.SumQty | number}}</td>
                     <td>{{item.UserName}}</td>
                     <td>
-                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-warning" title="Print Invoice"><i class="icon ion-printer"></i></button>
-                        <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
-                        <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
-                        <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
+                        <button (click)="PrintInvoice(item.SOID)" class="btn btn-warning" title="Print Invoice">
+                            <i class="icon ion-printer"></i>
+                        </button>
+                        <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit">
+                            <i class="icon ion-edit"></i>
+                        </button>
+                        <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details">
+                            <i class="icon ion-eye"></i>
+                        </button>
+                        <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete">
+                            <i class="icon ion-trash-a"></i>
+                        </button>
                     </td>
                 </tr>
 
@@ -157,7 +202,9 @@
                                         <td>{{item.Quantity}}</td>
                                         <td>{{item.Price}}</td>
                                         <td>{{item.Price * item.Quantity}}</td>
-                                        <td><a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Delete</a></td>
+                                        <td>
+                                            <a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Delete</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
@@ -168,9 +215,12 @@
                                         <td></td>
                                         <td></td>
                                         <td colspan="2">
-                                            Total Quantity: <span id="SumQty">{{subQty | number}}</span>
-                                            <br> Total Sum: <span id="SumTotal">{{subtotal | number:'1.2-2'}}</span>
-                                            <br> Grand Total: <span id="GrandTotal">{{model.GrandTotal | number:'1.2-2'}}</span>
+                                            Total Quantity:
+                                            <span id="SumQty">{{subQty | number}}</span>
+                                            <br> Total Sum:
+                                            <span id="SumTotal">{{subtotal | number:'1.2-2'}}</span>
+                                            <br> Grand Total:
+                                            <span id="GrandTotal">{{model.GrandTotal | number:'1.2-2'}}</span>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -208,11 +258,15 @@
                                 <tbody>
                                     <tr *ngFor="let item of SPayments; let i = index">
                                         <td>{{item.PaymentDate | date:'mediumDate'}}</td>
-                                        <td><input type="checkbox" [checked]="item.Paid" disabled> {{item.PayAmount | number:'1.2-2'}}</td>
+                                        <td>
+                                            <input type="checkbox" [checked]="item.Paid" disabled> {{item.PayAmount | number:'1.2-2'}}</td>
                                         <td>{{item.CommisionPaymentDate | date:'mediumDate'}}</td>
-                                        <td><input type="checkbox" [checked]="item.CommsionPaid" disabled> {{item.CommisionAmount | number:'1.2-2'}}</td>
+                                        <td>
+                                            <input type="checkbox" [checked]="item.CommsionPaid" disabled> {{item.CommisionAmount | number:'1.2-2'}}</td>
                                         <td>{{item.UserName}}</td>
-                                        <td><a class="no-print" href="javascript:void(0)" (click)="DeletePayment(i)">Delete</a></td>
+                                        <td>
+                                            <a class="no-print" href="javascript:void(0)" (click)="DeletePayment(i)">Delete</a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -220,8 +274,8 @@
                     </div>
                 </div>
                 <div class="form-group no-print col-md-offset-2 col-md-10">
-                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button>                    |
-                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button>                    |
+                    <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'">Save</button> |
+                    <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button> |
                     <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
                 </div>
             </div>

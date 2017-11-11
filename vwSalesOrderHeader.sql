@@ -235,3 +235,17 @@ JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID
 --WHERE d.RecordDate <= @RecordDate
 GROUP BY d.ColorID, m.ModelID, ModelName, ModelCode, Color, ColorName, ProdColorCode, BatchNo, d.StoreTypeID
 GO
+--------------------------------------------------------------------------
+ALTER TABLE dbo.SalesRepTarget ADD MonthQty INT 
+GO
+CREATE PROC SalesTargetInsert 
+@SalesRepID INT ,@TargetYear INT ,@TargetMonth INT ,@MonthQty INT AS 
+INSERT dbo.SalesRepTarget
+        ( SalesRepID ,TargetYear ,TargetMonth ,MonthQty )
+VALUES  ( @SalesRepID ,@TargetYear ,@TargetMonth ,@MonthQty )
+GO
+
+CREATE PROC SalesTargetDelete
+@SalesRepID INT ,@TargetYear INT AS
+DELETE dbo.SalesRepTarget WHERE SalesRepID = @SalesRepID AND TargetYear = @TargetYear
+GO

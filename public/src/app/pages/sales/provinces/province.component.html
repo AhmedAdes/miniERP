@@ -17,7 +17,7 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th> {{srchObj.DisplayNames.ProvinceName.Disp}} <i (click)="SortTable('ProvinceName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ProvinceName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
+                    <th> {{srchObj.DisplayNames.Province.Disp}} <i (click)="SortTable('Province')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Province') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.engName.Disp}} <i (click)="SortTable('engName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('engName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th></th>
                 </tr>
@@ -25,7 +25,7 @@
                     <th>
                         <div class="input-group">
                             <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
-                            <input class="form-control" type="text" id="srchProvinceName" name="ProvinceName" [(ngModel)]="srchObj.ProvinceName">
+                            <input class="form-control" type="text" id="srchProvince" name="Province" [(ngModel)]="srchObj.Province">
                         </div>
                     </th>
                     <th>
@@ -38,8 +38,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
-                    <td>{{item.ProvinceName}}</td>
+                <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 25, currentPage: p })">
+                    <td>{{item.Province}}</td>
                     <td>{{item.engName}}</td>
                     <td>
                         <button (click)="EditThis(item.ProvinceID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
@@ -61,10 +61,10 @@
                 <br>
 
                 <div class="form-group row" [ngClass]="{ 'has-error': f.submitted && !prvName.valid }">
-                    <label for="ProvinceName" class="control-label col-md-2">{{srchObj.DisplayNames.ProvinceName.Disp}}</label>
+                    <label for="Province" class="control-label col-md-2">{{srchObj.DisplayNames.Province.Disp}}</label>
                     <div class="col-md-10">
-                        <input class="form-control" type="text" name="ProvinceName" [(ngModel)]="model.ProvinceName" #prvName="ngModel" required>
-                        <div *ngIf="prvName.touched && !prvName.valid" class="alert alert-danger">{{srchObj.DisplayNames.ProvinceName.Disp}} is required</div>
+                        <input class="form-control" type="text" name="Province" [(ngModel)]="model.Province" #prvName="ngModel" required>
+                        <div *ngIf="prvName.touched && !prvName.valid" class="alert alert-danger">{{srchObj.DisplayNames.Province.Disp}} is required</div>
                     </div>
                 </div>
                 <div class="form-group row" [ngClass]="{ 'has-error': f.submitted && !eName.valid }">

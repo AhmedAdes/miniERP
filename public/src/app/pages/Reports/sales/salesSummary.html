@@ -63,18 +63,21 @@
         <br>
         <table class="table table-hover table-bordered table-responsive col-md-12 col-sm-12">
             <colgroup>
-                <col width="40%" />
-                <col width="60%" />
+                <col width="30%" />
+                <col width="35%" />
+                <col width="35%" />
             </colgroup>
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th>Month</th>
+                    <th>Quantity</th>
                     <th>Amount</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of collection">
+                <tr *ngFor="let item of collection" class="text-center">
                     <td>{{item.MonthDate | date:'MM/yyyy'}}</td>
+                    <td>{{item.TotalQty | number}}</td>
                     <td>{{item.TotalAmount | number}}</td>
                 </tr>
             </tbody>

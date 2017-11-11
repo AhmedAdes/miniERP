@@ -5,6 +5,7 @@ export * from './salesOrder/header/header.component';
 export * from './salesOrder/detail/detail.component';
 export * from './salesOrder/payment/payment.component';
 export * from './salesReps/salesRep.component';
+export * from './salesReps/RepPlan/repPlan';
 export * from './salesPayment/payment.component';
 export * from './commission/commission.component';
 export * from './provinces/province.component';

@@ -19,6 +19,7 @@ export class SalesHeader {
     SalesPerson: string;
     UserID: number;
     UserName: string;
+    haveReturn: boolean;
 
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
@@ -116,6 +117,25 @@ export class SalesRep {
         SalesRepID: { Disp: "Person Code كود المندوب" },
         SalesPerson: { Disp: "Sales Person مندوب البيع" },
         Tel: { Disp: "Tel التليفون" }
+    }
+}
+export class SalesRepTarget {
+    SalesRepID: number;
+    SalesPerson: string;
+    TargetID: number;
+    TargetYear: number;
+    TargetMonth: number;
+    MonthName: string;
+    MonthQty: number;
+
+    DisplayNames = {
+        SalesRepID: { Disp: "Person Code كود المندوب" },
+        SalesPerson: { Disp: "Sales Person مندوب البيع" },
+        TargetID: { Disp: "Target المطلوب" },
+        TargetYear: { Disp: "Year السنة" },
+        TargetMonth: { Disp: "Month الشهر" },
+        MonthName: { Disp: "Month الشهر" },
+        MonthQty: { Disp: "Target Qty كمية المطلوب" }
     }
 }
 export class rptSalesByCust {
