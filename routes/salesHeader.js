@@ -33,6 +33,17 @@ router.get('/finSales', function (req, res, next) {
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); });
 });
+router.get('/salesByStrType/:id(\\d+).:fromDate.:toDate', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, (d.Quantity * d.Price) SubTotal, ISNULL(h.Discount, 0) Discount, m.ModelCode, h.SODate
+                    FROM dbo.SalesOrderDetails d JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
+                    JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
+                    JOIN dbo.Customers c ON c.CustID = h.CustID
+                    WHERE d.StoreTypeID = ${req.params.id} AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+});
 router.get('/salesByCust/:id(\\d+).:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
@@ -226,6 +237,7 @@ router.post('/', function (req, res, next) {
                 request.input('CustID', so.CustID);
                 request.input('SalesTax', so.SalesTax);
                 request.input('Discount', so.Discount);
+                request.input('DiscountPrcnt', so.DiscountPrcnt);
                 request.input('Notes', so.Notes);
                 request.input('DeliveryDate', so.DeliveryDate);
                 request.input('Commisioner', so.Commisioner);
@@ -311,6 +323,7 @@ router.put('/:id', function (req, res, next) {
                 request.input('CustID', so.CustID);
                 request.input('SalesTax', so.SalesTax);
                 request.input('Discount', so.Discount);
+                request.input('DiscountPrcnt', so.DiscountPrcnt);
                 request.input('Notes', so.Notes);
                 request.input('DeliveryDate', so.DeliveryDate);
                 request.input('Commisioner', so.Commisioner);

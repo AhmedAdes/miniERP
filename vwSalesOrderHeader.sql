@@ -49,7 +49,7 @@ GO
 
 ALTER VIEW dbo.vwSalesOrderHeader
 AS
-SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , Notes , DeliveryDate ,
+SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , dis , Notes , DeliveryDate ,
         Commisioner , CommisionerTel , soh.UserID , u.UserName, DeliveryType , PayMethod , GrandTotal ,
         soh.SalesRepID , r.SalesPerson, c.ContactPerson, 
 		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty
@@ -248,4 +248,31 @@ GO
 CREATE PROC SalesTargetDelete
 @SalesRepID INT ,@TargetYear INT AS
 DELETE dbo.SalesRepTarget WHERE SalesRepID = @SalesRepID AND TargetYear = @TargetYear
+GO
+--------------------------------------------------------------------------
+ALTER TABLE dbo.SalesOrderHeader ADD DiscountPrcnt BIT
+GO
+ALTER PROC dbo.SalesHeaderInsert
+@SODate DATE,@CustID INT,@SalesTax DECIMAL(10,2),@Discount DECIMAL(10,2),@Notes nvarchar(max),@DeliveryDate DATE,
+@Commisioner NVARCHAR(200),@CommisionerTel NVARCHAR(20),@UserID INT,@DeliveryType NVARCHAR(50),@PayMethod NVARCHAR(50),
+@GrandTotal DECIMAL(10,2),@SalesRepID INT, @DiscountPrcnt BIT
+AS
+INSERT dbo.SalesOrderHeader
+        ( SODate ,CustID ,SalesTax ,Discount ,Notes ,DeliveryDate ,Commisioner ,CommisionerTel ,UserID ,
+		DeliveryType ,PayMethod ,GrandTotal ,SalesRepID, DiscountPrcnt )
+VALUES  ( @SODate ,@CustID ,@SalesTax ,@Discount ,@Notes ,@DeliveryDate ,@Commisioner ,@CommisionerTel ,@UserID ,
+		@DeliveryType ,@PayMethod ,@GrandTotal ,@SalesRepID, @DiscountPrcnt )
+SELECT IDENT_CURRENT  ('SalesOrderHeader') AS SOID
+GO
+
+ALTER PROC dbo.SalesHeaderUpdate
+@SOID INT,@SODate DATE,@CustID INT,@SalesTax DECIMAL(10,2),@Discount DECIMAL(10,2),@Notes nvarchar(max),@DeliveryDate DATE,
+@Commisioner NVARCHAR(200),@CommisionerTel NVARCHAR(20),@UserID INT,@DeliveryType NVARCHAR(50),@PayMethod NVARCHAR(50),
+@GrandTotal DECIMAL(10,2),@SalesRepID INT, @DiscountPrcnt BIT
+AS
+UPDATE dbo.SalesOrderHeader SET SODate=@SODate ,CustID=@CustID ,SalesTax=@SalesTax ,Discount=@Discount ,
+		DiscountPrcnt=@DiscountPrcnt ,Notes=@Notes ,DeliveryDate=@DeliveryDate ,
+		Commisioner=@Commisioner ,CommisionerTel=@CommisionerTel ,UserID=@UserID ,DeliveryType=@DeliveryType ,PayMethod=@PayMethod ,GrandTotal=@GrandTotal ,
+		SalesRepID=@SalesRepID
+WHERE SOID = @SOID
 GO

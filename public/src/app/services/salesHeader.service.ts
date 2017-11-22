@@ -40,6 +40,9 @@ export class SalesHeaderService {
     return this.http.delete(this.url + id, this.options).map(res => res.json());
   }
 
+  getSalesByStoreTypeReport(typeID: number, fromdate: string, todate: string) {
+    return this.http.get(this.url + 'salesByStrType/' + typeID + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
+  }
   getSalesByCustReport(custID: number, fromdate: string, todate: string) {
     return this.http.get(this.url + 'salesByCust/' + custID + '.' + fromdate + '.' + todate, this.options).map(res => res.json())
   }

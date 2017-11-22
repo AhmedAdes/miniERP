@@ -14,43 +14,74 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-        <div *ngIf="currentUser.isAdmin === ture" class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12">
+        <div *ngIf="currentUser.isAdmin === true">
+          <div class="row">
+            <div class="col-md-3 col-sm-4 col-xs-12">
                 <div class="small-box alert-warning">
                     <div class="inner text-center">
-                        <h4>Total Stock</h4>
-                        <h4>اجمالي الرصيد الحالي</h4>
-                        <h3>{{sumQuantity | number}}</h3>
+                        <h4>Total Stock -Pack-</h4>
+                        <h4>-اجمالي الرصيد -سرية</h4>
+                        <h3>{{sumPackQty | number}}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="small-box alert-warning">
+                    <div class="inner text-center">
+                        <h4>Total Stock -Individuel-</h4>
+                        <h4>-اجمالي الرصيد -تكسير</h4>
+                        <h3>{{sumIndvQty | number}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="small-box alert-warning">
+                    <div class="inner text-center">
+                        <h4>Total Stock -Défaut-</h4>
+                        <h4>-اجمالي الرصيد -ديفوه</h4>
+                        <h3>{{sumDefQty | number}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-12">
+                <div class="small-box alert-warning">
+                    <div class="inner text-center">
+                        <h4>Total Stock -Sample-</h4>
+                        <h4>-اجمالي الرصيد -عينات</h4>
+                        <h3>{{sumSmplQty | number}}</h3>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="small-box alert-danger">
                     <div class="inner text-center">
                         <h4>Total Pieces Price</h4>
-                        <h4>-إجمالي السعر -قطع</h4>
+                        <h4>-إجمالي السعر -سرية-قطع</h4>
                         <h3>{{piecePrices | number:'1.2-2'}}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="small-box alert-info">
                     <div class="inner text-center">
                         <h4>Total Store Price</h4>
-                        <h4>-إجمالي السعر -محلات</h4>
+                        <h4>-إجمالي السعر -سرية-محلات</h4>
                         <h3>{{storePrices | number:'1.2-2'}}</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="small-box alert-primary">
                     <div class="inner text-center">
                         <h4>Total Wholesales Price</h4>
-                        <h4>-إجمالي السعر -جملة</h4>
+                        <h4>-إجمالي السعر -سرية-جملة</h4>
                         <h3>{{wholePrices | number:'1.2-2'}}</h3>
                     </div>
                 </div>
             </div>
+          </div>
         </div>
 
         <div class="btn-group" data-toggle="buttons">
