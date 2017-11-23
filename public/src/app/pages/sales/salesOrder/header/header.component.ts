@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SalesHeader, CurrentUser, Customer, SalesRep, DeliveryTypes, PayMethods } from '../../../../Models';
 import { CustomerService, SalesRepService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { CompleterService, CompleterData, CompleterItem } from "ng2-completer";
 
 @Component({
     selector: 'sales-header',
@@ -15,6 +16,7 @@ export class SalesHeaderComponent implements OnInit {
     @Output() formValid = new EventEmitter();
     @Output() changeRepExist = new EventEmitter();
     customerList: Customer[];
+    CustsList: CompleterData;
     repsList: SalesRep[];
     DeliveryList = DeliveryTypes;
     PayList = PayMethods;
@@ -23,10 +25,12 @@ export class SalesHeaderComponent implements OnInit {
     cnvSODate: string;
     cnvDeliveryDate: string;
 
-    constructor(public srvCust: CustomerService, public srvRep: SalesRepService, fb: FormBuilder) {
+    constructor(public srvCust: CustomerService, public srvRep: SalesRepService,
+      private srvCmp: CompleterService, fb: FormBuilder) {
         this.headerForm = fb.group({
             SODate: ['', Validators.required],
             CustID: ['', Validators.required],
+            autoCustID: ['', Validators.required],
             SalesTax: [''],
             Discount: [''],
             DiscountPrcnt: [true],
@@ -38,7 +42,7 @@ export class SalesHeaderComponent implements OnInit {
         });
 
         this.headerForm.valueChanges.subscribe(value => this.onFormValid(value));
-        // this.headerForm.controls['CustID'].valueChanges.subscribe(value => this.onCustChanged(value));
+        this.headerForm.controls['CustID'].valueChanges.subscribe(value => this.onCustChanged(value));
         // this.headerForm.controls['SalesTax'].valueChanges.subscribe(value => this.onTaxChange(value));
         // this.headerForm.controls['Discount'].valueChanges.subscribe(value => this.onDiscountChange(value));
         this.headerForm.controls['SODate'].valueChanges.subscribe(value => this.onSODatechange(value));
@@ -49,6 +53,8 @@ export class SalesHeaderComponent implements OnInit {
     ngOnInit() {
         this.srvCust.getCustomer().subscribe(cols => {
             this.customerList = cols;
+            this.CustsList = this.srvCmp.local(cols, "CustName", "CustName").descriptionField("Country").descriptionField("Area");
+            // this.CustsList = cols.map(c => {return c.CustName})
             this.cnvSODate = this.model.SODate ? this.HandleDate(new Date(this.model.SODate)) : this.HandleDate(new Date());
             this.cnvDeliveryDate = this.model.DeliveryDate ? this.HandleDate(new Date(this.model.DeliveryDate)) : this.HandleDate(new Date());
             this.srvRep.getSalesRep().subscribe(Reps => this.repsList = Reps)
@@ -66,9 +72,15 @@ export class SalesHeaderComponent implements OnInit {
         var Ret = goodDate.toISOString();
         return goodDate.toISOString().substring(0, 10);
     }
-
-    onCustChanged(newObj) {
-        this.custChanged.emit(newObj.target.value.split(":")[0]);
+    CustSelected(selected){
+      if (selected) {
+          this.model.CustID = this.customerList.find(c => c.CustName = selected.title).CustID
+      } else {
+          this.model.CustID = null;
+      }
+    }
+    onCustChanged(value) {
+        this.custChanged.emit(value);
     }
 
     onTaxChange(value) {

@@ -22,6 +22,8 @@ export class RptSalesByCustComponent implements OnInit {
     subHeader: string
     selCust: Customer = new Customer()
     sumTotals: number
+    subTotals: number
+    sumDiscount: number
 
     ngOnInit() {
         this.srvCst.getSalesCustomers().subscribe(cst => {
@@ -35,12 +37,11 @@ export class RptSalesByCustComponent implements OnInit {
             this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.collection = ret
             this.selCust = this.custList.filter(x => x.CustID == this.custID)[0]
-            var Total = this.collection.reduce((a, b) => a + b.SubTotal, 0)
-            var disCount = this.collection.reduce((a, b) => a + ((b.Discount * b.SubTotal) / 100), 0)
-            this.sumTotals = Total - disCount
+            this.subTotals = this.collection.reduce((a, b) => a + b.SubTotal, 0)
+            this.sumDiscount = this.collection.reduce((a, b) => a + (b.Discount ? b.DiscountPrcnt ? (b.Discount / 100 * b.SubTotal) : b.Discount : 0), 0)
+            this.sumTotals = this.subTotals - this.sumDiscount
         })
     }
-
     AfterViewInit() {
         // window.setTimeout(function () { window.print(); }, 500);
         // window.onfocus = function () { setTimeout(function () { window.close(); }, 500); }

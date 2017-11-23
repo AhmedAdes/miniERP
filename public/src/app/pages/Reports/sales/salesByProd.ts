@@ -59,6 +59,7 @@ export class RptSalesByProdComponent implements OnInit {
                 this.collection = ret
                 this.selProd = this.prodList.find(x => x.ModelID == this.modelID)
                 this.subTotals = this.collection.reduce((a, b) => a + b.SubTotal, 0)
+                this.sumDiscount = this.collection.reduce((a, b) => a + (b.Discount ? b.DiscountPrcnt ? (b.Discount / 100 * b.SubTotal) : b.Discount : 0), 0)
                 this.sumDiscount = this.collection.reduce((a, b) => a + (((b.Discount * b.SubTotal) / 100)), 0)
                 this.sumTotals = this.subTotals - this.sumDiscount
                 this.Months = chrt

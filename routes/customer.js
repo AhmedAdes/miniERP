@@ -7,7 +7,9 @@ var sqlcon = sql.globalConnection;
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query("Select c.*,u.UserName From dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID")
+    request.query(`Select c.CustID ,ISNULL(c.CustName, '') CustName,c.CustType ,c.Country ,c.Address ,c.Tel ,c.Email ,c.Website ,
+                    c.UserID ,c.CreateDate ,c.Area ,ISNULL(c.ContactPerson, '') ContactPerson,u.UserName 
+                    FROM dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID`)
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); })
 });
@@ -15,7 +17,9 @@ router.get('/', function (req, res, next) {
 router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query("Select c.*,u.UserName From dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID Where CustID = '" + req.params.id + "'")
+    request.query(`Select c.CustID ,ISNULL(c.CustName, '') CustName,c.CustType ,c.Country ,c.Address ,c.Tel ,c.Email ,c.Website ,
+                    c.UserID ,c.CreateDate ,c.Area ,ISNULL(c.ContactPerson, '') ContactPerson,u.UserName 
+                    FROM dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID Where CustID = ${req.params.id}`)
         .then(function (recordset) { res.json(recordset); })
         .catch(function (err) { res.json({ error: err }); console.log(err); })
 });

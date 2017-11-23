@@ -150,6 +150,7 @@ export class rptSalesByCust {
     SubTotal: number;
     SODate: Date;
     SOID: number;
+    DiscountPrcnt: boolean;
 }
 export class rptSalesByProd {
     CustID: number;
@@ -164,6 +165,7 @@ export class rptSalesByProd {
     SubTotal: number;
     SODate: Date;
     SOID: number;
+    DiscountPrcnt: boolean;
 }
 export class rptCompareSales{
     ModelCode: string;
@@ -171,7 +173,7 @@ export class rptCompareSales{
     M1Quantity: number;
     M1Amount: number;
     M2Quantity: number;
-    M2Amount: number;   
+    M2Amount: number;
 }
 
 // M1.ModelCode, M1.ModelCode, M1.Quantity M1Quantity, M1.Amount M1Amount, M2.Quantity M2Quantity, M2.Amount M2Amount

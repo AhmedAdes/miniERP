@@ -77,7 +77,7 @@
                 <col width="10%" />
             </colgroup>
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th> SOID </th>
                     <th> Date </th>
                     <th> Customer </th>
@@ -89,7 +89,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of collection">
+                <tr *ngFor="let item of collection" class="text-center">
                     <td>{{item.SOID}}</td>
                     <td>{{item.SODate | date:'dd/MM/yyyy'}}</td>
                     <td>{{item.CustName}}</td>
@@ -102,16 +102,13 @@
             </tbody>
             <tfoot>
                 <tr style="font-weight: bold; background-color: palegreen">
-                    <td colspan="5" class="text-center">Totals</td>
-                    <td colspan="2">{{subTotals}}</td>
+                    <td colspan="6" class="text-center">Totals</td>
+                    <td >{{subTotals | number}}</td>
+                    <td >{{sumDiscount | number}}</td>
                 </tr>
                 <tr style="font-weight: bold; background-color: palegreen">
-                    <td colspan="5" class="text-center">Discount</td>
-                    <td colspan="2">{{sumDiscount}}</td>
-                </tr>
-                <tr style="font-weight: bold; background-color: palegreen">
-                    <td colspan="5" class="text-center">Totals after Discount</td>
-                    <td colspan="2">{{sumTotals}}</td>
+                    <td colspan="6" class="text-center">Totals after Discount</td>
+                    <td colspan="2">{{sumTotals | number}}</td>
                 </tr>
             </tfoot>
         </table>

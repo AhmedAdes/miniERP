@@ -91,9 +91,7 @@ export class SalesDetailComponent implements OnInit {
     var IDs = this.modelsList.map(m => {
       return { ID: m.ModelID.toString(), Code: m.ModelCode };
     });
-    this.modelIDsList = this.srvCmp
-      .local(IDs, "Code", "Code")
-      .descriptionField("ID");
+    this.modelIDsList = this.srvCmp.local(IDs, "Code", "Code").descriptionField("ID");
     this.selectedModelID = this.Detmodel.ModelID;
     // this.selectedColor = this.Detmodel.ColorID;
   }

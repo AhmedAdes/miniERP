@@ -103,7 +103,13 @@
                         <ba-card title="Basic Info" baCardClass="with-scroll">
                             <div class="form-group row">
                                 <label for="SOID" class="form-control-label col-md-2 col-sm-4">{{srchObj.DisplayNames.SOID.Disp}}</label>
-                                <div class="col-md-10 col-sm-8">
+                                <div class="col-md-5 col-sm-4">
+                                  <ng2-completer name="ModelID" [(ngModel)]="model.SOID" [formControl]="basicform.controls['autoSoID']" [datasource]="SOIDList"
+                                    [minSearchLength]="0" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Sales Orders'" [textNoResults]="'No Models found'"
+                                    [inputClass]="'form-control'" (selected)="SOIDSelected($event)">
+                                  </ng2-completer>
+                                </div>
+                                <div class="col-md-5 col-sm-4">
                                     <select class="form-control" name="SOID" [(ngModel)]="model.SOID" [formControl]="basicform.controls['soID']">
                                         <option value="">Select Sales Order ...</option>
                                         <option *ngFor="let i of SOList" [value]="i.SOID"> {{i.SOID}} by {{i.CustName}}--{{i.ContactPerson}} on {{i.SODate | date:'mediumDate'}}</option>

@@ -14,7 +14,7 @@ import {
   RptSalesSummaryComponent, RptSalesIncomeTrackerComponent,
   RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
   RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent,
-  RptFinStoreBlncDateComponent, RptSalesByProdComponent
+  RptFinStoreBlncDateComponent, RptSalesByProdComponent, RptSalesByStrTypeComponent
 } from './index';
 import {
   CustomerService, SalesHeaderService, SalesDetailService, FinStoreService, FinDetailService, FinReceivingService, FinDispensingService,
@@ -26,7 +26,7 @@ let cust_Rpts = [RptCustCountryComponent, RptCustAreaComponent, RptTopCustCompon
 let sls_Rpts = [
   RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
-  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptSalesByProdComponent
+  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptSalesByProdComponent, RptSalesByStrTypeComponent
 ]
 let fin_Rpts = [RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
   RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptFinStoreBlncDateComponent]

@@ -49,10 +49,10 @@ GO
 
 ALTER VIEW dbo.vwSalesOrderHeader
 AS
-SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , dis , Notes , DeliveryDate ,
+SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , Notes , DeliveryDate ,
         Commisioner , CommisionerTel , soh.UserID , u.UserName, DeliveryType , PayMethod , GrandTotal ,
         soh.SalesRepID , r.SalesPerson, c.ContactPerson, 
-		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty
+		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty, DiscountPrcnt
 FROM dbo.SalesOrderHeader soh 
 JOIN dbo.Customers c ON soh.CustID = c.CustID
 LEFT JOIN dbo.SalesRep r ON soh.SalesRepID = r.SalesRepID

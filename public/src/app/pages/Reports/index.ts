@@ -7,6 +7,7 @@ export * from './customer/topCust'
 export * from './customer/allCust'
 
 export * from './sales/salesByCust'
+export * from './sales/salesByStoreType'
 export * from './sales/salesByProd'
 export * from './sales/salesByCntry'
 export * from './sales/salesByArea'

@@ -3,6 +3,7 @@ import { AuthenticationService, FinReturnService, FinDetailService, ModelService
 import { CurrentUser, FinishedReturn, FinishedStoreDetail, SalesHeader, Model } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CompleterService, CompleterData, CompleterItem } from "ng2-completer";
 
 @Component({
     selector: 'fin-Ret',
@@ -23,22 +24,6 @@ import { Router } from '@angular/router';
     ]
 })
 export class FinReturnComponent implements OnInit {
-    //RecYear ,SerialNo ,ReturnDate ,ReturnFrom ,ReturnReason ,UserID
-    constructor(public srvRet: FinReturnService, private auth: AuthenticationService,
-        private srvDet: FinDetailService, private srvModel: ModelService, private srvSO: SalesHeaderService,
-        fb: FormBuilder, private router: Router) {
-        this.basicform = fb.group({
-            RecDate: ['', Validators.required],
-            soID: [''],
-            RetFrom: ['', Validators.required],
-            RetReason: ['', Validators.required]
-        });
-
-        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
-        this.basicform.controls['soID'].valueChanges.subscribe(value => this.onSOIDchange(value));
-        // this.basicform.controls['ReturnType'].valueChanges.subscribe(value => this.onchkchange(value));
-    }
-
     currentUser: CurrentUser = this.auth.getUser();
     collection: FinishedReturn[] = [];
     finDetails: FinishedStoreDetail[] = [];
@@ -56,13 +41,34 @@ export class FinReturnComponent implements OnInit {
     cnvRecDate: string;
     basicform: FormGroup;
     stillSaving: boolean
+    SOIDList: CompleterData;
+
+    //RecYear ,SerialNo ,ReturnDate ,ReturnFrom ,ReturnReason ,UserID
+    constructor(public srvRet: FinReturnService, private auth: AuthenticationService, private srvCmp: CompleterService,
+        private srvDet: FinDetailService, private srvModel: ModelService, private srvSO: SalesHeaderService,
+        fb: FormBuilder, private router: Router) {
+        this.basicform = fb.group({
+            RecDate: ['', Validators.required],
+            soID: [''],
+            autoSoID: [''],
+            RetFrom: ['', Validators.required],
+            RetReason: ['', Validators.required]
+        });
+
+        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
+        this.basicform.controls['soID'].valueChanges.subscribe(value => this.onSOIDchange(value));
+        // this.basicform.controls['ReturnType'].valueChanges.subscribe(value => this.onchkchange(value));
+    }
 
     ngOnInit() {
         this.srvRet.getReturn().subscribe(cols => {
             this.collection = cols;
             this.srvModel.getModelwithColors().subscribe(mod => {
                 this.modelsList = mod;
-                this.srvSO.getFinishedSalesHeader().subscribe(so => this.SOList = so);
+                this.srvSO.getFinishedSalesHeader().subscribe(so => {
+                  this.SOList = so;
+                  this.SOIDList = this.srvCmp.local(so, "SOID", "SOID").descriptionField("CustName")
+                });
                 this.TableBack();
             })
         });
@@ -190,6 +196,13 @@ export class FinReturnComponent implements OnInit {
             var selSo = this.SOList.filter(so => so.SOID == value)[0]
             this.model.ReturnFrom = selSo.CustName + ' ' + selSo.ContactPerson
         })
+    }
+    SOIDSelected(selected){
+      if (selected) {
+          this.model.SOID = selected
+      } else {
+          this.model.SOID = null;
+      }
     }
     DeleteDetail(i: number) {
         this.finDetails.splice(i, 1);

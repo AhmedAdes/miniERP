@@ -51,6 +51,11 @@ export class ReportHomeComponent implements OnInit {
             link: "../slsProd"
         },
         {
+            header_en: "Sales By Store Type",
+            header_ar: "المبيعات بنوع المخزن",
+            link: "../slsStr"
+        },
+        {
             header_en: "Sales By Country",
             header_ar: "المبيعات بالمحافظة",
             link: "../slscntry"
