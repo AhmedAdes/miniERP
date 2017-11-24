@@ -8,7 +8,8 @@ var Promise = require('bluebird');
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query(`SELECT fr.*, u.UserName FROM dbo.FinishedReceiving fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
+    request.query(`SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinReceivingID = fr.FinReceivingID GROUP BY FinReceivingID) SumQty  
+                FROM dbo.FinishedReceiving fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
         .then(function (recordset) {
             res.json(recordset);
         }).catch(function (err) {

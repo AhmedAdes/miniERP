@@ -76,6 +76,7 @@ export class FinishedReceiving {
     ReceivedFrom: string;
     UserID: number;
     UserName: string;
+    SumQty: number;
 
     DisplayNames = {
         FinReceivingID: { Disp: "Code الكود" },
@@ -85,6 +86,7 @@ export class FinishedReceiving {
         ManfDate: { Disp: "Manf. Date تاريخ الانتاج" },
         BatchNo: { Disp: "BatchNo رقم التشغيلة" },
         ReceivedFrom: { Disp: "Received From مستلم من" },
+        SumQty: { Disp: "Total Quantity اجمالي الكمية" },
         UserName: { Disp: "User Name" }
     }
 }
@@ -99,6 +101,7 @@ export class FinishedDispensing {
     UserID: number;
     UserName: string;
     CustName: string;
+    SumQty: number;
 
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
@@ -108,6 +111,7 @@ export class FinishedDispensing {
         DispensingDate: { Disp: "Dispensing Date تاريخ الصرف" },
         DispenseTo: { Disp: "DispenseTo صرف إلي" },
         CustName: { Disp: "Customer اسم العميل" },
+        SumQty: { Disp: "Total Quantity اجمالي الكمية" },
         UserName: { Disp: "User Name" }
     }
 }
@@ -141,6 +145,7 @@ export class FinishedReturn {
     UserID: number;
     UserName: string;
     SOID: number;
+    SumQty: number;
 
     DisplayNames = {
         FinReturnID: { Disp: "Code الكود" },
@@ -150,6 +155,7 @@ export class FinishedReturn {
         ReturnFrom: { Disp: "Return From مرتجع من" },
         ReturnReason: { Disp: "Return Reason سبب المرتجع" },
         SOID: { Disp: "Sales Order امرالبيع" },
+        SumQty: { Disp: "Total Quantity اجمالي الكمية" },
         UserName: { Disp: "User Name" }
     }
 }
@@ -162,6 +168,7 @@ export class FinishedEqualization {
     EqualizeType: string;
     UserID: number;
     UserName: string;
+    SumQty: number;
 
     DisplayNames = {
         FinEqualizeID: { Disp: "Code الكود" },
@@ -169,6 +176,7 @@ export class FinishedEqualization {
         SerialNo: { Disp: "SerialNo مسلسل" },
         EqualizeDate: { Disp: "Equalize Date التاريخ" },
         EqualizeType: { Disp: "Equalize Type نوع التسوية" },
+        SumQty: { Disp: "Total Quantity اجمالي الكمية" },
         UserName: { Disp: "User Name" }
     }
 }

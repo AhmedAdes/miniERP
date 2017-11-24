@@ -406,4 +406,37 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
+router.get('/SalesGroupPeriod/:fromDate.:toDate.:groupby', function(req, res, next){
+    let group = req.params.groupby
+    let mainStr = `
+        SELECT h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, (d.Quantity * d.Price) SubTotal, ISNULL(h.Discount, 0) Discount, 
+                m.ModelCode, h.SODate, c.Country + ' - ' + c.Area AS Region, c.Country, c.Area, h.SOID, h.DiscountPrcnt, d.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType,
+                CASE h.DiscountPrcnt WHEN 1 THEN (ISNULL(h.Discount, 0) * (d.Quantity * d.Price) / 100) WHEN 0 THEN ISNULL(h.Discount, 0) END TOTDiscount
+        FROM dbo.SalesOrderDetails d 
+        JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
+        JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID 
+        JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
+        JOIN dbo.Customers c ON c.CustID = h.CustID
+        WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
+        ` 
+    let str = ``
+    if(group = 'Product'){
+        str = `SELECT ModelCode, ModelName, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount 
+        FROM (${mainStr}) QRY GROUP BY ModelCode, ModelName ORDER BY SubTotal DESC`
+    } else if(group = 'Customer'){
+        str = `SELECT CustID, CustName, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount 
+        FROM (${mainStr}) QRY GROUP BY CustID, CustName ORDER BY SubTotal DESC`
+    } else if(group = 'Store'){
+        str = `SELECT StoreTypeID, StoreType, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount 
+        FROM (${mainStr}) QRY GROUP BY StoreTypeID, StoreType ORDER BY SubTotal DESC`
+    } else if(group = 'Country'){
+        str = `SELECT Country, COUNT(DISTINCT QRY.CustID) CustCount, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount 
+        FROM (${mainStr}) QRY GROUP BY Country ORDER BY SubTotal DESC`
+    }
+    let request = new sql.Request(sqlcon);
+    request.query(str)
+        .then(function (recordset) { res.json(recordset); })
+        .catch(function (err) { res.json({ error: err }); console.log(err); });
+})
+
 module.exports = router;

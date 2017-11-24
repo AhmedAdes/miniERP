@@ -222,7 +222,7 @@ export class FinReturnComponent implements OnInit {
         this.Detmodel.StoreType = this.finDetails[i].StoreType;
     }
     PrintOrder(orderID) {
-        this.router.navigate(['printout/finRec', orderID])
+        this.router.navigate(['printout/finRet', orderID])
 
         // window.open(`#/printout/invoice/${soid}`, '_blank')
     }

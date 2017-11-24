@@ -52,7 +52,8 @@ AS
 SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , Notes , DeliveryDate ,
         Commisioner , CommisionerTel , soh.UserID , u.UserName, DeliveryType , PayMethod , GrandTotal ,
         soh.SalesRepID , r.SalesPerson, c.ContactPerson, 
-		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty, DiscountPrcnt
+		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty, DiscountPrcnt,
+		CAST(ISNULL((SELECT SOID FROM dbo.FinishedReturn WHERE SOID = soh.SOID),0) AS BIT) AS haveReturn
 FROM dbo.SalesOrderHeader soh 
 JOIN dbo.Customers c ON soh.CustID = c.CustID
 LEFT JOIN dbo.SalesRep r ON soh.SalesRepID = r.SalesRepID
@@ -250,7 +251,7 @@ CREATE PROC SalesTargetDelete
 DELETE dbo.SalesRepTarget WHERE SalesRepID = @SalesRepID AND TargetYear = @TargetYear
 GO
 --------------------------------------------------------------------------
-ALTER TABLE dbo.SalesOrderHeader ADD DiscountPrcnt BIT
+ALTER TABLE dbo.SalesOrderHeader ADD DiscountPrcnt BIT DEFAULT 1
 GO
 ALTER PROC dbo.SalesHeaderInsert
 @SODate DATE,@CustID INT,@SalesTax DECIMAL(10,2),@Discount DECIMAL(10,2),@Notes nvarchar(max),@DeliveryDate DATE,
