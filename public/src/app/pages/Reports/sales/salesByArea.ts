@@ -3,6 +3,7 @@ import { Location } from '@angular/common'
 import { SalesHeaderService } from '../../../services';
 // import { SalesHeader } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 interface SlsAreareport {
     Area: string
@@ -32,6 +33,8 @@ export class RptSalesByAreaComponent implements OnInit {
     subHeader: string
 
     ngOnInit() {
+        this.fromDate = hf.handleDate(new Date())
+        this.toDate = hf.handleDate(new Date())
         this.srv.getSellingCountries().subscribe(cnt => this.cntryList = cnt)
     }
 

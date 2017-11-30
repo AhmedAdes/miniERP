@@ -10,7 +10,7 @@ export class ModelService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'models/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getModel(id?: number) {
@@ -21,7 +21,7 @@ export class ModelService {
     return this.http.get(geturl, this.options).map(res => res.json());
   }
 
-  getModelwithColors(){
+  getModelwithColors() {
     return this.http.get(this.url + '/withColors/all', this.options).map(res => res.json());
   }
   insertModel(model: Model, clrs: ModelColor[], sizs: ModelSize[]) {

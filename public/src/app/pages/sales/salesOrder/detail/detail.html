@@ -50,6 +50,7 @@
         <div *ngIf="(ctrlQuant.touched || submitted) && !ctrlQuant.valid" class="alert alert-danger">
           <span *ngIf="ctrlQuant.hasError('required')">{{Detmodel.DisplayNames.Quantity.Disp}} is required.</span>
           <span *ngIf="ctrlQuant.hasError('min')">{{Detmodel.DisplayNames.Quantity.Disp}} must be greater than or equal 0.</span>
+          <span *ngIf="ctrlQuant.hasError('max')">{{Detmodel.DisplayNames.Quantity.Disp}} must be less than or equal available stock.</span>
         </div>
       </div>
     </div>

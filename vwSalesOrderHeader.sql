@@ -191,12 +191,9 @@ GO
 
 ALTER TABLE dbo.Customers ADD RegionID INT
 ALTER TABLE dbo.Customers ADD CONSTRAINT FK_Customers_Regions FOREIGN KEY (RegionID) REFERENCES dbo.Regions(RegionID)
+ALTER TABLE dbo.Customers ADD ProvinceID INT
+ALTER TABLE dbo.Customers ADD CONSTRAINT FK_Customers_Provinces FOREIGN KEY (ProvinceID) REFERENCES dbo.Provinces(ProvinceID)
 GO
-
-UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.ProvinceID, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
-WHERE qry.Region = Area AND qry.Province = Country
-GO
-
 CREATE PROC ProvinceInsert 
 @Province NVARCHAR(100), @engName NVARCHAR(100) AS
 INSERT dbo.Provinces ( Province, engName )
@@ -225,6 +222,8 @@ CREATE PROC RegionDelete
 DELETE dbo.Regions WHERE RegionID=@RegionID
 GO
 
+----------------------------------------------------------------------------
+
 CREATE FUNCTION fncFinishStoreByDate(@RecordDate DATE)
 RETURNS TABLE
 RETURN
@@ -252,28 +251,169 @@ DELETE dbo.SalesRepTarget WHERE SalesRepID = @SalesRepID AND TargetYear = @Targe
 GO
 --------------------------------------------------------------------------
 ALTER TABLE dbo.SalesOrderHeader ADD DiscountPrcnt BIT DEFAULT 1
+ALTER TABLE dbo.SalesOrderHeader ADD SelfNotes NVARCHAR(max)
 GO
 ALTER PROC dbo.SalesHeaderInsert
 @SODate DATE,@CustID INT,@SalesTax DECIMAL(10,2),@Discount DECIMAL(10,2),@Notes nvarchar(max),@DeliveryDate DATE,
 @Commisioner NVARCHAR(200),@CommisionerTel NVARCHAR(20),@UserID INT,@DeliveryType NVARCHAR(50),@PayMethod NVARCHAR(50),
-@GrandTotal DECIMAL(10,2),@SalesRepID INT, @DiscountPrcnt BIT
+@GrandTotal DECIMAL(10,2),@SalesRepID INT, @DiscountPrcnt BIT, @SelfNotes NVARCHAR(max)
 AS
 INSERT dbo.SalesOrderHeader
         ( SODate ,CustID ,SalesTax ,Discount ,Notes ,DeliveryDate ,Commisioner ,CommisionerTel ,UserID ,
-		DeliveryType ,PayMethod ,GrandTotal ,SalesRepID, DiscountPrcnt )
+		DeliveryType ,PayMethod ,GrandTotal ,SalesRepID, DiscountPrcnt, SelfNotes )
 VALUES  ( @SODate ,@CustID ,@SalesTax ,@Discount ,@Notes ,@DeliveryDate ,@Commisioner ,@CommisionerTel ,@UserID ,
-		@DeliveryType ,@PayMethod ,@GrandTotal ,@SalesRepID, @DiscountPrcnt )
+		@DeliveryType ,@PayMethod ,@GrandTotal ,@SalesRepID, @DiscountPrcnt, @SelfNotes )
 SELECT IDENT_CURRENT  ('SalesOrderHeader') AS SOID
 GO
 
 ALTER PROC dbo.SalesHeaderUpdate
 @SOID INT,@SODate DATE,@CustID INT,@SalesTax DECIMAL(10,2),@Discount DECIMAL(10,2),@Notes nvarchar(max),@DeliveryDate DATE,
 @Commisioner NVARCHAR(200),@CommisionerTel NVARCHAR(20),@UserID INT,@DeliveryType NVARCHAR(50),@PayMethod NVARCHAR(50),
-@GrandTotal DECIMAL(10,2),@SalesRepID INT, @DiscountPrcnt BIT
+@GrandTotal DECIMAL(10,2),@SalesRepID INT, @DiscountPrcnt BIT, @SelfNotes NVARCHAR(max)
 AS
 UPDATE dbo.SalesOrderHeader SET SODate=@SODate ,CustID=@CustID ,SalesTax=@SalesTax ,Discount=@Discount ,
 		DiscountPrcnt=@DiscountPrcnt ,Notes=@Notes ,DeliveryDate=@DeliveryDate ,
 		Commisioner=@Commisioner ,CommisionerTel=@CommisionerTel ,UserID=@UserID ,DeliveryType=@DeliveryType ,PayMethod=@PayMethod ,GrandTotal=@GrandTotal ,
-		SalesRepID=@SalesRepID
+		SalesRepID=@SalesRepID, SelfNotes=@SelfNotes
 WHERE SOID = @SOID
+GO
+--------------------------------------------------------------------------
+CREATE TABLE WashTypes
+(
+	WashID INT IDENTITY(1,1) NOT NULL,
+	WashType NVARCHAR(100) NOT NULL,
+	UserID INT,
+	CONSTRAINT PK_WashTypes PRIMARY KEY (WashID)
+)
+GO
+ALTER TABLE dbo.ProductModelCoding ADD WashID INT
+ALTER TABLE dbo.ProductModelCoding ADD CONSTRAINT FK_ProductModelCoding_WashTypes FOREIGN KEY(WashID) REFERENCES dbo.WashTypes(WashID)
+GO
+
+CREATE PROC WashTypesInsert
+ @WashType NVARCHAR(100), @UserID INT AS
+INSERT dbo.WashTypes
+        ( WashType, UserID )
+VALUES  ( @WashType, @UserID)
+GO
+CREATE PROC WashTypesUpdate
+@WashID INT, @WashType NVARCHAR(100), @UserID INT AS
+UPDATE dbo.WashTypes SET WashType=@WashType, UserID=@UserID WHERE WashID=@WashID
+GO
+CREATE PROC WashTypesDelete
+@WashID INT AS
+DELETE dbo.WashTypes WHERE WashID=@WashID
+GO
+
+ALTER PROC dbo.ModelInsert
+@ModelName NVARCHAR(500),@BrandID NCHAR(2),@ProdType NVARCHAR(100),@Photo IMAGE, @WashID INT,
+@PricePiece DECIMAL(10,2),@PriceWholeSale DECIMAL(10,2),@PriceStores DECIMAL(10,2),@UserID INT
+AS
+INSERT dbo.ProductModelCoding
+        ( ModelCode ,ModelName ,ProdModelID ,BrandID ,ProdType ,Photo ,PricePiece ,PriceWholeSale ,PriceStores ,WashID ,UserID )
+VALUES  (CONCAT(FORMAT((SELECT ISNULL(MAX(ProdModelID),0) + 1 FROM dbo.ProductModelCoding), '000'), @BrandID) , -- ModelCode - nchar(5)
+			@ModelName , 
+			FORMAT((SELECT ISNULL(MAX(ProdModelID),0)+1 FROM dbo.ProductModelCoding),'000') , -- ProdModelID - nchar(3)
+			@BrandID ,@ProdType ,@Photo ,@PricePiece ,@PriceWholeSale ,@PriceStores, @WashID ,@UserID
+        )
+SELECT @@IDENTITY AS ModelID
+GO
+
+ALTER PROC dbo.ModelUpdate	
+@ModelID INT,@ModelName NVARCHAR(500),@ProdType NVARCHAR(100),@Photo IMAGE, @WashID INT,
+@PricePiece DECIMAL(10,2),@PriceWholeSale DECIMAL(10,2),@PriceStores DECIMAL(10,2),@UserID INT
+AS
+UPDATE dbo.ProductModelCoding SET ModelName = @ModelName, ProdType=@ProdType ,Photo=@Photo ,PricePiece=@PricePiece ,
+				PriceWholeSale=@PriceWholeSale ,PriceStores=@PriceStores, WashID=@WashID ,UserID=@UserID
+WHERE ModelID = @ModelID
+GO
+
+ALTER TABLE dbo.SystemUsers ADD hashPass BINARY(64)
+ALTER TABLE dbo.SystemUsers ADD Salt UNIQUEIDENTIFIER
+ALTER TABLE dbo.SystemUsers ADD JobClass NVARCHAR(20)
+ALTER TABLE dbo.SystemUsers ADD Email NVARCHAR(200)
+ALTER TABLE dbo.SystemUsers ADD Phone NVARCHAR(50)
+ALTER TABLE dbo.SystemUsers ADD CreateDate DATE DEFAULT GETDATE()
+GO
+
+ALTER PROC dbo.AuthenticateUser
+@LoginName NVARCHAR(200), @UserPass NVARCHAR(200)
+AS
+IF EXISTS (SELECT * FROM dbo.SystemUsers WHERE UserName = @LoginName AND hashPass=HASHBYTES('SHA2_512', @UserPass + CAST(Salt AS NVARCHAR(40))))
+BEGIN
+	SELECT UserID, UserName, Photo, JobClass, Salt FROM dbo.SystemUsers
+	WHERE UserName = @LoginName AND Password=@UserPass
+END
+ELSE
+BEGIN
+	SELECT 'Error: UserName or Password is incorrect, please try again' AS Error
+END
+GO
+
+CREATE PROC UserInsert
+@UserName NVARCHAR(200), @UserPass NVARCHAR(50), @Photo IMAGE, @JobClass NVARCHAR(20), @Email NVARCHAR(200), @Phone NVARCHAR(50)
+AS
+DECLARE @Salt UNIQUEIDENTIFIER = NEWID()
+INSERT dbo.SystemUsers
+        ( UserName ,Photo,Password ,hashPass ,Salt ,JobClass, Email, Phone )
+VALUES  ( @UserName,@Photo,@UserPass, HASHBYTES('SHA2_512', @UserPass + CAST(@Salt AS NVARCHAR(40))),@Salt, @JobClass, @Email, @Phone )
+GO
+
+CREATE PROC UserUpdate
+@UserID INT, @UserName NVARCHAR(200), @UserPass NVARCHAR(50), @Photo IMAGE, @JobClass NVARCHAR(20), @Email NVARCHAR(200), @Phone NVARCHAR(50)
+AS
+UPDATE dbo.SystemUsers SET UserName=@UserName, Password=@UserPass, Photo=@Photo, JobClass=@JobClass, Email=@Email, Phone=@Phone  WHERE UserID=@UserID
+GO
+
+CREATE PROC UserDelete
+@UserID INT AS
+DELETE dbo.SystemUsers WHERE UserID=@UserID
+GO
+CREATE PROC UserChangePass
+@UserID INT , @NewPass NVARCHAR(50)
+AS
+UPDATE dbo.SystemUsers SET hashPass = HASHBYTES('SHA2_512', @NewPass + CAST(Salt AS NVARCHAR(40))), Password=@NewPass WHERE UserID=@UserID
+GO
+----------------------------------------------------------------------------------------------------
+ALTER TABLE dbo.Customers ADD RegionID INT
+ALTER TABLE dbo.Customers ADD CONSTRAINT FK_Customers_Regions FOREIGN KEY (RegionID) REFERENCES dbo.Regions(RegionID)
+GO
+ALTER TABLE dbo.Customers ADD ProvinceID INT
+ALTER TABLE dbo.Customers ADD CONSTRAINT FK_Customers_Provinces FOREIGN KEY (ProvinceID) REFERENCES dbo.Provinces(ProvinceID)
+GO
+ALTER PROC dbo.CustomerInsert
+@CustName NVARCHAR(300),@CustType NVARCHAR(20),@Country NVARCHAR(100),@Address NVARCHAR(300),@Tel NVARCHAR(30),@Email NVARCHAR(100),@Website NVARCHAR(100)
+,@UserID INT,@ContactPerson NVARCHAR(200),@Area NVARCHAR(100), @RegionID INT, @ProvinceID INT
+AS
+INSERT dbo.Customers ( CustName ,CustType ,Country ,Address ,Tel ,Email ,Website ,UserID ,ContactPerson ,CreateDate ,Area, RegionID, ProvinceID )
+VALUES  ( @CustName ,@CustType ,@Country ,@Address ,@Tel ,@Email ,@Website ,@UserID ,@ContactPerson , GETDATE(), @Area, @RegionID, @ProvinceID )
+GO
+ALTER PROC dbo.CustomerUpdate
+@CustID INT,@CustName NVARCHAR(300),@CustType NVARCHAR(20),@Country NVARCHAR(100),@Address NVARCHAR(300),@Tel NVARCHAR(30),@Email NVARCHAR(100),@Website NVARCHAR(100)
+,@UserID INT,@ContactPerson NVARCHAR(200),@Area NVARCHAR(100), @RegionID INT, @ProvinceID INT
+AS
+UPDATE dbo.Customers SET CustName=@CustName, CustType=@CustType ,Country=@Country ,Address=@Address ,Tel=@Tel ,Email=@Email ,Website=@Website 
+,UserID=@UserID ,ContactPerson=@ContactPerson ,Area=@Area, RegionID=@RegionID, ProvinceID=@ProvinceID
+WHERE CustID = @CustID
+GO
+
+UPDATE dbo.Customers SET ProvinceID =qry.ProvinceID FROM (SELECT p.ProvinceID, p.Province FROM dbo.Provinces p) qry WHERE qry.Province = Country
+UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.ProvinceID, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
+WHERE qry.Region = Area AND qry.Province = Country
+GO
+
+UPDATE dbo.SystemUsers SET Salt=NEWID()
+UPDATE dbo.SystemUsers SET hashPass=HASHBYTES('SHA2_512', Password + CAST(Salt AS NVARCHAR(40)))
+UPDATE dbo.SystemUsers SET JobClass = 'SysAdmin' WHERE IsAdmin = 1
+GO
+EXEC dbo.UserChangePass  @UserID = 1, -- int
+    @NewPass = N'123ades' -- nvarchar(50)
+GO
+
+CREATE VIEW vwCustomer AS 
+SELECT c.CustID ,ISNULL(c.CustName, '') CustName,c.CustType ,c.Country ,c.Area ,c.Address ,c.Tel ,c.Email ,c.Website ,
+c.UserID ,c.CreateDate ,ISNULL(c.ContactPerson, '') ContactPerson, u.UserName, 
+r.RegionID, r.Region, p.ProvinceID, p.Province, p.engName 
+FROM dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID 
+LEFT JOIN dbo.Regions r ON r.RegionID = c.RegionID LEFT JOIN dbo.Provinces p ON p.ProvinceID = c.ProvinceID
 GO

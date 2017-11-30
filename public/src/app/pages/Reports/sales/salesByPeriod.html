@@ -1,0 +1,114 @@
+<ba-card class="well no-print">
+  <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+    <div class="form-group row">
+      <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !from.valid }">
+        <label for="fromDate" class="col-sm-3 control-label">From</label>
+        <div class="col-sm-9">
+          <input class="form-control" type="date" name="fromDate" [(ngModel)]="fromDate" #from="ngModel" required>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !to.valid }">
+        <label for="toDate" class="col-sm-3 control-label">To</label>
+        <div class="col-sm-9">
+          <input class="form-control" type="date" name="toDate" [(ngModel)]="toDate" #to="ngModel" required>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row" [ngClass]="{ 'has-error': f.submitted && !grp.valid }">
+      <label for="selGroup" class="col-sm-3 text-right control-label">Group By</label>
+      <div class="col-sm-9">
+        <select class="form-control" name="selGroup" [(ngModel)]="selGroup" #grp="ngModel" (change)="ViewReport()" required>
+          <option *ngFor="let grp of groupByList" [value]="grp">{{grp}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+        <button type="submit" class="btn btn-primary btn-block">View</button>
+      </div>
+      <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+        <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+      </div>
+      <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+        <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </form>
+</ba-card>
+<div class="panel panel-default">
+  <div class="panel-heading row">
+    <h2 class="text-center">{{reportHeader}}</h2>
+    <h3 class="text-center">{{subHeader}}</h3>
+  </div>
+  <div class="panel-body">
+    <br>
+    <table id="tblReps" class="table table-hover text-center table-striped table-responsive table-bordered">
+      <colgroup>
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+        <col width="10%" />
+      </colgroup>
+      <thead class="bg-dark text-white font-weight-bold">
+        <tr class="text-center">
+          <td *ngIf="selGroup == 'No-Group'">SOID</td>
+          <th *ngIf="selGroup == 'No-Group'"> Date </th>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Customer'"> Customer </td>
+          <td *ngIf="selGroup == 'Customer'"> Region </td>
+          <th *ngIf="selGroup == 'No-Group' || selGroup == 'Product'"> Model Code </th>
+          <th *ngIf="selGroup == 'No-Group' || selGroup == 'Product'"> Model </th>
+          <th *ngIf="selGroup == 'No-Group' || selGroup == 'Store'"> Store Type </th>
+          <th *ngIf="selGroup == 'Country'"> Country </th>
+          <th *ngIf="selGroup == 'Country'"> Customer Count </th>
+          <th *ngIf="selGroup !== 'No-Group'"> Invoices Count </th>
+          <th> Quantity </th>
+          <th *ngIf="selGroup == 'No-Group'"> Unit Price </th>
+          <th> SubTotal </th>
+          <th> Discount </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of collection" class="text-center">
+          <td *ngIf="selGroup == 'No-Group'">{{item.SOID}}</td>
+          <td *ngIf="selGroup == 'No-Group'">{{item.SODate | date:'dd/MM/yyyy'}}</td>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Customer'">{{item.CustName}}</td>
+          <td *ngIf="selGroup == 'Customer'"> {{item.Region}} </td>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Product'">{{item.ModelCode}}</td>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Product'">{{item.ModelName}}</td>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Store'">{{item.StoreType}}</td>
+          <th *ngIf="selGroup == 'Country'"> {{item.Country}} </th>
+          <th *ngIf="selGroup == 'Country'"> {{item.CustCount}} </th>
+          <td *ngIf="selGroup !== 'No-Group'">{{item.SalesCount | number}}</td>
+          <td>{{item.Quantity | number}}</td>
+          <td *ngIf="selGroup == 'No-Group'">{{item.UnitPrice | number}}</td>
+          <td>{{item.SubTotal | number}}</td>
+          <td>{{item.TOTDiscount | number}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr class="text-center" style="font-weight: bold; background-color: palegreen">
+          <td *ngIf="selGroup == 'No-Group'" colspan="6" class="text-center">Totals</td>
+          <td *ngIf="selGroup !== 'No-Group' && selGroup !== 'Store'" colspan="2" class="text-center">Totals</td>
+          <td *ngIf="selGroup == 'Store'" class="text-center">Totals</td>
+          <td>{{sumSales | number}}</td>
+          <td>{{sumQty | number}}</td>
+          <td>{{subTotals | number}}</td>
+          <td>{{sumDiscount | number}}</td>
+        </tr>
+        <tr class="text-center" style="font-weight: bold; background-color: palegreen">
+          <td *ngIf="selGroup == 'No-Group'" colspan="8" class="text-center">Totals after Discount</td>
+          <td *ngIf="selGroup == 'Product' || selGroup == 'Customer' || selGroup == 'Country'" colspan="4" class="text-center">Totals after Discount</td>
+          <td *ngIf="selGroup == 'Store'" colspan="3" class="text-center">Totals after Discount</td>
+          <td colspan="2">{{sumTotals | number}}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <!--<pagination-controls class="no-print" (pageChange)="p = $event" maxSize="10"></pagination-controls>-->
+  </div>
+</div>

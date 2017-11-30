@@ -10,7 +10,7 @@ export class MatDispensingService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'matdisp/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getDispensing(id?: number) {

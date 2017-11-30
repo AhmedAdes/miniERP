@@ -3,6 +3,7 @@ import { Location } from '@angular/common'
 import { SalesHeaderService } from '../../../services';
 // import { rptTopCustomers } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 interface SlsProdQtyreport {
     ModelCode: string
@@ -31,7 +32,8 @@ export class RptLeastSalesProdQtyComponent implements OnInit {
     filterBy: string = 'Quantity'
 
     ngOnInit() {
-
+        this.fromDate = hf.handleDate(new Date())
+        this.toDate = hf.handleDate(new Date())
     }
 
     ViewReport() {

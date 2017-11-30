@@ -12,7 +12,7 @@ export class SalesDetailService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'sdetail/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getSalesDetail(id?: number) {
@@ -25,7 +25,7 @@ export class SalesDetailService {
   getSalesFinishDetail(soid) {
     return this.http.get(this.url + 'salesFinDet/' + soid, this.options).map(res => res.json());
   }
-  
+
   InsertSalesDetails(SOID: number, UserID: number, clrs: SalesDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + SOID, this.options).map(res => res.json()));

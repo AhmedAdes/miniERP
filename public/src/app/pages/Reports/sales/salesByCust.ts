@@ -3,6 +3,7 @@ import { Location } from '@angular/common'
 import { CustomerService, SalesHeaderService } from '../../../services';
 import { Customer, SalesHeader, rptSalesByCust } from '../../../Models';
 // import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'rpt-slsCust',
@@ -28,6 +29,8 @@ export class RptSalesByCustComponent implements OnInit {
     ngOnInit() {
         this.srvCst.getSalesCustomers().subscribe(cst => {
             this.custList = cst
+            this.fromDate = hf.handleDate(new Date())
+            this.toDate = hf.handleDate(new Date())
         })
     }
 

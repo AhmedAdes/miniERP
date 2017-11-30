@@ -13,6 +13,7 @@ export class SalesPaymentComponent implements OnInit {
     @Input() Paymodel: SalesPayment;
     @Input() currentUser: CurrentUser;
     @Input() SalesRepExist: boolean;
+    @Input() GrandTotal: number;
     @Output() ValidateTotal = new EventEmitter();
     payform: FormGroup;
 

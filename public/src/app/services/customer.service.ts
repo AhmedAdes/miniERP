@@ -10,7 +10,7 @@ export class CustomerService {
     constructor(private http: Http, private auth: AuthenticationService) { }
 
     url = DBConStrng + 'customer/';
-    headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+    headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
     options = new RequestOptions({ headers: this.headers });
 
     getCustomer(id?: number) {
@@ -19,6 +19,9 @@ export class CustomerService {
             geturl = this.url + id;
         }
         return this.http.get(geturl, this.options).map(res => res.json());
+    }
+    getCustomerforUser(id: number) {
+        return this.http.get(this.url + 'UserCustomers/' + id, this.options).map(res => res.json());
     }
 
     insertCustomer(customer: Customer) {
@@ -40,11 +43,14 @@ export class CustomerService {
     getCustomerByPeriod(fromDate: string, toDate: string) {
         return this.http.get(this.url + 'ByPeriod/' + fromDate + '.' + toDate, this.options).map(res => res.json());
     }
-    getTopCustomers(fromDate: string, toDate: string){
+    getTopCustomers(fromDate: string, toDate: string) {
         return this.http.get(this.url + 'topCust/' + fromDate + '.' + toDate, this.options).map(res => res.json())
     }
-    getSalesCustomers(){
+    getSalesCustomers() {
         return this.http.get(this.url + 'SalesCusts', this.options).map(res => res.json());
     }
-    
+    getRepNewCustomer(id: number, fromDate: string, toDate: string) {
+        return this.http.get(this.url + 'repNewCusts/' + id + '.' + fromDate + '.' + toDate, this.options).map(res => res.json());
+    }
+
 }

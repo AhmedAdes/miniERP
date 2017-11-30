@@ -10,9 +10,9 @@ var compression = require('compression');
 
 var sql = require('mssql');
 var con = require('./SQLConfig.js');
-var connection = new sql.Connection(con.config);
+var connection = new sql.ConnectionPool(con.config);
 //store the connection
-sql.globalConnection = connection;
+sql.globalPool = connection;
 
 var app = express();
 
@@ -74,6 +74,7 @@ var matret = require('./routes/matReturn');
 var expnse = require('./routes/expanses');
 var prov = require('./routes/provinces');
 var regn = require('./routes/regions');
+var wash = require('./routes/wash');
 
 app.use('/', index);
 app.use('/api/fabrics', fabrics);
@@ -108,6 +109,7 @@ app.use('/api/matret', matret);
 app.use('/api/expnse', expnse);
 app.use('/api/provnc', prov);
 app.use('/api/region', regn);
+app.use('/api/wash', wash);
 
 connection.connect(err => {
     if (err) {

@@ -10,11 +10,11 @@ export class MaterialService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   fabric = DBConStrng + 'fabrics/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getCloth(id?: number) {
-    var geturl = this.fabric ;
+    var geturl = this.fabric;
     if (id != null) {
       geturl = this.fabric + id;
     }
@@ -22,10 +22,10 @@ export class MaterialService {
   }
 
   insertMaterial(material: Material) {
-    return this.http.post(this.fabric , material, this.options).map(res => res.json());
+    return this.http.post(this.fabric, material, this.options).map(res => res.json());
   }
   updateMaterial(id: number, material: Material) {
-    return this.http.put(this.fabric  + id, material, this.options).map(res => res.json());
+    return this.http.put(this.fabric + id, material, this.options).map(res => res.json());
   }
   deleteMaterial(id: number) {
     return this.http.delete(this.fabric + id, this.options).map(res => res.json());

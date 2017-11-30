@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModelColor, CurrentUser } from '../../../Models';
+import { ModelColor, CurrentUser } from '../../../../Models';
 import { ColorPickerService } from 'ngx-color-picker';
 
 @Component({

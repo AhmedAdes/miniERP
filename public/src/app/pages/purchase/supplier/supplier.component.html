@@ -9,7 +9,7 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="tableslide panel-body table-responsive" *ngIf="showTable">
-        <table id="tblSuppliers" class="table table-hover table-striped table-responsive">
+        <table id="tblSuppliers" class="table table-hover text-center table-striped table-responsive">
             <colgroup>
                 <col width="15%" />
                 <col width="15%" />
@@ -20,7 +20,7 @@
                 <col width="10%" />
                 <col width="15%" />
             </colgroup>
-            <thead>
+            <thead class="bg-dark text-white font-weight-bold">
                 <tr>
                     <th> {{srchObj.DisplayNames.SupName.Disp}} <i (click)="SortTable('SupName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SupName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.SupContactPerson.Disp}} <i (click)="SortTable('SupContactPerson')" class="btn btn-default"

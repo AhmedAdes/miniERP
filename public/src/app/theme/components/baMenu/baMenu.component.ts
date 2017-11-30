@@ -13,6 +13,7 @@ export class BaMenu {
 
   @Input() sidebarCollapsed: boolean = false;
   @Input() menuHeight: number;
+  @Input() curUser
 
   @Output() expandMenu = new EventEmitter<any>();
 

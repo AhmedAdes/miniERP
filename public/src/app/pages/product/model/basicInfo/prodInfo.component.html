@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-lg-4">
+    <ba-card [title]="srchObj.DisplayNames.Photo.Disp" baCardClass="with-scroll">
+      <div class="row picZoomer">
+        <a href="javascript:void(0)" data-lighter>
+          <img width="140" height="140" class="img-rounded img-responsive" id="ImgProduct" [src]="model.SelectedProductImgSrc" [imageZoom]="zoomedImageSrc">
+          <br>
+        </a>
+      </div>
+      <div class="row" dir="rtl">
+        <input type="file" imageUpload (imageSelected)="selected($event)">
+        <!--<input id="files" name="productPic" accept="image/*;capture=camera"  type="file" (change)="ChangeImage()">-->
+      </div>
+    </ba-card>
+  </div>
+  <div class="col-lg-8">
+    <div class="form-group row">
+      <label for="BrandName" class="form-control-label col-md-4">{{srchObj.DisplayNames.BrandName.Disp}}</label>
+      <div class="col-md-8">
+        <select class="form-control" name="BrandName" [(ngModel)]="model.BrandID" #brandName="ngModel" required>
+          <option value="">Select a Brand ...</option>
+          <option *ngFor="let i of BrandList" [ngValue]="i.BrandID">{{i.BrandName}}</option>
+        </select>
+        <div *ngIf="brandName.touched && !brandName.valid" class="alert alert-danger">{{srchObj.DisplayNames.BrandName.Disp}} is required.</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="ModelName" class="control-label col-md-4">{{srchObj.DisplayNames.ModelName.Disp}}</label>
+      <div class="col-md-8">
+        <input class="form-control" type="text" name="ModelName" [(ngModel)]="model.ModelName" #ModelName="ngModel" required>
+        <div *ngIf="ModelName.touched && !ModelName.valid" class="alert alert-danger">{{srchObj.DisplayNames.ModelName.Disp}} is required</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="ProdType" class="control-label col-md-4">{{srchObj.DisplayNames.ProdType.Disp}}</label>
+      <div class="col-md-8">
+        <input class="form-control" type="text" name="ProdType" [(ngModel)]="model.ProdType" #prodType="ngModel">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="WashID" class="form-control-label col-md-4">{{srchObj.DisplayNames.WashType.Disp}}</label>
+      <div class="col-md-8">
+        <select class="form-control" name="WashID" [(ngModel)]="model.WashID" #wash="ngModel" required>
+          <option value="">Select a Wash Type ...</option>
+          <option *ngFor="let i of WashList" [ngValue]="i.WashID">{{i.WashType}}</option>
+        </select>
+        <div *ngIf="wash.touched && !wash.valid" class="alert alert-danger">{{srchObj.DisplayNames.WashType.Disp}} is required.</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="PriceWholeSale" class="control-label col-md-4">{{srchObj.DisplayNames.PriceWholeSale.Disp}}</label>
+      <div class="col-md-8">
+        <input class="form-control" type="number" name="PriceWholeSale" [(ngModel)]="model.PriceWholeSale" #PriceWholeSale="ngModel"
+          required>
+        <div *ngIf="PriceWholeSale.touched && !PriceWholeSale.valid" class="alert alert-danger">{{srchObj.DisplayNames.PriceWholeSale.Disp}} is required</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="PriceStores" class="control-label col-md-4">{{srchObj.DisplayNames.PriceStores.Disp}}</label>
+      <div class="col-md-8">
+        <input class="form-control" type="number" name="PriceStores" [(ngModel)]="model.PriceStores" #PriceStores="ngModel" required>
+        <div *ngIf="PriceStores.touched && !PriceWholeSale.valid" class="alert alert-danger">{{srchObj.DisplayNames.PriceStores.Disp}} is required</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="PricePiece" class="control-label col-md-4">{{srchObj.DisplayNames.PricePiece.Disp}}</label>
+      <div class="col-md-8">
+        <input class="form-control" type="number" name="PricePiece" [(ngModel)]="model.PricePiece" #PricePiece="ngModel" required>
+        <div *ngIf="PricePiece.touched && !PriceWholeSale.valid" class="alert alert-danger">{{srchObj.DisplayNames.PricePiece.Disp}} is required</div>
+      </div>
+    </div>
+  </div>
+</div>

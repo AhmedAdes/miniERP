@@ -10,7 +10,7 @@ export class FinRejectService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'finrej/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getReject(id?: number) {

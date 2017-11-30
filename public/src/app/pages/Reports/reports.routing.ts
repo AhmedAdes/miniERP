@@ -9,26 +9,32 @@ import {
   RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptFinHistoryComponent,
   RptFinRecPeriodComponent, RptFinDispPeriodComponent, RptFinEqzPeriodComponent,
   RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent,
-  RptFinStoreBlncDateComponent, RptSalesByProdComponent, RptSalesByStrTypeComponent
+  RptFinStoreBlncDateComponent, RptSalesByProdComponent, RptSalesByStrTypeComponent,
+  RptSalesByPeriodComponent, RptNewCustbyRepComponent
 } from './index';
 
 // noinspection TypeScriptValidateTypes
 const routes: Routes = [
-  // { path: '', redirectTo: '/reports/home', pathMatch: 'full' },
+  // { path: '', redirectTo: '/home/reports/home', pathMatch: 'full' },
+  // {
+  //   path: '', redirectTo: './home', pathMatch: 'full'
+  // },
   {
     path: '',
     component: ReportsComponent,
     children: [
-      { path: 'home', component: ReportHomeComponent, canActivate: [AuthGuard] },
+      { path: 'home', component: ReportHomeComponent, canActivate: [AuthGuard], data: {title: 'Reports التقارير'} },
       { path: 'custcntry', component: RptCustCountryComponent, canActivate: [AuthGuard] },
       { path: 'custarea', component: RptCustAreaComponent, canActivate: [AuthGuard] },
       { path: 'topCust', component: RptTopCustComponent, canActivate: [AuthGuard] },
       { path: 'allCust', component: RptAllCustomersComponent, canActivate: [AuthGuard] },
+      { path: 'repNewCust', component: RptNewCustbyRepComponent, canActivate: [AuthGuard] },
       { path: 'slsCust', component: RptSalesByCustComponent, canActivate: [AuthGuard] },
       { path: 'slsProd', component: RptSalesByProdComponent, canActivate: [AuthGuard] },
       { path: 'slsStr', component: RptSalesByStrTypeComponent, canActivate: [AuthGuard] },
       { path: 'slscntry', component: RptSalesByCntryComponent, canActivate: [AuthGuard] },
       { path: 'slsarea', component: RptSalesByAreaComponent, canActivate: [AuthGuard] },
+      { path: 'slsGrp', component: RptSalesByPeriodComponent, canActivate: [AuthGuard] },
       { path: 'topProd', component: RptTopSalesProdQtyComponent, canActivate: [AuthGuard] },
       { path: 'lstProd', component: RptLeastSalesProdQtyComponent, canActivate: [AuthGuard] },
       { path: 'cmprMonth', component: RptSalesCompareComponent, canActivate: [AuthGuard] },
@@ -42,7 +48,7 @@ const routes: Routes = [
       { path: 'rptfinEmpty', component: RptFinEmptyStockComponent, canActivate: [AuthGuard] },
       { path: 'blncDate', component: RptFinStoreBlncDateComponent, canActivate: [AuthGuard] },
     ]
-  }
+  },
 ];
 
 export const routing = RouterModule.forChild(routes);

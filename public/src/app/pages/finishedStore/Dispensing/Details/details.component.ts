@@ -13,7 +13,6 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
     @Input() Detmodel: FinishedStoreDetail;
     @Input() currentUser: CurrentUser;
     @Input() modelsList: Model[];
-    @Input() BatchNo: string;
     colorList: ModelColor[];
     BatchList: BatchNo[];
     modelIDsList: string[];

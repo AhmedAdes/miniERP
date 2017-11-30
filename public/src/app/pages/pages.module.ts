@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ImageUploadModule } from 'ng2-imageupload';
-import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ImageUploadModule } from 'ng2-imageupload';
+import { ImageZoomModule } from 'angular2-image-zoom';
 
 import { routing } from './pages.routing';
 import { NgaModule } from '../theme/nga.module';
@@ -13,13 +13,13 @@ import { NgaModule } from '../theme/nga.module';
 import { Pages } from './pages.component';
 
 import {
-  BrandComponent, DashboardComponent, ModelComponent, UserComponent, ExpansesComponent,
-  ColorComponent, SizeComponent, ProdInfoComponent, LoginComponent, LogOutComponent
+  DashboardComponent, UserComponent, ExpansesComponent,
+  ChngPassComponent, LoginComponent, LogOutComponent, ProfileComponent
 } from './index';
 import {
   AuthenticationService, AuthGuard, DashboardService, AccessoryService, BrandService,
   MaterialService, ModelService, ColorService, SizeService, CustomerService, SupplierService,
-  ExpansesService
+  ExpansesService, WashTypeService, UserService
 } from '../services';
 
 import { PipeModule } from '../pipes/pipes.module';
@@ -28,20 +28,19 @@ import { PrintOutModule } from './PrintOut/printout.module'
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
-    ImageUploadModule, ColorPickerModule, NgxPaginationModule,
+    NgxPaginationModule, ImageUploadModule, ImageZoomModule,
     BrowserAnimationsModule, PrintOutModule
   ],
   declarations: [
     Pages,
-    UserComponent, BrandComponent, LoginComponent, LogOutComponent,
-    DashboardComponent, ModelComponent,
-    ColorComponent, SizeComponent, ProdInfoComponent, ExpansesComponent
+    UserComponent, LoginComponent, LogOutComponent, ChngPassComponent,
+    DashboardComponent, ExpansesComponent, ProfileComponent
   ],
   providers: [
     AuthGuard, AuthenticationService, DashboardService,
-    AccessoryService, BrandService,
-    MaterialService, ModelService, ColorService,
-    SizeService, ExpansesService
+    AccessoryService, BrandService, MaterialService,
+    ModelService, ColorService, SizeService,
+    ExpansesService, WashTypeService, UserService
   ]
 })
 export class PagesModule {

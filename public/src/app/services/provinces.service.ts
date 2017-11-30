@@ -10,11 +10,11 @@ export class ProvinceService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'provnc/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getProvince(id?: number) {
-    var geturl = this.url ;
+    var geturl = this.url;
     if (id != null) {
       geturl = this.url + id;
     }
@@ -22,10 +22,10 @@ export class ProvinceService {
   }
 
   insertProvince(prov: Province) {
-    return this.http.post(this.url , prov, this.options).map(res => res.json());
+    return this.http.post(this.url, prov, this.options).map(res => res.json());
   }
   updateProvince(id: number, prov: Province) {
-    return this.http.put(this.url  + id, prov, this.options).map(res => res.json());
+    return this.http.put(this.url + id, prov, this.options).map(res => res.json());
   }
   deleteProvince(id: number) {
     return this.http.delete(this.url + id, this.options).map(res => res.json());

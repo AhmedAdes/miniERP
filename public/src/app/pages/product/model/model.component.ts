@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { ImageResult } from 'ng2-imageupload';
-import { AuthenticationService, ModelService, BrandService, ColorService, SizeService } from '../../services';
-import { Brand, Model, CurrentUser, ModelColor, ModelSize } from '../../Models';
+import { AuthenticationService, ModelService, BrandService, ColorService, SizeService, WashTypeService } from '../../../services';
+import { Brand, WashType, Model, CurrentUser, ModelColor, ModelSize } from '../../../Models';
 
 @Component({
     selector: 'app-model',
@@ -24,7 +23,7 @@ import { Brand, Model, CurrentUser, ModelColor, ModelSize } from '../../Models';
 export class ModelComponent implements OnInit {
 
     constructor(public serv: ModelService, private auth: AuthenticationService,
-        private brandServ: BrandService, private clrServ: ColorService, private sizeServ: SizeService) { }
+        private brandServ: BrandService, private clrServ: ColorService, private sizeServ: SizeService, private srvwash: WashTypeService) { }
 
     currentUser: CurrentUser = this.auth.getUser();
     collection: Model[] = [];
@@ -34,25 +33,23 @@ export class ModelComponent implements OnInit {
     Formstate: string;
     headerText: string;
     BrandList: Brand[] = [];
+    WashList: WashType[] = [];
     colorList: ModelColor[] = [];
     sizeList: ModelSize[] = [];
     errorMessage: string;
     orderbyString: string = "";
     orderbyClass: string = "fa fa-sort";
+    
 
     ngOnInit() {
         this.serv.getModel().subscribe(cols => {
             this.collection = cols;
             this.brandServ.getBrand().subscribe(set => {
-                this.BrandList = set; this.TableBack();
+                this.BrandList = set; 
+                this.srvwash.getWashType().subscribe(w => this.WashList = w)
+                this.TableBack();
             });
         });
-    }
-
-    selected(imageResult: ImageResult) {
-        this.model.SelectedProductImgSrc = imageResult.resized
-            && imageResult.resized.dataURL
-            || imageResult.dataURL;
     }
 
     CreateNew() {

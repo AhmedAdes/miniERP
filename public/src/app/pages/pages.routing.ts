@@ -8,7 +8,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { AuthGuard } from '../services/auth.guard';
 
 import {
-  BrandComponent, DashboardComponent, ModelComponent, UserComponent
+  DashboardComponent, UserComponent, ProfileComponent, ChngPassComponent
 } from './index';
 import { ReportHomeComponent } from './Reports/reportHome/rptHome.component'
 
@@ -20,10 +20,11 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
-      { path: 'brand', component: BrandComponent, canActivate: [AuthGuard] },
-      { path: 'model', component: ModelComponent, canActivate: [AuthGuard] },
-      { path: 'profile', component: UserComponent },
+      { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: 'pass', component: ChngPassComponent, canActivate: [AuthGuard] },
       { path: 'materials', loadChildren: 'app/pages/Materials/materials.module#MaterialsModule' },
+      { path: 'prod', loadChildren: 'app/pages/product/product.module#ProductsModule' },
       { path: 'sales', loadChildren: 'app/pages/sales/sales.module#SalesModule' },
       { path: 'finish', loadChildren: 'app/pages/finishedStore/finishStore.module#FinStoreModule' },
       { path: 'purchase', loadChildren: 'app/pages/purchase/purchase.module#PurchaseModule' },

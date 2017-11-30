@@ -9,6 +9,7 @@ export class BaMenuItem {
 
   @Input() menuItem:any;
   @Input() child:boolean = false;
+  @Input() curUser
 
   @Output() itemHover = new EventEmitter<any>();
   @Output() toggleSubMenu = new EventEmitter<any>();

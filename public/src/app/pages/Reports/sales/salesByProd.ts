@@ -4,6 +4,7 @@ import { ModelService, SalesHeaderService } from '../../../services';
 import { Model, SalesHeader, rptSalesByProd } from '../../../Models';
 import { BaseChartDirective, Color } from 'ng2-charts';
 // import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 interface MonthChart {
     MonthDate: Date
@@ -48,6 +49,8 @@ export class RptSalesByProdComponent implements OnInit {
         this.srvProd.getModel().subscribe(cst => {
             this.prodList = cst
             this.modelIDsList = this.prodList.map(m => { return m.ModelCode })
+            this.fromDate = hf.handleDate(new Date())
+            this.toDate = hf.handleDate(new Date())
         })
     }
 
@@ -60,7 +63,6 @@ export class RptSalesByProdComponent implements OnInit {
                 this.selProd = this.prodList.find(x => x.ModelID == this.modelID)
                 this.subTotals = this.collection.reduce((a, b) => a + b.SubTotal, 0)
                 this.sumDiscount = this.collection.reduce((a, b) => a + (b.Discount ? b.DiscountPrcnt ? (b.Discount / 100 * b.SubTotal) : b.Discount : 0), 0)
-                this.sumDiscount = this.collection.reduce((a, b) => a + (((b.Discount * b.SubTotal) / 100)), 0)
                 this.sumTotals = this.subTotals - this.sumDiscount
                 this.Months = chrt
                 this.chartData = [{

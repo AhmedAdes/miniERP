@@ -31,3 +31,4 @@ export * from './matReturn.service';
 export * from './expanses.service';
 export * from './provinces.service';
 export * from './regions.service';
+export * from './washTypes.service';

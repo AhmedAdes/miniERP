@@ -9,14 +9,14 @@
 		</div>
 	</div>
 	<div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-		<table id="tblClothMaterials" class="table table-hover table-striped table-responsive">
+		<table id="tblClothMaterials" class="table table-hover text-center table-striped table-responsive">
 			<colgroup>
 				<col width="20%" />
 				<col width="10%" />
 				<col width="10%" />
 				<col width="15%" />
 			</colgroup>
-			<thead>
+			<thead class="bg-dark text-white font-weight-bold">
 				<tr>
 					<th> {{srchObj.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
 					<th> {{srchObj.DisplayNames.Unit.Disp}} <i (click)="SortTable('Unit')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Unit') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
@@ -46,7 +46,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let item of (collection | filter:srchMat | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+				<tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
 					<td>{{item.MaterialName}}</td>
 					<td>{{item.Unit}}</td>
 					<td>{{item.UserName}}</td>

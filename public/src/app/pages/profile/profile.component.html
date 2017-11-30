@@ -1,0 +1,81 @@
+<div class="panel panel-default zz">
+  <div class="panel-heading">
+
+    <h2> {{headerText}} </h2>
+    <br>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      <p>{{errorMessage}}</p>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="inFrm" (submit)="inFrm.valid && HandleForm($event)" novalidate>
+          <div class="form-horizontal row">
+
+            <div class="col-md-4 col-sm-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3>User Photo</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row picZoomer">
+                    <a href="javascript:void(0)" data-lighter>
+                      <img width="300" height="300" class="img-rounded img-responsive" id="ImgUser" [src]="model.Photo" [imageZoom]="zoomedImageSrc">
+                      <br>
+                    </a>
+                  </div>
+                  <br>
+                  <div class="row" dir="rtl">
+                    <input type="file" imageUpload (imageSelected)="selected($event)">
+                    <!--<input id="files" name="productPic" accept="image/*;capture=camera"  type="file" (change)="ChangeImage()">-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+              <div class="form-group row">
+                <label for="UserName" class="control-label col-md-2 col-sm-4">User Name</label>
+                <div class="col-md-10 col-sm-8">
+                  <input class="form-control" type="text" name="UserName" [(ngModel)]="model.UserName" [formControl]="inFrm.controls['UserName']">
+                  <div class='error' *ngIf="inFrm.controls['UserName'].touched">
+                    <div class="alert alert-danger" *ngIf="inFrm.controls['UserName'].hasError('required')">User name is required.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="JobClass" class="control-label col-md-2 col-sm-4">Job Class</label>
+                <div class="col-md-10 col-sm-8">
+                  <input class="form-control" type="text" name="JobClass" [(ngModel)]="model.JobClass" [formControl]="inFrm.controls['JobClass']">
+                  <div class='error' *ngIf="inFrm.controls['JobClass'].touched">
+                    <div class="alert alert-danger" *ngIf="inFrm.controls['JobClass'].hasError('required')">Job Class is required.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Email" class="control-label col-md-2 col-sm-4">Email</label>
+                <div class="col-md-10 col-sm-8">
+                  <input class="form-control" type="text" name="Email" key [(ngModel)]="model.Email" [formControl]="inFrm.controls['Email']">
+                  <div class='error' *ngIf="inFrm.controls['Email'].touched">
+                    <div class="alert alert-danger" *ngIf="inFrm.controls['Email'].hasError('required')">Email is required.</div>
+                    <div class="alert alert-danger" *ngIf="inFrm.controls['Email'].hasError('invalidEmail')">Email is invalid; must be lowercase e.g.: john@doe.com</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Phone" class="control-label col-md-2 col-sm-4">Phone</label>
+                <div class="col-md-10 col-sm-8">
+                  <input class="form-control" type="text" name="Phone" key [(ngModel)]="model.Phone" [formControl]="inFrm.controls['Phone']">
+                </div>
+              </div>
+            </div>
+            <div class="form-group row no-print col-sm-offset-3 col-sm-9">
+              <button type="submit" class="btn btn-primary" [disabled]='!inFrm.valid'>Save</button> |
+              <button type="button" (click)="goBack()" class="btn btn-danger">Back to List</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

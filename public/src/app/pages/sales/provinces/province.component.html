@@ -2,20 +2,20 @@
     <div class="panel-heading">
 
         <h2> {{headerText}} </h2>
-        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+        <button *ngIf="!Formstate && currentUser.jobClass < 1" class="btn btn-primary" (click)="CreateNew()">Create New</button>
         <br><br>
         <div class="alert alert-danger" *ngIf="errorMessage">
             <p>{{errorMessage}}</p>
         </div>
     </div>
     <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-        <table id="tblProvinces" class="table table-hover table-striped table-responsive">
+        <table id="tblProvinces" class="table table-hover text-center table-striped table-responsive">
             <colgroup>
                 <col width="40%" />
                 <col width="40%" />
                 <col width="20%" />
             </colgroup>
-            <thead>
+            <thead class="bg-dark text-white font-weight-bold">
                 <tr>
                     <th> {{srchObj.DisplayNames.Province.Disp}} <i (click)="SortTable('Province')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Province') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                     <th> {{srchObj.DisplayNames.engName.Disp}} <i (click)="SortTable('engName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('engName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
@@ -42,9 +42,9 @@
                     <td>{{item.Province}}</td>
                     <td>{{item.engName}}</td>
                     <td>
-                        <button (click)="EditThis(item.ProvinceID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
+                        <button *ngIf="currentUser.jobClass < 1" (click)="EditThis(item.ProvinceID)" class="btn btn-info btn-icon" title="Edit"><i class="icon ion-edit"></i></button>
                         <button (click)="ShowDetails(item.ProvinceID)" class="btn btn-success btn-icon" title="Details"><i class="icon ion-eye"></i></button>
-                        <button (click)="Delete(item.ProvinceID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
+                        <button *ngIf="currentUser.jobClass < 1" (click)="Delete(item.ProvinceID)" class="btn btn-danger btn-icon" title="Delete"><i class="icon ion-trash-a"></i></button>
                     </td>
                 </tr>
 

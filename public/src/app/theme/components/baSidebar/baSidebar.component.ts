@@ -11,7 +11,7 @@ export class BaSidebar {
   public menuHeight:number;
   public isMenuCollapsed:boolean = false;
   public isMenuShouldCollapsed:boolean = false;
-
+  public curUser
   constructor(private _elementRef:ElementRef, private _state:GlobalState) {
 
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
@@ -20,6 +20,7 @@ export class BaSidebar {
   }
 
   public ngOnInit():void {
+    this.curUser = JSON.parse(localStorage.getItem('currentUser'))
     if (this._shouldMenuCollapse()) {
       this.menuCollapse();
     }

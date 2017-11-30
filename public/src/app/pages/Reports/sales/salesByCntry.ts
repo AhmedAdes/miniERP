@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
 import { SalesHeaderService } from '../../../services';
-// import { SalesHeader } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 interface SlsCntryreport {
     Country: string
@@ -30,7 +30,8 @@ export class RptSalesByCntryComponent implements OnInit {
     subHeader: string
 
     ngOnInit() {
-
+        this.fromDate = hf.handleDate(new Date())
+        this.toDate = hf.handleDate(new Date())
     }
 
     ViewReport() {

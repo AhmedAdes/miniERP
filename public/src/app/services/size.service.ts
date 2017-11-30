@@ -12,7 +12,7 @@ export class SizeService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'size/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getSize(id?: number) {

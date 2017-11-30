@@ -2,6 +2,7 @@
     (mouseleave)="hoverElemTop=outOfArea">
   <ba-menu-item
     [menuItem]="item"
+    [curUser]="curUser"
     (itemHover)="hoverItem($event)"
     (toggleSubMenu)="toggleSubMenu($event)"
     *ngFor="let item of menuItems"></ba-menu-item>

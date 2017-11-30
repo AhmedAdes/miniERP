@@ -3,6 +3,7 @@ import { Location } from '@angular/common'
 import { SalesHeaderService } from '../../../services';
 import { rptCompareSales } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'rpt-slscmpr',
@@ -24,7 +25,8 @@ export class RptSalesCompareComponent implements OnInit {
     subHeader: string 
 
     ngOnInit() {
-        
+        this.firstDate = hf.handleDate(new Date())
+        this.secondDate = hf.handleDate(new Date())
     }
 
     ViewReport() {

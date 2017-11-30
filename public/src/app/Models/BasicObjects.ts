@@ -152,10 +152,8 @@ export const provinces = [
 
 export const JobClass = [
   { class: 0, name: 'SysAdmin' },
-  { class: 1, name: 'Warehouse Mng' },
-  { class: 2, name: 'Sales & Marketing Mng' },
-  { class: 3, name: 'Manufacture Mng' },
-  { class: 4, name: 'Representative' }
+  { class: 1, name: 'SuperVisor' },
+  { class: 2, name: 'Sales Rep.' }
 ];
 export const CustTypes = [
   { name: 'WholeSale جملة' },

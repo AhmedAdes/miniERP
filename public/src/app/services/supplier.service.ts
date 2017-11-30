@@ -10,11 +10,11 @@ export class SupplierService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'supplier/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getSupplier(id?: number) {
-    var geturl = this.url ;
+    var geturl = this.url;
     if (id != null) {
       geturl = this.url + id;
     }
@@ -22,10 +22,10 @@ export class SupplierService {
   }
 
   insertSupplier(supplier: Supplier) {
-    return this.http.post(this.url , supplier, this.options).map(res => res.json());
+    return this.http.post(this.url, supplier, this.options).map(res => res.json());
   }
   updateSupplier(id: number, supplier: Supplier) {
-    return this.http.put(this.url  + id, supplier, this.options).map(res => res.json());
+    return this.http.put(this.url + id, supplier, this.options).map(res => res.json());
   }
   deleteSupplier(id: number) {
     return this.http.delete(this.url + id, this.options).map(res => res.json());

@@ -3,6 +3,8 @@ import { Location } from '@angular/common'
 import { SalesHeaderService } from '../../../services';
 // import { rptSalesByCust } from '../../../Models';
 import { BaseChartDirective, Color } from 'ng2-charts';
+import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 
 interface MonthChart {
@@ -25,9 +27,7 @@ interface slsSummary {
     styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesSummaryComponent implements OnInit {
-    constructor(private srv: SalesHeaderService, private loc: Location) { }
     @ViewChild(BaseChartDirective) private _chart;
-
     collection: MonthChart[] = []
     sumry: slsSummary = { TotalAmount: 0, TotalOrders: 0, TotalCustomers: 0, TotalProducts: 0 }
     fromDate: string
@@ -45,8 +45,11 @@ export class RptSalesSummaryComponent implements OnInit {
     };
     colorsEmpty: Array<Color> = []
 
-    ngOnInit() {
+    constructor(private srv: SalesHeaderService, private loc: Location, private router: Router) { }
 
+    ngOnInit() {
+        this.fromDate = hf.handleDate(new Date())
+        this.toDate = hf.handleDate(new Date())
     }
 
     ViewReport() {
@@ -80,5 +83,8 @@ export class RptSalesSummaryComponent implements OnInit {
     }
     printReport() {
         window.print();
+    }
+    routeDetails(groupBy) {
+        this.router.navigate(['/home/reports/slsGrp', [ groupBy, this.fromDate, this.toDate ]])
     }
 }

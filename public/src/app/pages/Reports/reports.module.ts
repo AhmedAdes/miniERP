@@ -13,12 +13,13 @@ import {
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
   RptSalesSummaryComponent, RptSalesIncomeTrackerComponent,
   RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
-  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptAllCustomersComponent,
-  RptFinStoreBlncDateComponent, RptSalesByProdComponent, RptSalesByStrTypeComponent
+  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent,
+  RptAllCustomersComponent, RptFinStoreBlncDateComponent, RptSalesByProdComponent,
+  RptSalesByStrTypeComponent, RptSalesByPeriodComponent, RptNewCustbyRepComponent
 } from './index';
 import {
   CustomerService, SalesHeaderService, SalesDetailService, FinStoreService, FinDetailService, FinReceivingService, FinDispensingService,
-  ModelService, ColorService
+  ModelService, ColorService, SalesRepService
 } from '../../services';
 import { PipeModule } from '../../pipes/pipes.module'
 
@@ -26,10 +27,13 @@ let cust_Rpts = [RptCustCountryComponent, RptCustAreaComponent, RptTopCustCompon
 let sls_Rpts = [
   RptSalesByCustComponent, RptSalesByCntryComponent, RptSalesByAreaComponent,
   RptLeastSalesProdQtyComponent, RptTopSalesProdQtyComponent, RptSalesCompareComponent,
-  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptSalesByProdComponent, RptSalesByStrTypeComponent
+  RptSalesSummaryComponent, RptSalesIncomeTrackerComponent, RptSalesByProdComponent,
+  RptSalesByStrTypeComponent, RptNewCustbyRepComponent
 ]
 let fin_Rpts = [RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeriodComponent,
-  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptFinStoreBlncDateComponent]
+  RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptFinStoreBlncDateComponent,
+  RptSalesByPeriodComponent
+]
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
@@ -40,7 +44,7 @@ let fin_Rpts = [RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeri
   ],
   providers: [
     CustomerService, SalesHeaderService, SalesDetailService, FinStoreService, FinDetailService, FinReceivingService, FinDispensingService,
-    ModelService, ColorService
+    ModelService, ColorService, SalesRepService
   ],
 })
 export class ReportsModule {

@@ -10,7 +10,7 @@ export class FinStoreService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'finstore/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getStoreBalance() {
@@ -25,7 +25,7 @@ export class FinStoreService {
   getStoreZeroBalanceinDate(indt: string) {
     return this.http.get(this.url + '/strBlncByDateZero/' + indt, this.options).map(res => res.json());
   }
-  getBalanceSubDetails(){
+  getBalanceSubDetails() {
     return this.http.get(this.url + 'BalanceSubDet/all', this.options).map(res => res.json());
   }
   getProdHistory(modelID: number, clrID?: number) {
@@ -48,6 +48,6 @@ export class FinStoreService {
     return this.http.get(this.url + 'ReturnByPeriod/' + fromdate + '.' + todate, this.options).map(res => res.json())
   }
   getEmptyStock() {
-    return this.http.get(this.url + 'EmptyStock/all' , this.options).map(res => res.json())
+    return this.http.get(this.url + 'EmptyStock/all', this.options).map(res => res.json())
   }
 }

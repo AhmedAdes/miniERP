@@ -10,7 +10,7 @@ export class UserService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'users/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getuser(id?: number) {
@@ -23,7 +23,7 @@ export class UserService {
   }
 
   InsertUser(user: User) {
-    return this.http.post(this.url , user, this.options).map(res => res.json());
+    return this.http.post(this.url, user, this.options).map(res => res.json());
   }
 
   UpdateUser(id: number, user: User) {
@@ -36,6 +36,9 @@ export class UserService {
 
   ApproveUser(id: number, ApproveUser: number) {
     this.options.headers.append("Content-type", "application/json");
-    return this.http.put(this.url + 'Approve/' + id, JSON.stringify({id: id, appuser: ApproveUser}), this.options).map(res => res.json());
+    return this.http.put(this.url + 'Approve/' + id, JSON.stringify({ id: id, appuser: ApproveUser }), this.options).map(res => res.json());
+  }
+  changePass(mod: User) {
+    return this.http.put(this.url + 'ChangePass/' + mod.UserID, mod, this.options).map(res => res.json());
   }
 }

@@ -9,14 +9,14 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-        <table id="tblSalesReps" class="table table-hover table-striped table-responsive">
+        <table id="tblSalesReps" class="table table-hover text-center table-striped table-responsive">
             <colgroup>
                 <col width="20%" />
                 <col width="40%" />
                 <col width="20%" />
                 <col width="20%" />
             </colgroup>
-            <thead>
+            <thead class="bg-dark text-white font-weight-bold">
                 <tr>
                     <th> {{srchObj.DisplayNames.SalesRepID.Disp}}
                         <i (click)="SortTable('SalesRepID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SalesRepID') == 1) ? orderbyClass : 'fa fa-sort'"></i>

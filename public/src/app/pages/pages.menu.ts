@@ -1,4 +1,3 @@
-
 export const PAGES_MENU = [
   {
     path: 'home',
@@ -24,6 +23,7 @@ export const PAGES_MENU = [
             selected: false,
             expanded: false,
             order: 100,
+            hidden: 1,
           }
         },
         children: [
@@ -47,7 +47,7 @@ export const PAGES_MENU = [
         ]
       },
       {
-        path: '',
+        path: 'prod',
         data: {
           menu: {
             title: 'Products منتجات',
@@ -75,6 +75,15 @@ export const PAGES_MENU = [
                 icon: 'icon ion-pricetags'
               }
             },
+          },
+          {
+            path: 'wash',
+            data: {
+              menu: {
+                title: 'Wash Type نوع الغسلة',
+                icon: 'icon ion-pricetags'
+              }
+            },
           }
         ]
       },
@@ -87,6 +96,7 @@ export const PAGES_MENU = [
             selected: false,
             expanded: false,
             order: 300,
+            hidden: 1,
           }
         },
         children: [
@@ -110,6 +120,7 @@ export const PAGES_MENU = [
             selected: false,
             expanded: false,
             order: 400,
+            hidden: 1,
           }
         },
         children: [
@@ -195,7 +206,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Print Barcode طباعة باركود',
-                icon: 'fa fa-circle-o'
+                icon: 'fa fa-circle-o',
+                hidden: 1,
               }
             }
           },
@@ -204,7 +216,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Receiving الاستلام',
-                icon: 'fa fa-circle-o'
+                icon: 'fa fa-circle-o',
+                hidden: 1,
               }
             }
           },
@@ -213,7 +226,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Dispensing الصرف',
-                icon: 'fa fa-circle-o'
+                icon: 'fa fa-circle-o',
+                hidden: 1,
               }
             }
           },
@@ -222,7 +236,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Equalization التسوية',
-                icon: 'fa fa-circle-o'
+                icon: 'fa fa-circle-o',
+                hidden: 1,
               }
             }
           },
@@ -231,7 +246,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Return المرتجعات',
-                icon: 'fa fa-circle-o'
+                icon: 'fa fa-circle-o',
+                hidden: 1,
               }
             }
           }
@@ -272,7 +288,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Payments استلام دفعات',
-                icon: 'fa fa-dollar'
+                icon: 'fa fa-dollar',
+                hidden: 1,
               }
             }
           },
@@ -281,7 +298,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Commissions عمولة البيع',
-                icon: 'fa fa-dollar'
+                icon: 'fa fa-dollar',
+                hidden: 1,
               }
             }
           },
@@ -290,7 +308,8 @@ export const PAGES_MENU = [
             data: {
               menu: {
                 title: 'Sales Rep. مندوبين البيع',
-                icon: 'fa fa-dollar'
+                icon: 'fa fa-dollar',
+                hidden: 1,
               }
             }
           },
@@ -322,13 +341,13 @@ export const PAGES_MENU = [
             icon: 'fa fa-key',
             selected: false,
             expanded: false,
-            hidden: JSON.parse(localStorage.getItem('currentUser')) == null ? true : JSON.parse(localStorage.getItem('currentUser')).isAdmin == false,
+            hidden: 1,
             order: 800,
           }
         },
         children: [
           {
-            path: '',
+            path: 'user',
             data: {
               menu: {
                 title: 'System Users المستخدمين',
@@ -346,7 +365,8 @@ export const PAGES_MENU = [
             icon: 'icon ion-android-home',
             selected: false,
             expanded: false,
-            order: 0
+            order: 0,
+            hidden: 2,
           }
         }
       }

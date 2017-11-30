@@ -4,7 +4,7 @@
     & > tr {
       & > th {
         border-bottom: 1px solid $border-light;
-        white-space: nowrap;
+        // white-space: nowrap;
         &:first-child {
           text-align: center;
         }
@@ -276,9 +276,9 @@ input.search-input {
   border-bottom: dashed 1px $border;
 }
 
-th {
-  font-weight: $font-normal;
-}
+// th {
+//   font-weight: $font-normal;
+// }
 
 .editable-empty {
   color: $danger-dark;

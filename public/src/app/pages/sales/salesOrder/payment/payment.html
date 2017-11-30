@@ -16,10 +16,13 @@
       <label for="PayAmount" class="control-label col-md-2">{{Paymodel.DisplayNames.PayAmount.Disp}}</label>
       <div class="col-md-10">
         <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">
+            <button (click)="Paymodel.PayAmount = GrandTotal" title="Add All Total"><i class="icon ion-archive"></i></button>
+          </span>
           <input class="form-control" type="number" name="PayAmount" [(ngModel)]="Paymodel.PayAmount" [formControl]="payform.controls['PayAmount']"
             required>
-          <span class="input-group-addon" id="basic-addon1">(Done) Paid</span>
-          <span class="input-group-addon" id="basic-addon1">
+          <span class="input-group-addon" id="basic-addon2">(Done) Paid</span>
+          <span class="input-group-addon" id="basic-addon3">
             <input type="checkbox" name="Paid" [(ngModel)]="Paymodel.Paid" [formControl]="payform.controls['PayDone']">
           </span>
         </div>

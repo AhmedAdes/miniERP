@@ -8,6 +8,7 @@ export class SalesHeader {
     Discount: number;
     DiscountPrcnt: boolean;
     Notes: string;
+    SelfNotes: string;
     DeliveryDate: Date;
     Commisioner: string;
     CommisionerTel: string;
@@ -29,7 +30,8 @@ export class SalesHeader {
         ContactPerson: { Disp: "Contact Person المسئول" },
         SalesTax: { Disp: "SalesTax % ضريبة المبيعات" },
         Discount: { Disp: "Discount % الخصم" },
-        Notes: { Disp: "Notes ملاحظات" },
+        Notes: { Disp: "Customer Notes ملاحظات للعميل" },
+        SelfNotes: { Disp: "Self Notes ملاحظات لنا" },
         DeliveryDate: { Disp: "Delivery Date تاريخ التسليم" },
         Commisioner: { Disp: "Sales Rep. مندوب البيع" },
         CommisionerTel: { Disp: "Sales Rep. Tel. تليفون مندوب البيع" },
@@ -56,6 +58,10 @@ export class SalesDetail {
     Stock: string;
     StoreType: string;
     StoreTypeID: number;
+    SODate: Date;
+    CustID: number;
+    CustName: string;
+    ContactPerson: string;
 
     DisplayNames = {
         SOID: { Disp: "Sales Order امرالبيع" },
@@ -69,6 +75,10 @@ export class SalesDetail {
         UserName: { Disp: "User Name" },
         Stock: { Disp: "Store Stock رصيد المخزن" },
         StoreType: { Disp: "Store Type نوع مخزن المنتج" },
+        SODate: { Disp: "Sales Date التاريخ" },
+        CustID: { Disp: "Customer العميل" },
+        CustName: { Disp: "Customer العميل" },
+        ContactPerson: { Disp: "Contact Person المسئول" },
     }
 }
 export class SalesPayment {
@@ -167,7 +177,7 @@ export class rptSalesByProd {
     SOID: number;
     DiscountPrcnt: boolean;
 }
-export class rptCompareSales{
+export class rptCompareSales {
     ModelCode: string;
     ModelName: string;
     M1Quantity: number;
@@ -176,5 +186,31 @@ export class rptCompareSales{
     M2Amount: number;
 }
 
-// M1.ModelCode, M1.ModelCode, M1.Quantity M1Quantity, M1.Amount M1Amount, M2.Quantity M2Quantity, M2.Amount M2Amount
-//  h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, h.GrandTotal, ISNULL(h.Discount, 0) Discount, m.ModelCode
+export class rptSalesPeriod {
+    CustID: number;
+    CustName: string;
+    Region: string;
+    Country: string;
+    ColorID: number;
+    ModelCode: string;
+    ModelName: string;
+    Quantity: number;
+    UnitPrice: number;
+    Discount: number;
+    SubTotal: number;
+    SODate: Date;
+    SOID: number;
+    DiscountPrcnt: boolean;
+    StoreTypeID: number;
+    StoreType: string;
+    TOTDiscount: number;
+    SalesCount: number;
+    CustCount: number;
+}
+// h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, (d.Quantity * d.Price) SubTotal, ISNULL(h.Discount, 0) Discount, 
+// m.ModelCode, h.SODate, c.Country + ' - ' + c.Area AS Region, c.Country, c.Area, h.SOID, h.DiscountPrcnt, d.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType,
+// CASE h.DiscountPrcnt WHEN 1 THEN (ISNULL(h.Discount, 0) * (d.Quantity * d.Price) / 100) WHEN 0 THEN ISNULL(h.Discount, 0) END TOTDiscount
+// --SELECT CustID, CustName, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount
+// --SELECT ModelCode, ModelName, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount
+// --SELECT StoreTypeID, StoreType, COUNT(DISTINCT SOID) SalesCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount
+// --SELECT Country, COUNT(DISTINCT QRY.CustID) CustCount, COUNT(DISTINCT SOID) SOCount, SUM(QRY.Quantity) Quantity ,SUM(QRY.SubTotal) SubTotal, CAST(SUM(TOTDiscount) AS REAL) TOTDiscount

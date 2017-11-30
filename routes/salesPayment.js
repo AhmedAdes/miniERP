@@ -1,29 +1,79 @@
-
 var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
-var sqlcon = sql.globalConnection;
+var jwt = require("jsonwebtoken");
+var sqlcon = sql.globalPool;
+
+router.use(function (req, res, next) {
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers["authorization"];
+    var secret = req.body.salt || req.query.salt || req.headers["salt"];
+    // decode token
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, secret, function (err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: "Failed to authenticate token."
+                });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: "No token provided."
+        });
+    }
+});
 
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderPayment ORDER BY Paid, PaymentDate`)
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderPayment Where SOPayID = ${req.params.id}`)
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 router.get('/orderpays/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderPayment Where SOID = ${req.params.id}`)
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.post('/', function (req, res, next) {
@@ -38,10 +88,17 @@ router.post('/', function (req, res, next) {
     request.input('Paid', sod.Paid);
     request.input('CommsionPaid', sod.CommsionPaid);
     request.input('UserID', sod.UserID);
-    request.execute('SalesPaymentInsert', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SalesPaymentInsert', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });
@@ -54,10 +111,17 @@ router.put('/:id', function (req, res, next) {
     request.input('PayNoteNo', sod.PayNoteNo);
     request.input('Paid', sod.Paid);
     request.input('RecDate', sod.RecDate);
-    request.execute('SalesPaymentUpdate', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SalesPaymentUpdate', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });
@@ -66,10 +130,17 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('SOID', req.params.id);
-    request.execute('SalesPaymentDelete', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SalesPaymentDelete', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });

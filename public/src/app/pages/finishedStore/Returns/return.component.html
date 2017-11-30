@@ -10,7 +10,7 @@
     </div>
   </div>
   <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-    <table id="tblFinReceivings" class="table table-hover table-striped table-responsive">
+    <table id="tblFinReceivings" class="table table-hover text-center table-striped table-responsive">
       <colgroup>
         <col width="8%" />
         <col width="8%" />
@@ -21,7 +21,7 @@
         <col width="10%" />
         <col width="15%" />
       </colgroup>
-      <thead>
+      <thead class="bg-dark text-white font-weight-bold">
         <tr>
           <th> {{srchObj.DisplayNames.RecYear.Disp}}
             <i (click)="SortTable('RecYear')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('RecYear') == 1) ? orderbyClass : 'fa fa-sort'"></i>
@@ -190,7 +190,7 @@
                 [Detmodel]="Detmodel" [SOID]="model.SOID">
               </fin-ret-detail>
 
-              <table class="table table-hover table-striped table-responsive">
+              <table class="table table-hover text-center table-striped table-responsive">
                 <colgroup>
                   <col width="10%" />
                   <col width="10%" />
@@ -199,7 +199,7 @@
                   <col width="10%" />
                   <col width="10%" />
                 </colgroup>
-                <thead>
+                <thead class="bg-dark text-white font-weight-bold">
                   <tr>
                     <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
                     <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>

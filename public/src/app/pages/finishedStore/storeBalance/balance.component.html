@@ -6,7 +6,7 @@
         <a class="btn btn-primary" [routerLink]="['/home/finish/finequl']"> Equalization تسوية </a>
         <!--<a class="btn btn-primary" [routerLink]="['/']"> Return مرتجع </a>-->
         <a class="btn btn-primary" [routerLink]="['/home/finish/finret']"> Reject مرفوض </a>
-        <a class="btn btn-primary" [routerLink]="['/home/finish/barcode']">Print Barcodes</a>
+        <a class="btn btn-primary" *ngIf="currentUser.jobClass < 1" [routerLink]="['/home/finish/barcode']">Print Barcodes</a>
         <a class="btn btn-primary" [routerLink]="['/printout/finBlnc']">Print Balance</a>
 
         <div class="alert alert-danger" *ngIf="errorMessage">
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-        <div *ngIf="currentUser.isAdmin === true">
+        <div *ngIf="currentUser.jobClass === 0">
           <div class="row">
             <div class="col-md-3 col-sm-4 col-xs-12">
                 <div class="small-box alert-warning">
@@ -53,7 +53,7 @@
                 </div>
             </div>
           </div>
-          <div class="row">
+          <div *ngIf="currentUser.jobClass < 1" class="row">
             <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="small-box alert-danger">
                     <div class="inner text-center">
@@ -93,7 +93,7 @@
             </label>
         </div>
         <br>
-        <table id="tblBrands" class="table table-hover table-striped table-responsive">
+        <table id="tblBrands" class="table table-hover text-center table-striped table-responsive">
             <colgroup>
                 <col width="20%" />
                 <col width="20%" />

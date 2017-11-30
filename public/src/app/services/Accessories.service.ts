@@ -10,11 +10,11 @@ export class AccessoryService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   accessory = DBConStrng + 'Accessories/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getAccessory(id?: number) {
-    var geturl = this.accessory ;
+    var geturl = this.accessory;
     if (id != null) {
       geturl = this.accessory + id;
     }
@@ -22,10 +22,10 @@ export class AccessoryService {
   }
 
   insertMaterial(material: Material) {
-    return this.http.post(this.accessory , material, this.options).map(res => res.json());
+    return this.http.post(this.accessory, material, this.options).map(res => res.json());
   }
   updateMaterial(id: number, material: Material) {
-    return this.http.put(this.accessory  + id, material, this.options).map(res => res.json());
+    return this.http.put(this.accessory + id, material, this.options).map(res => res.json());
   }
   deleteMaterial(id: number) {
     return this.http.delete(this.accessory + id, this.options).map(res => res.json());

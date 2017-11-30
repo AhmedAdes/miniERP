@@ -1,50 +1,121 @@
-
 var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
-var sqlcon = sql.globalConnection;
+var jwt = require("jsonwebtoken");
+var sqlcon = sql.globalPool;
+
+router.use(function (req, res, next) {
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers["authorization"];
+    var secret = req.body.salt || req.query.salt || req.headers["salt"];
+    // decode token
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, secret, function (err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: "Failed to authenticate token."
+                });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: "No token provided."
+        });
+    }
+});
 
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select c.*,u.UserName From dbo.Suppliers c Join dbo.SystemUsers u on c.UserID = u.UserID")
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select c.*,u.UserName From dbo.Suppliers c Join dbo.SystemUsers u on c.UserID = u.UserID Where SupID = '" + req.params.id + "'")
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.get('/ByCountry', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select Distinct Country From dbo.Suppliers")
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.get('/ByArea', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select Distinct Area From dbo.Suppliers")
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.get('/ByPeriod/:fromDate.:toDate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * From dbo.Suppliers Where CreateDate Between '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (recordset) { console.log(recordset); 
-            var times = array.map(function(obj) { return obj.age; }); 
-            times = times.filter(function(v,i) { return times.indexOf(v) == i; });
-            res.json({ supData: recordset ,YearData: times});})
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            console.log(recordset);
+            var times = array.map(function (obj) {
+                return obj.age;
+            });
+            times = times.filter(function (v, i) {
+                return times.indexOf(v) == i;
+            });
+            res.json({
+                supData: recordset,
+                YearData: times
+            });
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.post('/', function (req, res, next) {
@@ -65,10 +136,17 @@ router.post('/', function (req, res, next) {
     request.input('ContractDate', sup.ContractDate);
     request.input('ContractLength', sup.ContractLength);
     request.input('UserID', sup.UserID);
-    request.execute('SupplierInsert', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SupplierInsert', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });
@@ -91,10 +169,17 @@ router.put('/:id', function (req, res, next) {
     request.input('ContractDate', sup.ContractDate);
     request.input('ContractLength', sup.ContractLength);
     request.input('UserID', sup.UserID);
-    request.execute('SupplierUpdate', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SupplierUpdate', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 
@@ -104,10 +189,17 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('SupID', req.params.id);
-    request.execute('SupplierDelete', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SupplierDelete', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });

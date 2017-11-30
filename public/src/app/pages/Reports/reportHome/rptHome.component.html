@@ -1,21 +1,30 @@
-<div class="row">
-    <ng-template ngFor let-rpt [ngForOf]="reports" class="row">
-        <div class="col-xs-12 col-md-12" *ngIf="rpt.heading">
-            <h2>{{rpt.header_en}}</h2>
-            <h2>{{rpt.header_ar}}</h2>
+<ng-template ngFor let-head [ngForOf]="headings" class="row">
+  <div class="card "><!--> text-white bg-secondary <-->
+    <div class="card-title m-1"><!--> bg-dark <-->
+      <div class="text-center text-capitalize"> <!--> text-white <-->
+        <h1>{{head.header_en}} {{head.header_ar}}</h1>
+      </div>
+    </div>
+    <div class="card-body row px-2" >
+      <ng-template ngFor let-rpt [ngForOf]="reports">
+        <div class="col-xs-6 col-sm-6 col-md-3" *ngIf="rpt.group === head.group">
+          <div class="card">
+            <a [routerLink]="rpt.link" class="thumbnail">
+              <div class="text-center">
+                <img class="card-img-top" src="./assets/img/ReportIcon.svg" alt="Report" style="max-height: 150px; max-width: 100px">
+                <div class="card-body">
+                  <h4 class="card-title">
+                    <strong>{{rpt.header_en}}</strong>
+                  </h4>
+                  <h4 class="card-title">
+                    <strong>{{rpt.header_ar}}</strong>
+                  </h4>
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
-        <div class="col-xs-6 col-md-3" *ngIf="!rpt.heading">
-            <div class="card">
-                <a [routerLink]="rpt.link" class="thumbnail">
-                    <div class="text-center">
-                        <img class="card-img-top" src="./assets/img/ReportIcon.svg" alt="Report" style="max-height: 150px; max-width: 100px">
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title text-center">{{rpt.header_en}}</h4>
-                        <h4 class="card-title text-center">{{rpt.header_ar}}</h4>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </ng-template>
-</div>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>

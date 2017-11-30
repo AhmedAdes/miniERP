@@ -12,26 +12,26 @@ export class MatDetailService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'matdet/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
-  getMatRecDetail(id: number) {    
+  getMatRecDetail(id: number) {
     return this.http.get(this.url + 'Receiving/' + id, this.options).map(res => res.json());
   }
-  getMatDispDetail(id: number) {    
+  getMatDispDetail(id: number) {
     return this.http.get(this.url + 'Dispensing/' + id, this.options).map(res => res.json());
   }
-  getMatEqualDetail(id: number) {    
+  getMatEqualDetail(id: number) {
     return this.http.get(this.url + 'Equalize/' + id, this.options).map(res => res.json());
   }
-  getMatRetDetail(id: number) {    
+  getMatRetDetail(id: number) {
     return this.http.get(this.url + 'Return/' + id, this.options).map(res => res.json());
   }
-  getMatRejectDetail(id: number) {    
+  getMatRejectDetail(id: number) {
     return this.http.get(this.url + 'Reject/' + id, this.options).map(res => res.json());
   }
 
-  getMatStock(clrid: number){
+  getMatStock(clrid: number) {
     return this.http.get(this.url + 'ClrStock/' + clrid, this.options).map(res => res.json());
   }
 

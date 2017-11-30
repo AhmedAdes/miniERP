@@ -11,7 +11,7 @@ tr th, tr td {
 }
 
 thead tr {
-    background-color: lightseagreen; 
+    /* background-color: lightseagreen;  */
     font-weight: bold !important;
 }
 thead tr th {

@@ -10,11 +10,11 @@ export class RegionService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'region/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getRegion(id?: number) {
-    var geturl = this.url ;
+    var geturl = this.url;
     if (id != null) {
       geturl = this.url + id;
     }
@@ -22,10 +22,10 @@ export class RegionService {
   }
 
   insertRegion(region: Region) {
-    return this.http.post(this.url , region, this.options).map(res => res.json());
+    return this.http.post(this.url, region, this.options).map(res => res.json());
   }
   updateRegion(id: number, region: Region) {
-    return this.http.put(this.url  + id, region, this.options).map(res => res.json());
+    return this.http.put(this.url + id, region, this.options).map(res => res.json());
   }
   deleteRegion(id: number) {
     return this.http.delete(this.url + id, this.options).map(res => res.json());

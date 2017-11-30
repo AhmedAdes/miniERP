@@ -13,6 +13,8 @@ export class Model {
     UserID: number;
     UserName: string;
     SelectedProductImgSrc: string;
+    WashID: number;
+    WashType: string;
 
     DisplayNames = {
         ModelID: { Disp: "Model الموديل" },
@@ -24,7 +26,8 @@ export class Model {
         PricePiece: { Disp: "Price /Piece سعر القطعة" },
         PriceWholeSale: { Disp: "Price /WholeSale سعر الجملة" },
         PriceStores: { Disp: "Price /Stores سعر المحلات" },
-        UserName: { Disp: "User Name" }
+        UserName: { Disp: "User Name" },
+        WashType: { Disp: "Wash Type نوع الغسلة" }
     }
 }
 
@@ -64,6 +67,18 @@ export class ModelSize {
         QuntPerDozen: { Disp: "Qunt. Per Dozen الكمية في الدستة" },
         ModelID: { Disp: "Model الموديل" },
         ModelName: { Disp: "Model Name الموديل" },
+        UserName: { Disp: "User Name" }
+    }
+}
+export class WashType {
+    WashID: number;
+    WashType: string;
+    UserID: number;
+    UserName: string;
+    
+    DisplayNames = {
+        WashID: { Disp: "Wash ID كود الغسلة" },
+        WashType: { Disp: "Wash Type نوع الغسلة" },
         UserName: { Disp: "User Name" }
     }
 }

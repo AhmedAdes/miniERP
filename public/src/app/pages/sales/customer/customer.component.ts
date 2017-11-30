@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { AuthenticationService, CustomerService } from '../../../services';
-import { Customer, CurrentUser, CustTypes } from '../../../Models';
+import { AuthenticationService, CustomerService, ProvinceService, RegionService } from '../../../services';
+import { FormBuilder, FormGroup, Validators, AbstractControl, PatternValidator } from '@angular/forms';
+import { Customer, CurrentUser, CustTypes, Province, Region } from '../../../Models';
+import { alreadyExist } from '../../../pipes/validators'
 
 @Component({
     selector: 'app-customer',
@@ -22,10 +24,11 @@ import { Customer, CurrentUser, CustTypes } from '../../../Models';
 })
 export class CustomerComponent implements OnInit {
 
-    constructor(public serv: CustomerService, private auth: AuthenticationService) { }
-
     currentUser: CurrentUser = this.auth.getUser();
     collection: Customer[] = [];
+    provList: Province[] = [];
+    regList: Region[] = [];
+    allRegions: Region[] = [];
     model: Customer;
     srchObj: Customer = new Customer();
     showTable: boolean;
@@ -36,62 +39,118 @@ export class CustomerComponent implements OnInit {
     orderbyClass: string = "fa fa-sort";
     CustTypeList = CustTypes;
     stillSaving: boolean
+    submitted: boolean
+    inFrm: FormGroup;
+    custName; contact; custType; country; prov: AbstractControl; region: AbstractControl
+    carea; address; tel; email; website
 
+    constructor(public serv: CustomerService, private auth: AuthenticationService,
+        private srvReg: RegionService, private srvProv: ProvinceService, fb: FormBuilder) {
+        this.inFrm = fb.group({
+            'custName': [null, Validators.required],
+            'contact': [null, Validators.required],
+            'custType': [null, Validators.required],
+            'country': [null],
+            'area': [null],
+            'province': [null, Validators.required],
+            'region': [null, Validators.required],
+            'address': [null],
+            'tel': [null, Validators.required],
+            'email': [null],
+            'website': [null]
+        })
+
+        this.custName = this.inFrm.get('custName')
+        this.contact = this.inFrm.get('contact')
+        this.custType = this.inFrm.get('custType')
+        this.country = this.inFrm.get('country')
+        this.carea = this.inFrm.get('area')
+        this.prov = this.inFrm.get('province')
+        this.region = this.inFrm.get('region')
+        this.address = this.inFrm.get('address')
+        this.tel = this.inFrm.get('tel')
+        this.email = this.inFrm.get('email')
+        this.website = this.inFrm.get('website')
+
+        this.prov.valueChanges.subscribe(val => this.onProvinceChanged(val))
+    }
 
     ngOnInit() {
-        this.serv.getCustomer().subscribe(cols => this.collection = cols);
-        this.TableBack();
+        this.srvProv.getProvince().subscribe(prv => {
+            this.provList = prv
+            this.srvReg.getRegion().subscribe(reg => {
+                this.allRegions = reg
+                if (this.currentUser.jobClass === 0) {
+                    this.serv.getCustomer().subscribe(cols => {
+                        this.collection = cols
+                    })
+                }else {
+                    this.serv.getCustomerforUser(this.currentUser.userID).subscribe(cols => {
+                        this.collection = cols
+                    })
+                }
+
+                this.TableBack()
+            })
+        });
     }
 
     CreateNew() {
         this.model = new Customer();
+        this.tel.setValidators([Validators.required, alreadyExist(this.collection, 'Tel', '')])
         this.showTable = false;
+        this.stillSaving = false
+        this.submitted = false
         this.Formstate = 'Create';
         this.headerText = 'Create New Customer';
     }
 
     EditThis(id: number) {
-        this.serv.getCustomer(id).subscribe(mat => {
-            this.model = mat[0];
-            this.showTable = false;
-            this.Formstate = 'Edit';
-            this.headerText = 'Edit Customer';
-        });
+        this.LoadDetails(id, 'Edit')
     }
     ShowDetails(id: number) {
-        this.serv.getCustomer(id).subscribe(mat => {
-            this.model = mat[0];
-            this.showTable = false;
-            this.Formstate = 'Detail';
-            this.headerText = 'Customer Details';
-        });
+        this.LoadDetails(id, 'Detail')
     }
     Delete(id: number) {
+        this.LoadDetails(id, 'Delete')
+    }
+    LoadDetails(id, state) {
         this.serv.getCustomer(id).subscribe(mat => {
             this.model = mat[0];
+            if (state == 'Edit') {
+                this.tel.setValidators([Validators.required, alreadyExist(this.collection, 'Tel', this.model.Tel)])
+            }
             this.showTable = false;
-            this.Formstate = 'Delete';
-            this.headerText = 'Delete Customer';
+            this.Formstate = state
+            this.headerText = state == 'Detail' ? `Customer ${state}s` : `${state} Customer`;
         });
     }
     TableBack() {
+        this.inFrm.reset()
+        this.country.disable()
+        this.carea.disable()
         this.showTable = true;
         this.Formstate = null;
         this.headerText = 'Customers';
         this.errorMessage = null;
         this.stillSaving = false
+        this.submitted = false
     }
     HandleForm(event) {
         event.preventDefault();
+        this.submitted = true
+        if (this.inFrm.invalid) return
         if (this.stillSaving) return
         this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
+        this.model.Tel = this.model.Tel.replace('/', '-').replace('+', '-');
 
         switch (this.Formstate) {
             case 'Create':
                 this.serv.insertCustomer(this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.stillSaving = false
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message;
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -100,7 +159,8 @@ export class CustomerComponent implements OnInit {
             case 'Edit':
                 this.serv.updateCustomer(this.model.CustID, this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.stillSaving = false
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message;
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -109,18 +169,25 @@ export class CustomerComponent implements OnInit {
             case 'Delete':
                 this.serv.deleteCustomer(this.model.CustID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.stillSaving = false
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message;
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => {
+                    this.errorMessage = err.message
+                    this.stillSaving = false
+                });
                 break;
 
             default:
                 break;
         }
     }
-
+    onProvinceChanged(value: number) {
+        if (!value) { this.regList = []; return; }
+        this.regList = this.allRegions.filter(r => r.ProvinceID == value)
+    }
     SortTable(column: string) {
         if (this.orderbyString.indexOf(column) == -1) {
             this.orderbyClass = "fa fa-sort-amount-asc";

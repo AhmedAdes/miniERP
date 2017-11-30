@@ -9,7 +9,7 @@
 		</div>
 	</div>
 	<div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-		<table id="tblClothMaterials" class="table table-hover table-striped table-responsive">
+		<table id="tblClothMaterials" class="table table-hover text-center table-striped table-responsive">
 			<colgroup>
 				<col width="20%" />
 				<col width="10%" />
@@ -20,7 +20,7 @@
 				<col width="15%" />
 				<col width="15%" />
 			</colgroup>
-			<thead>
+			<thead class="bg-dark text-white font-weight-bold">
 				<tr>
 					<th> {{srchObj.DisplayNames.MaterialName.Disp}} <i (click)="SortTable('MaterialName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
 					<th> {{srchObj.DisplayNames.Onz.Disp}} <i (click)="SortTable('Onz')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Onz') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>

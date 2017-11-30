@@ -27,6 +27,17 @@ export function matchingPasswords(passwordKey: string, confirmPasswordKey: strin
   }
 }
 
+export function matchFieldValue(FieldName: string, matchValue: Object){
+  return (group: FormGroup): { [key: string]: any } => {
+    let Field = group.controls[FieldName];
+    if (Field.value !== matchValue) {
+      return {
+        mismatchValue: true
+      };
+    } 
+  }
+}
+
 /**
  * Validator that requires controls to have a value of a range length.
  */
@@ -94,6 +105,15 @@ export function maxDate(maxDate: any): ValidatorFn {
     if (!isDate(d)) return { maxDate: true };
 
     return d <= new Date(maxDate) ? null : { maxDate: true };
+  };
+}
+
+export function alreadyExist(list: any[], fieldName: string, current: string): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } => {
+    if (isPresent(Validators.required(control))) return null;
+
+    let v: string = control.value;
+    return list.findIndex(p => p[fieldName] == v && p[fieldName] != current) < 0 ? null : { 'alreadyexist': true };
   };
 }
 

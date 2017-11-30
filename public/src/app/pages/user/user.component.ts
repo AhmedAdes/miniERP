@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserService, AuthenticationService } from '../../services';
-import { emailValidator, matchingPasswords } from '../../pipes/index';
-import { User, CurrentUser } from '../../Models';
+import { emailValidator, matchingPasswords, alreadyExist } from '../../pipes/index';
+import { User, CurrentUser, JobClass } from '../../Models';
+import { ResizeOptions, ImageResult } from 'ng2-imageupload';
 
 @Component({
   selector: 'app-user',
@@ -22,34 +23,42 @@ import { User, CurrentUser } from '../../Models';
   ]
 })
 export class UserComponent implements OnInit {
-  inputForm: FormGroup;
-
-  constructor(public serv: UserService,
-    private auth: AuthenticationService,
-    private fb: FormBuilder) {
-    this.inputForm = fb.group({
-      'UserID': null,
-      'UserName': [null, Validators.required],
-      'LoginName': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
-      'UserPass': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
-      'ConfPass': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
-      'JobClass': [null, Validators.required],
-      'Email': [null, emailValidator],
-      'Phone': null
-    }, { validator: matchingPasswords('UserPass', 'ConfPass') })
-  }
-
+  inFrm: FormGroup;
   currentUser: CurrentUser = this.auth.getUser();
   collection: User[] = [];
   searchUser: User = new User();
+  classList = JobClass
   model: User;
   showTable: boolean;
   Formstate: string;
   headerText: string;
   errorMessage: string;
-  selectedRegion: number;
+  selectedUser: number;
   orderbyString: string = "";
   orderbyClass: string = "fa fa-sort";
+  zoomedImageSrc
+  stillSaving: boolean
+  submitted: boolean
+
+  resizeOptions: ResizeOptions = {
+    resizeMaxHeight: 300,
+    resizeMaxWidth: 300
+  };
+
+  constructor(public serv: UserService,
+    private auth: AuthenticationService,
+    private fb: FormBuilder) {
+    this.inFrm = fb.group({
+      'UserID': null,
+      'UserName': [null, Validators.required],
+      'UserPass': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
+      'ConfPass': [null, Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(200)])],
+      'JobClass': [null, Validators.required],
+      'photo': [null],
+      'Email': [null, emailValidator],
+      'Phone': null
+    }, { validator: matchingPasswords('UserPass', 'ConfPass') })
+  }
 
   ngOnInit() {
     this.serv.getuser().subscribe(cols => {
@@ -57,59 +66,71 @@ export class UserComponent implements OnInit {
       this.TableBack();
     });
   }
-  CompleteLogin() {
-    if (this.model.UserName != "") {
-      var sp = this.model.UserName.split(" ");
-      this.model.LoginName = sp[0].charAt(0) + '.' + sp[sp.length - 1];
-    }
-  }
   CreateNew() {
     this.model = new User();
+    this.model.Photo = './assets/img/app/profile/avatar5.png'
+    this.inFrm.controls['UserName'].setValidators([Validators.required, Validators.maxLength(200),
+    alreadyExist(this.collection, 'UserName', '')])
     this.showTable = false;
+    this.stillSaving = false
+    this.submitted = false
     this.Formstate = 'Create';
     this.headerText = 'Create New User';
   }
 
   EditThis(id: number) {
-
-    this.serv.getuser(id).subscribe(ret => {
-      this.model = ret[0];
-      this.showTable = false;
-      this.Formstate = 'Edit';
-      this.headerText = 'Edit User';
-    });
+    this.LoadDetails(id, 'Edit');
   }
   ShowDetails(id: number) {
-    this.serv.getuser(id).subscribe(ret => {
-      this.model = ret[0];
-      this.showTable = false;
-      this.Formstate = 'Detail';
-      this.headerText = 'User Details';
-    });
+    this.LoadDetails(id, 'Detail');
   }
   Delete(id: number) {
+    this.LoadDetails(id, 'Delete');
+  }
+  LoadDetails(id, state) {
     this.serv.getuser(id).subscribe(ret => {
       this.model = ret[0];
+      if (state == 'Edit') {
+        this.inFrm.controls['UserName'].setValidators([Validators.required, Validators.maxLength(200),
+        alreadyExist(this.collection, 'UserName', this.model.UserName)])
+        this.inFrm.controls['ConfPass'].setValue(this.model.Password);
+      }
+      let photo, base64String
+      if (ret[0].Photo != null) {
+        base64String = btoa([].reduce.call(new Uint8Array(ret[0].Photo.data), function (p, c) { return p + String.fromCharCode(c) }, ''))
+        photo = "data:image/PNG;base64," + base64String
+      } else {
+        photo = './assets/img/app/profile/avatar5.png'
+      }
+      this.model.Photo = photo
       this.showTable = false;
-      this.Formstate = 'Delete';
-      this.headerText = 'Delete User';
-    });
+      this.Formstate = state;
+      this.headerText = state == 'Detail' ? `User ${state}s` : `${state} User`;
+    })
   }
   TableBack() {
+    this.inFrm.reset()
     this.showTable = true;
     this.Formstate = null;
     this.headerText = 'Users';
     this.errorMessage = null;
+    this.stillSaving = false
+    this.submitted = false
   }
-  HandleForm(event) {
-    event.preventDefault();
+  HandleForm() {
+    this.submitted = true
+    if (this.inFrm.invalid) return
+    if (this.stillSaving) return
+    this.stillSaving = true
     var newUser: User = this.model;
     newUser.DirectManager = this.currentUser.userID;
+    newUser.Photo = document.getElementById("ImgUser").getAttribute("src") === "./assets/img/app/profile/avatar5.png" ? null : document.getElementById("ImgUser").getAttribute("src").split(",")[1]
     switch (this.Formstate) {
       case 'Create':
         this.serv.InsertUser(newUser).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            this.stillSaving = false
+            this.errorMessage = ret.error.message || ret.error.originalError.info.message;
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
@@ -118,7 +139,8 @@ export class UserComponent implements OnInit {
       case 'Edit':
         this.serv.UpdateUser(newUser.UserID, newUser).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            this.stillSaving = false
+            this.errorMessage = ret.error.message || ret.error.originalError.info.message;
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
@@ -127,7 +149,8 @@ export class UserComponent implements OnInit {
       case 'Delete':
         this.serv.DeleteUser(newUser.UserID).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            this.stillSaving = false
+            this.errorMessage = ret.error.message || ret.error.originalError.info.message;
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
@@ -159,5 +182,11 @@ export class UserComponent implements OnInit {
       this.orderbyClass = 'fa fa-sort';
       this.orderbyString = '';
     }
+  }
+  selected(imageResult: ImageResult) {
+    this.zoomedImageSrc = imageResult.dataURL
+    this.model.Photo = imageResult.resized
+      && imageResult.resized.dataURL
+      || imageResult.dataURL;
   }
 }

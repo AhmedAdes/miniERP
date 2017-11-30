@@ -3,6 +3,7 @@ import { Location } from '@angular/common'
 import { CustomerService } from '../../../services';
 import { rptTopCustomers } from '../../../Models';
 import { BaseChartDirective } from 'ng2-charts';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'rpt-topCust',
@@ -23,7 +24,8 @@ export class RptTopCustComponent implements OnInit {
     reportHeader: string 
 
     ngOnInit() {
-
+        this.fromDate = hf.handleDate(new Date())
+        this.toDate = hf.handleDate(new Date())
     }
 
     ViewReport() {

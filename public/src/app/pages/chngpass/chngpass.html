@@ -1,0 +1,50 @@
+<div class="panel panel-default zz">
+    <div class="panel-heading">
+        <h2> Change User Password </h2>
+        <div class="alert alert-danger" *ngIf="errorMessage">
+            <p>{{errorMessage}}</p>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form [formGroup]="inputForm" (submit)="(inputForm.valid) && SavePassword($event)" novalidate>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="OldPass" class="control-label col-md-2 col-sm-2">Old Password</label>
+                    <div class="col-md-10 col-sm-10">
+                        <input class="form-control" type="password" name="OldPass" [formControl]="inputForm.controls['OldPass']">
+                        <div class='error' *ngIf="inputForm.controls['OldPass'].touched">
+                            <div class="alert alert-danger" *ngIf="inputForm.controls['OldPass'].hasError('required')">Old User Password is required.</div>
+                            <div class="alert alert-danger" *ngIf="inputForm.hasError('mismatchValue')">Old User Password is Incorrect.</div>
+                            <div class="alert alert-danger" *ngIf="inputForm.controls['OldPass'].hasError('minlength')">Old User Password must be minimum 5 characters.</div>
+                            <div class="alert alert-danger" *ngIf="inputForm.controls['OldPass'].hasError('maxlength')">Old User Password must be maximum 200 characters.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="UserPass" class="control-label col-md-2 col-sm-2">New Password</label>
+                    <div class="col-md-10 col-sm-10">
+                        <input class="form-control" type="password" name="UserPass" [formControl]="inputForm.controls['UserPass']">
+                        <div class='error' *ngIf="inputForm.controls['UserPass'].touched">
+                            <div class="alert alert-danger" *ngIf="inputForm.controls['UserPass'].hasError('required')">User Password is required.</div>
+                            <div class="alert alert-danger" *ngIf="inputForm.controls['UserPass'].hasError('minlength')">User Password must be minimum 5 characters.</div>
+                            <div class="alert alert-danger" *ngIf="inputForm.controls['UserPass'].hasError('maxlength')">User Password must be maximum 200 characters.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ConfPass" class="control-label col-md-2 col-sm-2">Confirm Password</label>
+                    <div class="col-md-10 col-sm-10">
+                        <input class="form-control" type="password" name="ConfPass" [formControl]="inputForm.controls['ConfPass']">
+                        <div class='error' *ngIf="inputForm.controls['ConfPass'].touched">
+                            <div class="alert alert-danger" *ngIf="inputForm.hasError('mismatchedPasswords')">Passwords do not match.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group no-print col-md-offset-2 col-md-10 col-sm-10">
+                    <button type="submit" value="Save" class="btn btn-primary" [disabled]='!inputForm.valid'>Save</button>                    |
+                    <button type="button" (click)="Back()" class="btn btn-danger">Back to Home</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

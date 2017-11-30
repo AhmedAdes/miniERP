@@ -1,17 +1,51 @@
-
 var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
-var sqlcon = sql.globalConnection;
+var jwt = require("jsonwebtoken");
+var sqlcon = sql.globalPool;
+
+router.use(function (req, res, next) {
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers["authorization"];
+    var secret = req.body.salt || req.query.salt || req.headers["salt"];
+    // decode token
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, secret, function (err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: "Failed to authenticate token."
+                });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: "No token provided."
+        });
+    }
+});
 
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.vwFinishStore ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 
@@ -19,40 +53,60 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.vwFinishStore Where BrandID = '" + req.params.id + "'")
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/strBlncByDate/:indate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * From dbo.fncFinishStoreByDate('${req.params.indate}') ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/strBlncByDateZero/:indate', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * From dbo.fncFinishStoreByDate('${req.params.indate}') where Quantity > 0 ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/storeBalanceReport/:all', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.vwFinishStore where Quantity > 0 ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/BalanceSubDet/:all', function (req, res, next) {
@@ -62,12 +116,17 @@ router.get('/BalanceSubDet/:all', function (req, res, next) {
     request.query(`Select ABS(SUM(s.Quantity * ISNULL(m.PricePiece, 0))) SumPiecePrice FROM dbo.vwFinishStore s JOIN dbo.ProductModelCoding m ON m.ModelID = s.ModelID AND s.StoreTypeID = 1;
                    Select ABS(SUM(s.Quantity * ISNULL(m.PriceStores,0))) SumStoresPrice FROM dbo.vwFinishStore s JOIN dbo.ProductModelCoding m ON m.ModelID = s.ModelID AND s.StoreTypeID = 1;
                    SELECT ABS(SUM(s.Quantity * ISNULL(m.PriceWholeSale,0))) SumWholeSalePrice FROM dbo.vwFinishStore s JOIN dbo.ProductModelCoding m ON m.ModelID = s.ModelID AND s.StoreTypeID = 1;`,
-        function (err, recordsets, affected) {
-            if (err) { res.json({ error: err }); console.log(err); }
+        function (err, result) {
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
             res.json({
-                piece: recordsets[0],
-                store: recordsets[1],
-                whole: recordsets[2]
+                piece: result.recordsets[0],
+                store: result.recordsets[1],
+                whole: result.recordsets[2]
             });
         })
 });
@@ -81,16 +140,21 @@ router.get('/ProdHistoryMod/:id', function (req, res, next) {
                     FROM dbo.vwSalesOrderDetail sd JOIN dbo.SalesOrderHeader sh ON sh.SOID = sd.SOID JOIN dbo.Customers c ON c.CustID = sh.CustID
                     WHERE ModelID = @ModelID;
                     SELECT ISNULL(SUM(Quantity),0) StockQty FROM dbo.FinishedStoreDetails d JOIN dbo.ProductColorCoding c ON c.ColorID = d.ColorID Where ModelID = @ModelID;`,
-        function (err, recordsets, affected) {
-            if (err) { res.json({ error: err }); console.log(err); }
+        function (err, result) {
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
             res.json({
-                finRec: recordsets[0].filter(f => f.FinReceivingID != null),
-                finDisp: recordsets[0].filter(f => f.FinDispensingID != null),
-                finEqz: recordsets[0].filter(f => f.FinEqualizeID != null),
-                finRet: recordsets[0].filter(f => f.FinReturnID != null),
-                finRej: recordsets[0].filter(f => f.FinRejectID != null),
-                sales: recordsets[1],
-                stock: recordsets[2]
+                finRec: result.recordsets[0].filter(f => f.FinReceivingID != null),
+                finDisp: result.recordsets[0].filter(f => f.FinDispensingID != null),
+                finEqz: result.recordsets[0].filter(f => f.FinEqualizeID != null),
+                finRet: result.recordsets[0].filter(f => f.FinReturnID != null),
+                finRej: result.recordsets[0].filter(f => f.FinRejectID != null),
+                sales: result.recordsets[1],
+                stock: result.recordsets[2]
             });
         })
 });
@@ -105,16 +169,21 @@ router.get('/ProdHistoryClr/:id', function (req, res, next) {
                     FROM dbo.vwSalesOrderDetail sd JOIN dbo.SalesOrderHeader sh ON sh.SOID = sd.SOID JOIN dbo.Customers c ON c.CustID = sh.CustID
                     WHERE ColorID = @ColorID;
                     SELECT ISNULL(SUM(Quantity),0) StockQty FROM dbo.FinishedStoreDetails Where ColorID = @ColorID;`,
-        function (err, recordsets, affected) {
-            if (err) { res.json({ error: err }); console.log(err); }
+        function (err, result) {
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
             res.json({
-                finRec: recordsets[0].filter(f => f.FinReceivingID != null),
-                finDisp: recordsets[0].filter(f => f.FinDispensingID != null),
-                finEqz: recordsets[0].filter(f => f.FinEqualizeID != null),
-                finRet: recordsets[0].filter(f => f.FinReturnID != null),
-                finRej: recordsets[0].filter(f => f.FinRejectID != null),
-                sales: recordsets[1],
-                stock: recordsets[2]
+                finRec: result.recordsets[0].filter(f => f.FinReceivingID != null),
+                finDisp: result.recordsets[0].filter(f => f.FinDispensingID != null),
+                finEqz: result.recordsets[0].filter(f => f.FinEqualizeID != null),
+                finRet: result.recordsets[0].filter(f => f.FinReturnID != null),
+                finRej: result.recordsets[0].filter(f => f.FinRejectID != null),
+                sales: result.recordsets[1],
+                stock: result.recordsets[2]
             });
         })
 });
@@ -126,10 +195,15 @@ router.get('/ReceiveByPeriod/:fromDate.:toDate', function (req, res, next) {
                     FROM dbo.FinishedStoreDetails det JOIN dbo.ProductColorCoding c ON c.ColorID = det.ColorID
                     JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID JOIN dbo.FinishedReceiving fr ON fr.FinReceivingID = det.FinReceivingID
                     WHERE ReceivingDate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/DispenseByPeriod/:fromDate.:toDate', function (req, res, next) {
@@ -140,10 +214,15 @@ router.get('/DispenseByPeriod/:fromDate.:toDate', function (req, res, next) {
                     FROM dbo.FinishedStoreDetails det JOIN dbo.ProductColorCoding c ON c.ColorID = det.ColorID
                     JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID JOIN dbo.FinishedDispensing fd ON fd.FinDispensingID = det.FinDispensingID
                     WHERE fd.DispensingDate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/EqualizeByPeriod/:fromDate.:toDate', function (req, res, next) {
@@ -154,10 +233,15 @@ router.get('/EqualizeByPeriod/:fromDate.:toDate', function (req, res, next) {
                     FROM dbo.FinishedStoreDetails det JOIN dbo.ProductColorCoding c ON c.ColorID = det.ColorID
                     JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID JOIN dbo.FinStoreEqualization fe ON fe.FinEqualizeID = det.FinEqualizeID
                     WHERE fe.EqualizeDate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/ReturnByPeriod/:fromDate.:toDate', function (req, res, next) {
@@ -168,10 +252,15 @@ router.get('/ReturnByPeriod/:fromDate.:toDate', function (req, res, next) {
                     FROM dbo.FinishedStoreDetails det JOIN dbo.ProductColorCoding c ON c.ColorID = det.ColorID
                     JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID JOIN dbo.FinishedReturn fr ON fr.FinReturnID = det.FinReturnID
                     WHERE fr.ReturnDate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 router.get('/EmptyStock/:all', function (req, res, next) {
@@ -187,10 +276,15 @@ router.get('/EmptyStock/:all', function (req, res, next) {
                     GROUP BY det.ColorID, c.ColorName, m.ModelCode, m.ModelName 
                     HAVING SUM(Quantity) <= 0
                     ) QRY`)
-        .then(function (recordset) {
-            res.json(recordset);
+        .then(function (result) {
+            res.json(result.recordset);
         }).catch(function (err) {
-            if (err) { res.json({ error: err }); console.log(err); }
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
         })
 });
 module.exports = router;

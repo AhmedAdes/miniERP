@@ -8,7 +8,7 @@
         </div>
     </div>
     <div [@myAnimation]="showTable" class="tableslide panel-body table-responsive" *ngIf="showTable">
-        <table id="tblCustomers" class="table table-hover table-striped table-responsive">
+        <table id="tblCustomers" class="table table-hover text-center table-striped table-responsive">
             <colgroup>
                 <col width="10%" />
                 <col width="20%" />
@@ -20,7 +20,7 @@
                 <col width="10%" />
                 <col width="10%" />
             </colgroup>
-            <thead>
+            <thead class="bg-dark text-white font-weight-bold">
                 <tr>
                     <th style="word-wrap: break-word;"> {{srchHeadObj.DisplayNames.SOID.Disp}}
                         <i (click)="SortTable('SOID')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SOID') == 1) ? orderbyClass : 'fa fa-sort'"></i>
@@ -118,7 +118,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of (collection | filter:srchHeadObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })"
-                    [ngClass]="item.haveReturn? 'alert-danger' : ''">
+                    [ngClass]="item.haveReturn? 'danger' : ''">
                     <td>{{item.SOID}}</td>
                     <td>{{item.CustName}}</td>
                     <td>{{item.SODate | date:'mediumDate'}}</td>
@@ -131,13 +131,13 @@
                         <button (click)="PrintInvoice(item.SOID)" class="btn btn-warning" title="Print Invoice">
                             <i class="icon ion-printer"></i>
                         </button>
-                        <button (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit">
+                        <button *ngIf="currentUser.jobClass < 1" (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit">
                             <i class="icon ion-edit"></i>
                         </button>
                         <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details">
                             <i class="icon ion-eye"></i>
                         </button>
-                        <button (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete">
+                        <button *ngIf="currentUser.jobClass < 1" (click)="Delete(item.SOID)" class="btn btn-danger btn-icon" title="Delete">
                             <i class="icon ion-trash-a"></i>
                         </button>
                     </td>
@@ -170,7 +170,7 @@
                                 [Detmodel]="Detmodel" [modelsList]="modelsList" (CalculateTotal)="CalculateTotal()">
                             </sales-detail>
 
-                            <table class="table table-hover table-striped table-responsive">
+                            <table class="table table-hover text-center table-striped table-responsive">
                                 <colgroup>
                                     <col width="10%" />
                                     <col width="15%" />
@@ -181,7 +181,7 @@
                                     <col width="15%" />
                                     <col width="10%" />
                                 </colgroup>
-                                <thead>
+                                <thead class="bg-dark text-white font-weight-bold">
                                     <tr>
                                         <th>{{Detmodel.DisplayNames.ModelCode.Disp}}</th>
                                         <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>
@@ -233,10 +233,10 @@
                     <div class="col-lg-12">
                         <ba-card title="Payment Details" baCardClass="with-scroll">
                             <sorder-payment *ngIf="Formstate!='Detail' && Formstate!='Delete'" [Payments]="SPayments" [currentUser]="currentUser" [SalesRepExist]="SalesRepExist"
-                                [Paymodel]="PayModel" (ValidateTotal)="ValidateTotal()">
+                                [Paymodel]="PayModel" [GrandTotal]="model.GrandTotal" (ValidateTotal)="ValidateTotal()">
                             </sorder-payment>
 
-                            <table class="table table-hover table-striped table-responsive">
+                            <table class="table table-hover text-center table-striped table-responsive">
                                 <colgroup>
                                     <col width="20%" />
                                     <col width="20%" />
@@ -245,7 +245,7 @@
                                     <col width="15%" />
                                     <col width="15%" />
                                 </colgroup>
-                                <thead>
+                                <thead class="bg-dark text-white font-weight-bold">
                                     <tr>
                                         <th>{{PayModel.DisplayNames.PaymentDate.Disp}}</th>
                                         <th>{{PayModel.DisplayNames.PayAmount.Disp}}</th>

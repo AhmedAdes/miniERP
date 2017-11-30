@@ -2,6 +2,7 @@ import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@
 import { Location } from '@angular/common'
 import { FinStoreService } from '../../../services';
 import { FinishedReceiving } from '../../../Models'
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'rpt-finRec',
@@ -19,7 +20,8 @@ export class RptFinRecPeriodComponent implements OnInit {
     subHeader: string
 
     ngOnInit() {
-
+        this.fromDate = hf.handleDate(new Date())
+        this.toDate = hf.handleDate(new Date())
     }
 
     ViewReport() {

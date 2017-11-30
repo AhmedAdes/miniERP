@@ -17,7 +17,7 @@
                         <b>Pending Material Reception خامات تحت الاستلام</b>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-hover table-striped table-responsive">
+                        <table class="table table-hover text-center table-striped table-responsive">
                             <colgroup>
                                 <col width="10%" />
                                 <col width="10%" />
@@ -30,7 +30,7 @@
                                 <col width="10%" />
                                 <col width="10%" />
                             </colgroup>
-                            <thead>
+                            <thead class="bg-dark text-white font-weight-bold">
                                 <tr>
                                     <th>Year / Serial</th>
                                     <th>{{srchPend.DisplayNames.RecDate.Disp}} <i (click)="SortTable('RecDate')" class="btn btn-default"
@@ -130,7 +130,7 @@
                         <b>Material Receiving History تاريخ الاستلام</b>
                     </div>
                     <div class="panel-body">
-                        <table class="table table-hover table-striped table-responsive">
+                        <table class="table table-hover text-center table-striped table-responsive">
                             <colgroup>
                                 <col width="10%" />
                                 <col width="10%" />
@@ -142,7 +142,7 @@
                                 <col width="10%" />
                                 <col width="10%" />
                             </colgroup>
-                            <thead>
+                            <thead class="bg-dark text-white font-weight-bold">
                                 <tr>
                                     <th>Year / Serial</th>
                                     <th>{{srchObj.DisplayNames.ReceivingDate.Disp}} <i (click)="SortTable('ReceivingDate')" class="btn btn-default"
@@ -284,7 +284,7 @@
                                 [Detmodel]="Detmodel" [BatchNo]="model.BatchNo">
                             </mat-rec-detail>-->
 
-                            <table class="table table-hover table-striped table-responsive">
+                            <table class="table table-hover text-center table-striped table-responsive">
                                 <colgroup>
                                     <col width="10%" />
                                     <col width="20%" *ngIf="Formstate!='Detail' && Formstate!='Delete'" />
@@ -296,7 +296,7 @@
                                     <col width="10%" *ngIf="Formstate=='Detail' || Formstate=='Delete'" />
                                     <col width="10%" *ngIf="Formstate=='Detail' || Formstate=='Delete'" />
                                 </colgroup>
-                                <thead>
+                                <thead class="bg-dark text-white font-weight-bold">
                                     <!--Quantity,UnitPrice-->
                                     <tr>
                                         <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>

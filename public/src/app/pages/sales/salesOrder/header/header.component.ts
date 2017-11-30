@@ -39,6 +39,7 @@ export class SalesHeaderComponent implements OnInit {
             DeliveryDate: [''],
             SalesRepID: [''],
             Notes: [''],
+            SelfNotes: [''],
         });
 
         this.headerForm.valueChanges.subscribe(value => this.onFormValid(value));

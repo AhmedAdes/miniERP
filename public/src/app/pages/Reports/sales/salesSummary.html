@@ -1,92 +1,101 @@
 <ba-card class="well no-print">
-    <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
-        <div class="form-group row">
-            <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !from.valid }">
-                <label for="fromDate" class="col-sm-3 control-label">From</label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="date" name="fromDate" [(ngModel)]="fromDate" #from="ngModel" required>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !to.valid }">
-                <label for="toDate" class="col-sm-3 control-label">To</label>
-                <div class="col-sm-9">
-                    <input class="form-control" type="date" name="toDate" [(ngModel)]="toDate" #to="ngModel" required>
-                </div>
-            </div>
+  <form #f="ngForm" novalidate (submit)="f.valid && ViewReport()">
+    <div class="form-group row">
+      <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !from.valid }">
+        <label for="fromDate" class="col-sm-3 control-label">From</label>
+        <div class="col-sm-9">
+          <input class="form-control" type="date" name="fromDate" [(ngModel)]="fromDate" #from="ngModel" required>
         </div>
-        <div class="form-group row">
-            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
-                <button type="submit" class="btn btn-primary btn-block">View</button>
-            </div>
-            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
-                <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
-            </div>
-            <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
-                <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
-            </div>
+      </div>
+      <div class="col-md-6 col-sm-12" [ngClass]="{ 'has-error': f.submitted && !to.valid }">
+        <label for="toDate" class="col-sm-3 control-label">To</label>
+        <div class="col-sm-9">
+          <input class="form-control" type="date" name="toDate" [(ngModel)]="toDate" #to="ngModel" required>
         </div>
-    </form>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+        <button type="submit" class="btn btn-primary btn-block">View</button>
+      </div>
+      <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+        <button type="button" class="btn btn-info btn-block" (click)="printReport()">Print</button>
+      </div>
+      <div class="col-md-offset-1 col-sm-offset-1 col-xs-offset-1 col-md-4 col-sm-10 col-xs-10">
+        <button type="button" class="btn btn-danger btn-block" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </form>
 </ba-card>
 
 <div class="panel panel-default">
-    <div class="panel-heading row">
-        <h2 class="text-center">{{reportHeader}}</h2>
-        <h3 class="text-center">{{subHeader}}</h3>
+  <div class="panel-heading row">
+    <h2 class="text-center">{{reportHeader}}</h2>
+    <h3 class="text-center">{{subHeader}}</h3>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-2">
+      <button class="btn btn-info btn-large" (click)="routeDetails('No-Group')" *ngIf="collection.length > 0" > View Sales Orders Details </button>
     </div>
-    <div class="panel-body row">
-        <table class="table table-hover table-responsive table-bordered col-md-12 col-sm-12">
-            <colgroup>
-                <col width="20%" />
-                <col width="30%" />
-                <col width="20%" />
-                <col width="30%" />
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td class="rowHeader">Total Amount</td>
-                    <td>{{sumry.TotalAmount | number}}</td>
-                </tr>
-                <tr>
-                    <td class="rowHeader">Total Customers</td>
-                    <td>{{sumry.TotalCustomers | number}}</td>
-                </tr>
-                <tr>
-                    <td class="rowHeader">Total Orders</td>
-                    <td>{{sumry.TotalOrders | number}}</td>
-                </tr>
-                <tr>
-                    <td class="rowHeader">Total Products</td>
-                    <td>{{sumry.TotalProducts | number}}</td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <table class="table table-hover table-bordered table-responsive col-md-12 col-sm-12">
-            <colgroup>
-                <col width="30%" />
-                <col width="35%" />
-                <col width="35%" />
-            </colgroup>
-            <thead>
-                <tr class="text-center">
-                    <th>Month</th>
-                    <th>Quantity</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of collection" class="text-center">
-                    <td>{{item.MonthDate | date:'MM/yyyy'}}</td>
-                    <td>{{item.TotalQty | number}}</td>
-                    <td>{{item.TotalAmount | number}}</td>
-                </tr>
-            </tbody>
-        </table>
+  </div>
+  <div class="panel-body row">
+    <table class="table table-hover text-center table-responsive table-bordered col-md-12 col-sm-12">
+      <colgroup>
+        <col width="20%" />
+        <col width="30%" />
+        <col width="20%" />
+        <col width="30%" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <td class="rowHeader">Total Amount</td>
+          <td>{{sumry.TotalAmount | number}}</td>
+        </tr>
+        <tr>
+          <td class="rowHeader">Total Customers</td>
+          <td>
+            <a href="javascript:void(0)" (click)="routeDetails('Customer')">{{sumry.TotalCustomers | number}}</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="rowHeader">Total Orders</td>
+          <td>{{sumry.TotalOrders | number}}</td>
+        </tr>
+        <tr>
+          <td class="rowHeader">Total Products</td>
+          <td>
+            <a href="javascript:void(0)" (click)="routeDetails('Product')">{{sumry.TotalProducts | number}}</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <table class="table table-hover text-center table-bordered table-responsive col-md-12 col-sm-12">
+      <colgroup>
+        <col width="30%" />
+        <col width="35%" />
+        <col width="35%" />
+      </colgroup>
+      <thead class="bg-dark text-white font-weight-bold">
+        <tr class="text-center">
+          <th>Month</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of collection" class="text-center">
+          <td>{{item.MonthDate | date:'MM/yyyy'}}</td>
+          <td>{{item.TotalQty | number}}</td>
+          <td>{{item.TotalAmount | number}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel-body">
+    <div style="display: block;">
+      <canvas class="print-chart PrintnewPage" baseChart [datasets]="chartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="colorsEmpty" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
     </div>
-    <div class="panel-body">
-        <div style="display: block;">
-            <canvas class="print-chart PrintnewPage" baseChart [datasets]="chartData" [labels]="lineChartLabels" [options]="lineChartOptions"
-                [colors]="colorsEmpty" [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
-        </div>
-    </div>
+  </div>
 </div>

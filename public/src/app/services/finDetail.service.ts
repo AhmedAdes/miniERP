@@ -12,33 +12,33 @@ export class FinDetailService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'fdetail/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
-  getFinRecDetail(id: number) {    
+  getFinRecDetail(id: number) {
     return this.http.get(this.url + 'Receiving/' + id, this.options).map(res => res.json());
   }
-  getFinDispDetail(id: number) {    
+  getFinDispDetail(id: number) {
     return this.http.get(this.url + 'Dispensing/' + id, this.options).map(res => res.json());
   }
-  getFinEqualDetail(id: number) {    
+  getFinEqualDetail(id: number) {
     return this.http.get(this.url + 'Equalize/' + id, this.options).map(res => res.json());
   }
-  getFinRetDetail(id: number) {    
+  getFinRetDetail(id: number) {
     return this.http.get(this.url + 'Return/' + id, this.options).map(res => res.json());
   }
-  getFinRejectDetail(id: number) {    
+  getFinRejectDetail(id: number) {
     return this.http.get(this.url + 'Reject/' + id, this.options).map(res => res.json());
   }
 
-  getFinStock(clrid: number){
+  getFinStock(clrid: number) {
     return this.http.get(this.url + 'ClrStock/' + clrid, this.options).map(res => res.json());
-  }  
-  getFinStockwithOrders(clrid: number, strType: number){
+  }
+  getFinStockwithOrders(clrid: number, strType: number) {
     return this.http.get(this.url + 'ClrStockWOrders/' + clrid + '.' + strType, this.options).map(res => res.json());
   }
 
-  InsertFinRecDetails(rec: FinishedReceiving,UserID: number,fdetail: FinishedStoreDetail[]) {
+  InsertFinRecDetails(rec: FinishedReceiving, UserID: number, fdetail: FinishedStoreDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + 'Receiving/' + rec.FinReceivingID, this.options).map(res => res.json()));
     fdetail.forEach(element => {
@@ -47,13 +47,13 @@ export class FinDetailService {
       element.BatchNo = rec.BatchNo;
       element.SerialNo = rec.SerialNo;
       element.RecYear = rec.RecYear;
-      
+
       promises.push(this.http.post(this.url, element, this.options).map(res => res.json()));
     });
     return Observable.forkJoin(promises);
   }
 
-  InsertFinDispDetails(FinDispensingID: number,UserID: number,fdetail: FinishedStoreDetail[]) {
+  InsertFinDispDetails(FinDispensingID: number, UserID: number, fdetail: FinishedStoreDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + 'Dispensing/' + FinDispensingID, this.options).map(res => res.json()));
     fdetail.forEach(element => {
@@ -63,8 +63,8 @@ export class FinDetailService {
     });
     return Observable.forkJoin(promises);
   }
-  
-  InsertFinEqualDetails(FinEqualizeID: number,UserID: number,fdetail: FinishedStoreDetail[]) {
+
+  InsertFinEqualDetails(FinEqualizeID: number, UserID: number, fdetail: FinishedStoreDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + 'Equalize/' + FinEqualizeID, this.options).map(res => res.json()));
     fdetail.forEach(element => {
@@ -74,8 +74,8 @@ export class FinDetailService {
     });
     return Observable.forkJoin(promises);
   }
-  
-  InsertFinRetDetails(FinReturnID: number,UserID: number,fdetail: FinishedStoreDetail[]) {
+
+  InsertFinRetDetails(FinReturnID: number, UserID: number, fdetail: FinishedStoreDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + 'Return/' + FinReturnID, this.options).map(res => res.json()));
     fdetail.forEach(element => {
@@ -85,8 +85,8 @@ export class FinDetailService {
     });
     return Observable.forkJoin(promises);
   }
-  
-  InsertFinRejectDetails(FinRejectID: number,UserID: number,fdetail: FinishedStoreDetail[]) {
+
+  InsertFinRejectDetails(FinRejectID: number, UserID: number, fdetail: FinishedStoreDetail[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + 'Reject/' + FinRejectID, this.options).map(res => res.json()));
     fdetail.forEach(element => {
@@ -96,7 +96,7 @@ export class FinDetailService {
     });
     return Observable.forkJoin(promises);
   }
-  
+
   insertFinDetail(fdetail: FinishedStoreDetail) {
     return this.http.post(this.url, fdetail, this.options).map(res => res.json());
   }

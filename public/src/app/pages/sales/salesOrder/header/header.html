@@ -83,4 +83,10 @@
         <textarea rows="2" cols="10" class="form-control" name="Notes" [formControl]="headerForm.controls['Notes']" [(ngModel)]="model.Notes"></textarea>
       </div>
     </div>
+    <div class="form-group row">
+      <label for="SelfNotes" class="control-label col-md-2">{{srchObj.DisplayNames.SelfNotes.Disp}}</label>
+      <div class="col-md-10">
+        <textarea rows="2" cols="10" class="form-control" name="SelfNotes" [formControl]="headerForm.controls['SelfNotes']" [(ngModel)]="model.SelfNotes"></textarea>
+      </div>
+    </div>
   </div>

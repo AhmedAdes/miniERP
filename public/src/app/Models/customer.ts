@@ -12,6 +12,11 @@ export class Customer {
     CreateDate: Date;
     UserID: number;
     UserName: string;
+    ProvinceID: number;
+    Province: string;
+    engName: string;
+    RegionID: number;
+    Region: string;
 
     DisplayNames = {
         CustID: { Disp: "Customer العميل" },
@@ -24,7 +29,12 @@ export class Customer {
         Email: { Disp: "Email ايميل" },
         Website: { Disp: "Website موقع الكتروني" },
         ContactPerson: { Disp: "Contact Person المسئول" },
-        UserName: { Disp: "User Name" }
+        UserName: { Disp: "User Name" },
+        ProvinceID: { Disp: "Province المحافظة" },
+        Province: { Disp: "Province اسم المحافظة" },
+        engName: { Disp: "English Name الاسم بالانجليزية" },
+        RegionID: { Disp: "Region المنطقة" },
+        Region: { Disp: "Region اسم المنطقة" },
     }
     
 }

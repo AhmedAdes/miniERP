@@ -1,24 +1,67 @@
-
 var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
+var jwt = require("jsonwebtoken");
 var Promise = require('bluebird');
-var sqlcon = sql.globalConnection;
+var sqlcon = sql.globalPool;
+
+router.use(function (req, res, next) {
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers["authorization"];
+    var secret = req.body.salt || req.query.salt || req.headers["salt"];
+    // decode token
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, secret, function (err, decoded) {
+            if (err) {
+                return res.status(403).send({
+                    success: false,
+                    message: "Failed to authenticate token."
+                });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: "No token provided."
+        });
+    }
+});
 
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.SalesRep")
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.SalesRep Where SalesRepID = " + req.params.id)
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.get('/Plan/:id(\\d+).:year(\\d+)', function (req, res, next) {
@@ -33,8 +76,15 @@ router.get('/Plan/:id(\\d+).:year(\\d+)', function (req, res, next) {
         ISNULL((SELECT MonthQty FROM dbo.SalesRepTarget WHERE SalesRepID=${req.params.id} AND TargetYear=${req.params.year} AND TargetMonth=m.MonthDate),0) AS MonthQty, 
         (SELECT SalesPerson FROM dbo.SalesRep WHERE SalesRepID=${req.params.id}) SalesPerson
         FROM MonthRecursive m `)
-        .then(function (recordset) { res.json(recordset); })
-        .catch(function (err) { res.json({ error: err }); console.log(err); })
+        .then(function (result) {
+            res.json(result.recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
 });
 
 router.post('/', function (req, res, next) {
@@ -43,10 +93,17 @@ router.post('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.input('SalesPerson', srep.SalesPerson);
     request.input('Tel', srep.Tel);
-    request.execute('SalesRepInsert', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SalesRepInsert', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });
@@ -78,24 +135,40 @@ router.post('/Plan', function (req, res, next) {
                 }));
 
                 Promise.all(promises)
-                    .then(function (recordset) {
+                    .then(function (result) {
                         trans.commit().then(function () {
-                            res.json({ returnValue: 1, affected: 1 });
+                            res.json({
+                                returnValue: 1,
+                                affected: 1
+                            });
                         }).catch(function (err) {
                             trans.rollback();
-                            res.json({ error: err }); console.log(err);
+                            res.json({
+                                error: err
+                            });
+                            console.log(err);
                         })
                     }).catch(function (err) {
                         trans.rollback();
                         console.log('Transaction Rolled Back');
-                        res.json({ error: err }); console.log(err);
+                        res.json({
+                            error: err
+                        });
+                        console.log(err);
                     })
             }).catch(function (err) {
                 trans.rollback();
-                res.json({ error: err }); console.log(err);
+                res.json({
+                    error: err
+                });
+                console.log(err);
             })
     }).catch(function (err) {
-        res.json({ error: err }); console.log(err); connection.close();
+        res.json({
+            error: err
+        });
+        console.log(err);
+        connection.close();
     });
 });
 router.put('/:id', function (req, res, next) {
@@ -105,10 +178,17 @@ router.put('/:id', function (req, res, next) {
     request.input('SalesRepID', req.params.id);
     request.input('SalesPerson', srep.SalesPerson);
     request.input('Tel', srep.Tel);
-    request.execute('SalesRepUpdate', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SalesRepUpdate', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 
@@ -118,10 +198,17 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('SalesRepID', req.params.id);
-    request.execute('SalesRepDelete', function (err, recordset, returnValue, affected) {
-        if (err) { res.json({ error: err }); console.log(err); }
-        else {
-            res.json({ returnValue: returnValue, affected: affected });
+    request.execute('SalesRepDelete', function (err, result) {
+        if (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        } else {
+            res.json({
+                returnValue: result.returnValue,
+                affected: result.rowsAffected[0]
+            });
         }
     });
 });

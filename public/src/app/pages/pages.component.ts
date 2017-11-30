@@ -16,10 +16,10 @@ import { PAGES_MENU } from './pages.menu';
       </div>
     </div>    
     <ba-back-top position="200"></ba-back-top>
-    `
+    `,
+    styleUrls: ['./pages.component.scss']
 })
 export class Pages {
-
   constructor(private _menuService: BaMenuService,) {
   }
 

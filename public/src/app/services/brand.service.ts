@@ -10,11 +10,11 @@ export class BrandService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'brands/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getBrand(id?: number) {
-    var geturl = this.url ;
+    var geturl = this.url;
     if (id != null) {
       geturl = this.url + id;
     }
@@ -22,10 +22,10 @@ export class BrandService {
   }
 
   insertBrand(brand: Brand) {
-    return this.http.post(this.url , brand, this.options).map(res => res.json());
+    return this.http.post(this.url, brand, this.options).map(res => res.json());
   }
   updateBrand(id: string, brand: Brand) {
-    return this.http.put(this.url  + id, brand, this.options).map(res => res.json());
+    return this.http.put(this.url + id, brand, this.options).map(res => res.json());
   }
   deleteBrand(id: string) {
     return this.http.delete(this.url + id, this.options).map(res => res.json());

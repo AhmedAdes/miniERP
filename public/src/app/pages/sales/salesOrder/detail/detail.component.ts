@@ -187,6 +187,7 @@ export class SalesDetailComponent implements OnInit {
           stk.orders[0].OrderQty.toString() +
           " on Orders /-/-/ Total of " +
           (stk.stock[0].StockQty - stk.orders[0].OrderQty);
+          this.ctrlQuant.setValidators([Validators.required, min(0), max(stk.stock[0].StockQty)])
       });
   }
 

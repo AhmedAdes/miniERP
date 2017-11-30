@@ -21,7 +21,7 @@
 
   @mixin sidebar-collapsed() {
     .al-sidebar {
-      width: 52px;
+      width: 40px;
 
       .fa-angle-down, .fa-angle-up {
         opacity: 0;
@@ -30,7 +30,7 @@
       .al-sidebar-sublist {
         position: absolute;
         top: -1px;
-        left: 52px;
+        left: 40px;
         @include bg-translucent-dark(0.8);
         width: 0;
         display: block;

@@ -12,7 +12,7 @@ export class ColorService {
   constructor(private http: Http, private auth: AuthenticationService) { }
 
   url = DBConStrng + 'color/';
-  headers = new Headers({ 'Authorization': 'Bearer ' + this.auth.token });
+  headers = new Headers({ 'Authorization': this.auth.getUser().token, 'Salt': this.auth.getUser().salt });
   options = new RequestOptions({ headers: this.headers });
 
   getColor(id?: number) {
@@ -23,7 +23,7 @@ export class ColorService {
     return this.http.get(geturl, this.options).map(res => res.json());
   }
 
-  InsertProdColors(ModelID: number,UserID: number,clrs: ModelColor[]) {
+  InsertProdColors(ModelID: number, UserID: number, clrs: ModelColor[]) {
     var promises = [];
     promises.push(this.http.delete(this.url + ModelID, this.options).map(res => res.json()));
     clrs.forEach(element => {
