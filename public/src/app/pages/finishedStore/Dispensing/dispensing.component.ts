@@ -3,6 +3,7 @@ import { AuthenticationService, FinDispensingService, FinDetailService, ModelSer
 import { CurrentUser, FinishedDispensing, FinishedStoreDetail, Model, SalesHeader } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'fin-Disp',
@@ -125,7 +126,7 @@ export class FinDispensingComponent implements OnInit {
         this.stillSaving = false
         this.basicform.reset();
     }
-    RemoveSOIDfromtheList(){        
+    RemoveSOIDfromtheList(){
         var index = this.SOList.findIndex(a=> a.SOID == this.model.SOID)
         this.SOList.splice(index, 1);
     }
@@ -137,7 +138,7 @@ export class FinDispensingComponent implements OnInit {
         this.model.RecYear = new Date().getFullYear();
         // this.model.SOID = this.basicform.controls['soID'].value
         if (this.finDetails.length == 0) {
-            this.errorMessage = "Must Add some Products First";
+            hf.handleError('Must Add some Products First')
             this.stillSaving = false
             return;
         }
@@ -146,29 +147,29 @@ export class FinDispensingComponent implements OnInit {
             case 'Create':
                 this.srvDisp.insertDispensing(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                      hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvDisp.updateDispensing(this.model.FinDispensingID, this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                      hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvDisp.deleteDispensing(this.model.FinDispensingID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                      hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

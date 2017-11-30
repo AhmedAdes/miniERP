@@ -3,6 +3,7 @@ import { AuthenticationService, MatReturnService, MatDetailService, MaterialServ
 import { CurrentUser, MaterialReturn, MaterialStoreDetail, Model } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'mat-Ret',
@@ -25,7 +26,7 @@ import { Router } from '@angular/router';
 export class MatReturnComponent implements OnInit {
     //RecYear ,SerialNo ,ReturnDate ,ReturnFrom ,ReturnReason ,UserID
     constructor(public srvEqul: MatReturnService, private auth: AuthenticationService,
-        private srvDet: MatDetailService, private srvMat: MaterialService, private srvAcc: AccessoryService, 
+        private srvDet: MatDetailService, private srvMat: MaterialService, private srvAcc: AccessoryService,
         fb: FormBuilder, private router: Router) {
         this.basicform = fb.group({
             RecDate: ['', Validators.required],
@@ -140,29 +141,29 @@ export class MatReturnComponent implements OnInit {
             case 'Create':
                 this.srvEqul.insertReturn(this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvEqul.updateReturn(this.model.MatReturnID, this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvEqul.deleteReturn(this.model.MatReturnID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

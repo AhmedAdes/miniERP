@@ -4,6 +4,7 @@ import { CurrentUser, MaterialReceiving, MaterialInspection, MaterialStoreDetail
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../pipes/validators'
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'mat-insp',
@@ -110,7 +111,7 @@ export class MatInspectionComponent implements OnInit {
         this.Formstate = 'Create';
         this.headerText = 'Create New Material Inspection';
     }
-    
+
     LoadDetails(id, state) {
         this.srvInsp.getInspection(id).subscribe(mat => {
             if (mat[0].Category == 'Cloth') {
@@ -160,39 +161,43 @@ export class MatInspectionComponent implements OnInit {
                 this.model.RecYear = new Date().getFullYear();
                 this.srvInsp.insertInspection(this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvInsp.updateInspection(this.model.InspID, this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvInsp.deleteInspection(this.model.InspID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Release':
                 this.model.QCNO = +(this.model.RecYear.toString() + this.pad("000", this.model.SerialNo.toString(), true))
                 this.srvInsp.ReleaseInspection(this.model.InspID, this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

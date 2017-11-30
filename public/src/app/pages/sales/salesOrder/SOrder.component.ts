@@ -2,6 +2,7 @@ import { Component, OnInit, Input, trigger, state, style, transition, animate } 
 import { AuthenticationService, SalesHeaderService, SalesDetailService, SalesPaymentService, CustomerService, ModelService } from '../../../services';
 import { Customer, CurrentUser, SalesHeader, SalesDetail, SalesPayment, CustTypes, Model } from '../../../Models';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'sales-order',
@@ -111,7 +112,7 @@ export class SalesOrderComponent implements OnInit {
         this.model.UserID = this.currentUser.userID;
 
         if (this.SDetails.length == 0) {
-            this.errorMessage = "Must Add some Products First";
+            hf.handleError('Must Add some Products First')
             this.stillSaving = false
             return;
         }
@@ -129,33 +130,33 @@ export class SalesOrderComponent implements OnInit {
             case 'Create':
                 this.srvHead.insertFullSalesHeader(this.model, this.SDetails, this.SPayments).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                         this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvHead.updateFullSalesHeader(this.model.SOID, this.model, this.SDetails, this.SPayments).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                         this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvHead.deleteSalesHeader(this.model.SOID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                         this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
                 }, err => {
-                    this.stillSaving = false; this.errorMessage = err.message
+                    this.stillSaving = false; hf.handleError(err)
                 });
                 break;
 

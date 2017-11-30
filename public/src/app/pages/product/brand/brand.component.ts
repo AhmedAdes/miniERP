@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, BrandService } from '../../../services';
 import { Brand, CurrentUser } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
   selector: 'app-brand',
@@ -85,29 +86,29 @@ export class BrandComponent implements OnInit {
       case 'Create':
         this.serv.insertBrand(this.model).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
       case 'Edit':
         this.serv.updateBrand(this.model.BrandID, this.model).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
       case 'Delete':
         this.serv.deleteBrand(this.model.BrandID).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
 
       default:

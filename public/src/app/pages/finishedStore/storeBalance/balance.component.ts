@@ -9,7 +9,7 @@ import {
   animate
 } from "@angular/core";
 import { AuthenticationService, FinStoreService } from "../../../services";
-import { FinishedStore, CurrentUser } from "../../../Models";
+import { FinishedStore, CurrentUser, BatchNo } from "../../../Models";
 
 @Component({
   selector: "fin-balance",
@@ -36,7 +36,8 @@ export class StoreBalanceComponent implements OnInit {
 
   currentUser: CurrentUser = this.auth.getUser();
   collection: FinishedStore[] = [];
-  VisibleBalance: FinishedStore[] = [];
+  VisibleBalance: any[] = [];
+  modelsList: any[] = [];
   model: FinishedStore;
   srchObj: FinishedStore = new FinishedStore();
   showTable: boolean;
@@ -54,12 +55,37 @@ export class StoreBalanceComponent implements OnInit {
   sumSmplQty: number;
 
   ngOnInit() {
-    this.serv.getStoreBalance().subscribe(cols => {
+    this.serv.getStoreBalanceAll().subscribe(cols => {
       this.collection = cols;
       this.sumPackQty = 0;
       this.sumIndvQty = 0;
       this.sumDefQty = 0;
       this.sumSmplQty = 0;
+      let unique = this.collection
+        .map(cl => {
+          return cl.ColorID + '#' + cl.BatchNo ;
+        })
+        .filter((x, i, a) => a.indexOf(x) == i);
+      this.modelsList = unique.map(mod => {
+        let selMod = this.collection.filter(c => c.ColorID == +mod.split('#')[0] && c.BatchNo == mod.split('#')[1]);
+        return {
+          ModelCode: selMod[0].ModelCode,
+          ModelName: selMod[0].ModelName,
+          ColorName: selMod[0].ColorName,
+          BatchNo: selMod[0].BatchNo,
+          Color: selMod.findIndex(s => s.Quantity > 0) > -1,
+          stores: selMod.map(m => {
+            return {
+              StoreType: m.StoreType,
+              Quantity: m.Quantity,
+              ReceivingQty: m.ReceivingQty,
+              DispensingQty: m.DispensingQty,
+              EqualizeQty: m.EqualizeQty,
+              Color: m.StoreTypeID == 1 ? 'primary' : m.StoreTypeID == 2 ? 'danger' : m.StoreTypeID == 3 ? 'success' : 'dark'
+            };
+          })
+        };
+      });
       this.ZeroBalance(true);
       this.serv.getBalanceSubDetails().subscribe(ret => {
         this.piecePrices = ret.piece[0].SumPiecePrice;
@@ -109,9 +135,9 @@ export class StoreBalanceComponent implements OnInit {
   }
   ZeroBalance(active) {
     if (active) {
-      this.VisibleBalance = this.collection.filter(c => c.Quantity > 0);
+      this.VisibleBalance = this.modelsList.filter(c => {return c.stores.findIndex(s => s.Quantity > 0) > -1});
     } else {
-      this.VisibleBalance = this.collection;
+      this.VisibleBalance = this.modelsList;
     }
   }
 }

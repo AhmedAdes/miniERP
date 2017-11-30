@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { MaterialService, AuthenticationService } from '../../../services';
 import { Material, CurrentUser } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
   selector: 'app-cloth',
@@ -21,10 +22,10 @@ import { Material, CurrentUser } from '../../../Models';
   ]
 })
 export class ClothComponent implements OnInit {
-  
+
   constructor(public serv: MaterialService, private auth: AuthenticationService) { }
 
-  currentUser: CurrentUser = this.auth.getUser(); 
+  currentUser: CurrentUser = this.auth.getUser();
   collection: Material[] = [];
   model: Material;
   srchObj: Material = new Material();
@@ -86,36 +87,39 @@ export class ClothComponent implements OnInit {
       case 'Create':
         this.serv.insertMaterial(this.model).subscribe(ret => {
           if(ret.error){
-            this.errorMessage = ret.error.message;
+            this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err=> this.errorMessage = err.message );
+        }, err=> hf.handleError(err) );
         break;
       case 'Edit':
         this.serv.updateMaterial(this.model.MaterialID, this.model).subscribe(ret => {
           if(ret.error){
-            this.errorMessage = ret.error.message;
+            this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err=> this.errorMessage = err.message );
+        }, err=> hf.handleError(err) );
         break;
       case 'Delete':
         this.serv.deleteMaterial(this.model.MaterialID).subscribe(ret => {
           if(ret.error){
-            this.errorMessage = ret.error.message;
+            this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err=> this.errorMessage = err.message );
+        }, err=> hf.handleError(err) );
         break;
-    
+
       default:
         break;
     }
   }
-  
+
   SortTable(column: string) {
     if (this.orderbyString.indexOf(column) == -1) {
       this.orderbyClass = "fa fa-sort-amount-asc";

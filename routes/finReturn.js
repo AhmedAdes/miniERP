@@ -74,7 +74,7 @@ router.post('/', function (req, res, next) {
     var finRetID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -164,7 +164,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -296,7 +296,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()

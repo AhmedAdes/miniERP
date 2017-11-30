@@ -1,180 +1,189 @@
 <div class="panel panel-default zz">
-    <div class="panel-heading">
+  <div class="panel-heading">
 
-        <a class="btn btn-primary" [routerLink]="['/home/finish/finrec']">Receiving استلام</a>
-        <a class="btn btn-primary" [routerLink]="['/home/finish/findisp']"> Dispensing صرف </a>
-        <a class="btn btn-primary" [routerLink]="['/home/finish/finequl']"> Equalization تسوية </a>
-        <!--<a class="btn btn-primary" [routerLink]="['/']"> Return مرتجع </a>-->
-        <a class="btn btn-primary" [routerLink]="['/home/finish/finret']"> Reject مرفوض </a>
-        <a class="btn btn-primary" *ngIf="currentUser.jobClass < 1" [routerLink]="['/home/finish/barcode']">Print Barcodes</a>
-        <a class="btn btn-primary" [routerLink]="['/printout/finBlnc']">Print Balance</a>
+    <a class="btn btn-primary" [routerLink]="['/home/finish/finrec']">Receiving استلام</a>
+    <a class="btn btn-primary" [routerLink]="['/home/finish/findisp']"> Dispensing صرف </a>
+    <a class="btn btn-primary" [routerLink]="['/home/finish/finequl']"> Equalization تسوية </a>
+    <!--<a class="btn btn-primary" [routerLink]="['/']"> Return مرتجع </a>-->
+    <a class="btn btn-primary" [routerLink]="['/home/finish/finret']"> Reject مرفوض </a>
+    <a class="btn btn-primary" *ngIf="currentUser.jobClass < 1" [routerLink]="['/home/finish/barcode']">Print Barcodes</a>
+    <a class="btn btn-primary" [routerLink]="['/printout/finBlnc']">Print Balance</a>
 
-        <div class="alert alert-danger" *ngIf="errorMessage">
-            <p>{{errorMessage}}</p>
-        </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      <p>{{errorMessage}}</p>
     </div>
-    <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
-        <div *ngIf="currentUser.jobClass === 0">
-          <div class="row">
-            <div class="col-md-3 col-sm-4 col-xs-12">
-                <div class="small-box alert-warning">
-                    <div class="inner text-center">
-                        <h4>Total Stock -Pack-</h4>
-                        <h4>-اجمالي الرصيد -سرية</h4>
-                        <h3>{{sumPackQty | number}}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-12">
-                <div class="small-box alert-warning">
-                    <div class="inner text-center">
-                        <h4>Total Stock -Individuel-</h4>
-                        <h4>-اجمالي الرصيد -تكسير</h4>
-                        <h3>{{sumIndvQty | number}}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-12">
-                <div class="small-box alert-warning">
-                    <div class="inner text-center">
-                        <h4>Total Stock -Défaut-</h4>
-                        <h4>-اجمالي الرصيد -ديفوه</h4>
-                        <h3>{{sumDefQty | number}}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-12">
-                <div class="small-box alert-warning">
-                    <div class="inner text-center">
-                        <h4>Total Stock -Sample-</h4>
-                        <h4>-اجمالي الرصيد -عينات</h4>
-                        <h3>{{sumSmplQty | number}}</h3>
-                    </div>
-                </div>
-            </div>
-          </div>
-          <div *ngIf="currentUser.jobClass < 1" class="row">
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="small-box alert-danger">
-                    <div class="inner text-center">
-                        <h4>Total Pieces Price</h4>
-                        <h4>-إجمالي السعر -سرية-قطع</h4>
-                        <h3>{{piecePrices | number:'1.2-2'}}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="small-box alert-info">
-                    <div class="inner text-center">
-                        <h4>Total Store Price</h4>
-                        <h4>-إجمالي السعر -سرية-محلات</h4>
-                        <h3>{{storePrices | number:'1.2-2'}}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-xs-12">
-                <div class="small-box alert-primary">
-                    <div class="inner text-center">
-                        <h4>Total Wholesales Price</h4>
-                        <h4>-إجمالي السعر -سرية-جملة</h4>
-                        <h3>{{wholePrices | number:'1.2-2'}}</h3>
-                    </div>
-                </div>
+  </div>
+  <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+    <div *ngIf="currentUser.jobClass === 0">
+      <div class="row">
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class="small-box alert-warning">
+            <div class="inner text-center">
+              <h4>Total Stock -Pack-</h4>
+              <h4>-اجمالي الرصيد -سرية</h4>
+              <h3>{{sumPackQty | number}}</h3>
             </div>
           </div>
         </div>
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class="small-box alert-warning">
+            <div class="inner text-center">
+              <h4>Total Stock -Individuel-</h4>
+              <h4>-اجمالي الرصيد -تكسير</h4>
+              <h3>{{sumIndvQty | number}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class="small-box alert-warning">
+            <div class="inner text-center">
+              <h4>Total Stock -Défaut-</h4>
+              <h4>-اجمالي الرصيد -ديفوه</h4>
+              <h3>{{sumDefQty | number}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-12">
+          <div class="small-box alert-warning">
+            <div class="inner text-center">
+              <h4>Total Stock -Sample-</h4>
+              <h4>-اجمالي الرصيد -عينات</h4>
+              <h3>{{sumSmplQty | number}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="currentUser.jobClass < 1" class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="small-box alert-danger">
+            <div class="inner text-center">
+              <h4>Total Pieces Price</h4>
+              <h4>-إجمالي السعر -سرية-قطع</h4>
+              <h3>{{piecePrices | number:'1.2-2'}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="small-box alert-info">
+            <div class="inner text-center">
+              <h4>Total Store Price</h4>
+              <h4>-إجمالي السعر -سرية-محلات</h4>
+              <h3>{{storePrices | number:'1.2-2'}}</h3>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="small-box alert-primary">
+            <div class="inner text-center">
+              <h4>Total Wholesales Price</h4>
+              <h4>-إجمالي السعر -سرية-جملة</h4>
+              <h3>{{wholePrices | number:'1.2-2'}}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-outline-success active" (click)="ZeroBalance(true)">
-                <input type="radio" name="options" id="option2" autocomplete="off" checked> Non-Zero Balance
-            </label>
-            <label class="btn btn-outline-danger" (click)="ZeroBalance(false)">
-                <input type="radio" name="options" id="option3" autocomplete="off"> All Balance
-            </label>
-        </div>
-        <br>
-        <table id="tblBrands" class="table table-hover text-center table-striped table-responsive">
-            <colgroup>
-                <col width="20%" />
-                <col width="20%" />
-                <col width="20%" />
-                <col width="20%" />
-                <col width="20%" />
-            </colgroup>
-            <thead>
-                <tr>
-                    <th> {{srchObj.DisplayNames.ModelCode.Disp}}
-                        <i (click)="SortTable('ModelCode')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelCode') == 1) ? orderbyClass : 'fa fa-sort'"></i>
-                    </th>
-                    <th> {{srchObj.DisplayNames.ModelName.Disp}}
-                        <i (click)="SortTable('ModelName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
-                    </th>
-                    <th> {{srchObj.DisplayNames.ColorName.Disp}}
-                        <i (click)="SortTable('ColorName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ColorName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
-                    </th>
-                    <th> {{srchObj.DisplayNames.Quantity.Disp}}
-                        <i (click)="SortTable('Quantity')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('Quantity') == 1) ? orderbyClass : 'fa fa-sort'"></i>
-                    </th>
-                    <th> {{srchObj.DisplayNames.BatchNo.Disp}}
-                        <i (click)="SortTable('BatchNo')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('BatchNo') == 1) ? orderbyClass : 'fa fa-sort'"></i>
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1">
-                                <i class="icon ion-android-search"></i>
-                            </span>
-                            <input class="form-control" type="text" id="srchModelCode" name="ModelCode" [(ngModel)]="srchObj.ModelCode">
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1">
-                                <i class="icon ion-android-search"></i>
-                            </span>
-                            <input class="form-control" type="text" id="srchModelName" name="ModelName" [(ngModel)]="srchObj.ModelName">
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1">
-                                <i class="icon ion-android-search"></i>
-                            </span>
-                            <input class="form-control" type="text" id="srchColorName" name="ColorName" [(ngModel)]="srchObj.ColorName">
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1">
-                                <i class="icon ion-android-search"></i>
-                            </span>
-                            <input class="form-control" type="text" id="srchQuantity" name="Quantity" [(ngModel)]="srchObj.Quantity">
-                        </div>
-                    </th>
-                    <th>
-                        <div class="input-group">
-                            <span class="input-group-addon addon-left" id="basic-addon1">
-                                <i class="icon ion-android-search"></i>
-                            </span>
-                            <input class="form-control" type="text" id="srchBatchNo" name="BatchNo" [(ngModel)]="srchObj.BatchNo">
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-        </table>
-        <div class="row">
-            <div class="card col-md-3 col-sm-4" *ngFor="let item of (VisibleBalance | filter:srchObj | orderby:orderbyString)" style="border: 2px solid;"
-                [style.border-color]="(item.Quantity > 0) ? 'green' : 'red'">
-                <div class="card-body">
-                    <h4 class="text-center">Code: {{item.ModelCode}}</h4>
-                    <h5 class="text-center">{{item.ModelName}} - {{item.ColorName}}</h5>
-                    <h4 class="text-center alert-danger">Qty: {{item.Quantity}}</h4>
-                    <h5 class="text-center alert-info">{{item.StoreType}} - Batch: {{item.BatchNo}}</h5>
-                </div>
+    <div class="btn-group" data-toggle="buttons">
+      <label class="btn btn-outline-success active" (click)="ZeroBalance(true)">
+        <input type="radio" name="options" id="option2" autocomplete="off" checked> Non-Zero Balance
+      </label>
+      <label class="btn btn-outline-danger" (click)="ZeroBalance(false)">
+        <input type="radio" name="options" id="option3" autocomplete="off"> All Balance
+      </label>
+    </div>
+    <br>
+    <table id="tblBrands" class="table table-hover text-center table-striped table-responsive">
+      <colgroup>
+        <col width="20%" />
+        <col width="30%" />
+        <col width="30%" />
+        <col width="20%" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th> {{srchObj.DisplayNames.ModelCode.Disp}}
+            <i (click)="SortTable('ModelCode')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelCode') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.ModelName.Disp}}
+            <i (click)="SortTable('ModelName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ModelName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.ColorName.Disp}}
+            <i (click)="SortTable('ColorName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ColorName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.BatchNo.Disp}}
+            <i (click)="SortTable('BatchNo')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('BatchNo') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+        </tr>
+        <tr>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchModelCode" name="ModelCode" [(ngModel)]="srchObj.ModelCode">
             </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchModelName" name="ModelName" [(ngModel)]="srchObj.ModelName">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchColorName" name="ColorName" [(ngModel)]="srchObj.ColorName">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchBatchNo" name="BatchNo" [(ngModel)]="srchObj.BatchNo">
+            </div>
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <div class="row">
+      <div class="card col-md-4 col-sm-6" *ngFor="let model of (VisibleBalance | filter:srchObj | orderby:orderbyString)" style="border: 2px solid;"
+        [style.border-color]="model.Color ? 'green' : 'red'">
+        <div class="card-body row">
+          <h4 class="text-center text-primary">Code: {{model.ModelCode}}</h4>
+          <h5 class="text-center">{{model.ModelName}} - {{model.ColorName}}</h5>
+          <h5 class="text-center alert-info">Batch: {{model.BatchNo}}</h5>
+          <div class="col-md-12 col-sm-12 col-12 p-0">
+            <table class="table table-hover text-center">
+              <thead>
+                <tr>
+                  <th>Store</th>
+                  <th class="success">Rec.</th>
+                  <th class="danger">Disp.</th>
+                  <th class="warning">Equal.</th>
+                  <th class="info">Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let str of model.stores" [class]="'text-' + str.Color">
+                  <td class="font-weight-bold">{{str.StoreType}}</td>
+                  <td class="success">{{str.ReceivingQty}}</td>
+                  <td class="danger">{{str.DispensingQty}}</td>
+                  <td class="warning">{{str.EqualizeQty}}</td>
+                  <td class="info font-weight-bold">{{str.Quantity}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <!--   <tbody>
+      </div>
+    </div>
+    <!--   <tbody>
                 <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
                     <td>{{item.ModelCode}}</td>
                     <td>{{item.ModelName}}</td>
@@ -187,5 +196,5 @@
             </tbody>
         </table>
         <pagination-controls (pageChange)="p = $event"></pagination-controls> -->
-    </div>
+  </div>
 </div>

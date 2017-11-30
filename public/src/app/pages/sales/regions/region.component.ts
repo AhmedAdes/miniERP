@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, RegionService, ProvinceService } from '../../../services';
 import { Region, Province, CurrentUser } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'app-region',
@@ -80,29 +81,29 @@ export class RegionComponent implements OnInit {
             case 'Create':
                 this.serv.insertRegion(this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.serv.updateRegion(this.model.RegionID, this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.serv.deleteRegion(this.model.RegionID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

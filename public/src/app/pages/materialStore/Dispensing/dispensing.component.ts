@@ -3,6 +3,7 @@ import { AuthenticationService, MatDispensingService, MatDetailService, Material
 import { CurrentUser, MaterialDispensing, MaterialStoreDetail, Material, SalesHeader } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'mat-Disp',
@@ -27,7 +28,7 @@ export class MatDispensingComponent implements OnInit {
     constructor(public srvDisp: MatDispensingService, private auth: AuthenticationService,
         private srvDet: MatDetailService, private srvMat: MaterialService, private srvAcc: AccessoryService,
         fb: FormBuilder, private router: Router) {
-        this.basicform = fb.group({//RecYear ,SerialNo ,DispensingDate ,DispenseTO ,UserID 
+        this.basicform = fb.group({//RecYear ,SerialNo ,DispensingDate ,DispenseTO ,UserID
             RecDate: ['', Validators.required],
             DispenseTO: ['', Validators.required]
         });
@@ -141,29 +142,32 @@ export class MatDispensingComponent implements OnInit {
             case 'Create':
                 this.srvDisp.insertDispensing(this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvDisp.updateDispensing(this.model.MatDispensingID, this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvDisp.deleteDispensing(this.model.MatDispensingID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

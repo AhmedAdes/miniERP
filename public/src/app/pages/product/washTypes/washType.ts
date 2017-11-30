@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, WashTypeService } from '../../../services';
 import { WashType, CurrentUser } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
   selector: 'app-wash',
@@ -78,29 +79,29 @@ export class WashTypeComponent implements OnInit {
       case 'Create':
         this.serv.insertWashType(this.model).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
       case 'Edit':
         this.serv.updateWashType(this.model.WashID, this.model).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
       case 'Delete':
         this.serv.deleteWashType(this.model.WashID).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
 
       default:

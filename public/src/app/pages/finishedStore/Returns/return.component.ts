@@ -4,6 +4,7 @@ import { CurrentUser, FinishedReturn, FinishedStoreDetail, SalesHeader, Model } 
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CompleterService, CompleterData, CompleterItem } from "ng2-completer";
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'fin-Ret',
@@ -133,7 +134,7 @@ export class FinReturnComponent implements OnInit {
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.finDetails.length == 0) {
-            this.errorMessage = "Must Add some Products First";
+            hf.handleError('Must Add some Products First')
             this.stillSaving = false
             return;
         }
@@ -141,29 +142,32 @@ export class FinReturnComponent implements OnInit {
             case 'Create':
                 this.srvRet.insertReturn(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvRet.updateReturn(this.model.FinReturnID, this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvRet.deleteReturn(this.model.FinReturnID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

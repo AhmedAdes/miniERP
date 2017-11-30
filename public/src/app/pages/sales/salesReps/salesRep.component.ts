@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, SalesRepService } from '../../../services';
 import { SalesRep, CurrentUser } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
   selector: 'sales-rep',
@@ -94,29 +95,29 @@ export class SalesRepComponent implements OnInit {
       case 'Create':
         this.serv.insertSalesRep(this.model).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
       case 'Edit':
         this.serv.updateSalesRep(this.model.SalesRepID, this.model).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
       case 'Delete':
         this.serv.deleteSalesRep(this.model.SalesRepID).subscribe(ret => {
           if (ret.error) {
-            this.errorMessage = ret.error.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
         break;
 
       default:

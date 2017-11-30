@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { User, CurrentUser } from '../../Models';
 import { AuthenticationService, UserService } from '../../services';
 import { matchingPasswords, matchFieldValue } from '../../pipes/validators';
+import * as hf from '../helper.functions'
 
 @Component({
     selector: 'app-changePass',
@@ -33,14 +34,14 @@ export class ChngPassComponent implements OnInit {
     SavePassword(event) {
         event.preventDefault();
         this.model.Password = this.inputForm.controls['UserPass'].value
-        
+
         this.srvuser.changePass(this.model).subscribe(ret => {
             if (ret.error) {
-                this.errorMessage = ret.error.message;
+                hf.handleError(ret.error)
             } else if (ret.affected > 0) {
                 this.router.navigate(['login']);
             }
-        })
+        }, err => hf.handleError(err))
     }
     Back(){
         this.router.navigate(['home/dashboard']);

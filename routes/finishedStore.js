@@ -36,7 +36,7 @@ router.use(function (req, res, next) {
 router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query("Select * From dbo.vwFinishStore ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo")
+    request.query(`Select * From dbo.vwFinishStore ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo`)
         .then(function (result) {
             res.json(result.recordset);
         }).catch(function (err) {
@@ -49,10 +49,34 @@ router.get('/', function (req, res, next) {
         })
 });
 
+router.get('/storeBlnce/all', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`Select ModelID ,ModelName ,ModelCode ,ColorName ,ColorID ,BatchNo ,StoreTypeID ,StoreType,
+    (SELECT ISNULL(SUM(Quantity), 0) FROM dbo.FinishedStoreDetails 
+        WHERE FinReceivingID IS NOT NULL AND ColorID=f.ColorID AND StoreTypeID=f.StoreTypeID AND BatchNo=f.BatchNo) ReceivingQty,
+    (SELECT ISNULL(SUM(ABS(Quantity)), 0) FROM dbo.FinishedStoreDetails 
+        WHERE FinDispensingID IS NOT NULL AND ColorID=f.ColorID AND StoreTypeID=f.StoreTypeID AND BatchNo=f.BatchNo) DispensingQty,
+    (SELECT ISNULL(SUM(Quantity), 0) FROM dbo.FinishedStoreDetails 
+        WHERE FinEqualizeID IS NOT NULL AND ColorID=f.ColorID AND StoreTypeID=f.StoreTypeID AND BatchNo=f.BatchNo) EqualizeQty,
+    Quantity 
+    FROM dbo.vwFinishStore f
+    ORDER BY ModelCode, ColorName, StoreTypeID, BatchNo`)
+        .then(function (result) {
+            res.json(result.recordset);
+        }).catch(function (err) {
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
+        })
+});
 router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
-    request.query("Select * From dbo.vwFinishStore Where BrandID = '" + req.params.id + "'")
+    request.query(`Select * From dbo.vwFinishStore Where BrandID='${req.params.id}'`)
         .then(function (result) {
             res.json(result.recordset);
         }).catch(function (err) {

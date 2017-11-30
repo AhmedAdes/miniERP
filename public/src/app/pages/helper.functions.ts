@@ -1,3 +1,5 @@
+import swal from 'sweetalert2';
+
 export function handleDate(day: Date) {
   // var day = new Date(date);
   var yyy = day.getFullYear();
@@ -21,4 +23,21 @@ export function pad(padding, str, padLeft) {
   } else {
     return (str + padding).substring(0, padding.length);
   }
+}
+
+export function handleError(err) {
+  let errorMessage;
+  if (typeof err === 'string') {
+    errorMessage = err;
+  } else {
+    errorMessage =
+      err.message ||
+      (err.info && err.info.message) ||
+      (err.originalError && err.originalError.info.message) ||
+      '';
+  }
+  if (err.type == 2 && errorMessage == '') {
+    errorMessage = err.statusText + '; Status: 500';
+  }
+  swal('Some Error Occured', errorMessage, 'error');
 }

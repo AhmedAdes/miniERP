@@ -3,6 +3,7 @@ import { AuthenticationService, MatReceivingService, MatInspectionService, MatDe
 import { CurrentUser, MaterialReceiving, MaterialStoreDetail, MaterialInspection, Material } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'mat-rec',
@@ -168,29 +169,32 @@ export class MatReceivingComponent implements OnInit {
             case 'Create':
                 this.srvRec.insertReceiving(this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvRec.updateReceiving(this.model.MatReceivingID, this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvRec.deleteReceiving(this.model.MatReceivingID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

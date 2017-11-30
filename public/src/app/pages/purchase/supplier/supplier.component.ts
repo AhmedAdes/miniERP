@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, SupplierService } from '../../../services';
 import { Supplier, CurrentUser, CustTypes } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'app-supplier',
@@ -100,29 +101,29 @@ export class SupplierComponent implements OnInit {
             case 'Create':
                 this.serv.insertSupplier(this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.serv.updateSupplier(this.model.SupID, this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.serv.deleteSupplier(this.model.SupID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

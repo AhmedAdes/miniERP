@@ -3,6 +3,7 @@ import { AuthenticationService, FinEqualizeService, FinDetailService, ModelServi
 import { CurrentUser, FinishedEqualization, FinishedStoreDetail, Model, EqualizeTypes } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'fin-Equalize',
@@ -122,7 +123,7 @@ export class FinEqualizeComponent implements OnInit {
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.finDetails.length == 0) {
-            this.errorMessage = "Must Add some Products First";
+            hf.handleError('Must Add some Products First')
             this.stillSaving = false
             return;
         }
@@ -130,29 +131,29 @@ export class FinEqualizeComponent implements OnInit {
             case 'Create':
                 this.srvEqul.insertEqualize(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvEqul.updateEqualize(this.model.FinEqualizeID, this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvEqul.deleteEqualize(this.model.FinEqualizeID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

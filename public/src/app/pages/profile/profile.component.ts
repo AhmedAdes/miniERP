@@ -5,6 +5,7 @@ import { emailValidator } from '../../pipes/index';
 import { User, CurrentUser } from '../../Models';
 import { Location } from '@angular/common'
 import { ResizeOptions, ImageResult } from 'ng2-imageupload';
+import * as hf from '../helper.functions'
 
 @Component({
     selector: 'app-profile',
@@ -74,7 +75,7 @@ export class ProfileComponent implements OnInit {
         newUser.DirectManager = this.currentUser.userID;
         this.serv.UpdateUser(newUser.UserID, newUser).subscribe(ret => {
             if (ret.error) {
-                this.errorMessage = ret.error.message;
+                hf.handleError(ret.error)
             } else if (ret.affected > 0) {
                 this.ngOnInit();
             }

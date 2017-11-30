@@ -3,6 +3,7 @@ import { AuthenticationService, MatEqualizeService, MatDetailService, MaterialSe
 import { CurrentUser, MaterialEqualization, MaterialStoreDetail, Material, EqualizeTypes } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'mat-Equalize',
@@ -25,7 +26,7 @@ import { Router } from '@angular/router';
 export class MatEqualizeComponent implements OnInit {
     //RecYear ,SerialNo ,EqualizeDate ,EqualizeType ,UserID
     constructor(public srvEqul: MatEqualizeService, private auth: AuthenticationService,
-        private srvDet: MatDetailService, private srvMat: MaterialService, private srvAcc: AccessoryService, 
+        private srvDet: MatDetailService, private srvMat: MaterialService, private srvAcc: AccessoryService,
         fb: FormBuilder, private router: Router) {
         this.basicform = fb.group({
             RecDate: ['', Validators.required],
@@ -134,7 +135,7 @@ export class MatEqualizeComponent implements OnInit {
         this.model.UserID = this.currentUser.userID;
         this.model.RecYear = new Date().getFullYear();
         if (this.matDetails.length == 0) {
-            this.errorMessage = "Must Add some Products First";
+            hf.handleError('Must Add some Products First')
             this.stillSaving = false
             return;
         }
@@ -142,29 +143,32 @@ export class MatEqualizeComponent implements OnInit {
             case 'Create':
                 this.srvEqul.insertEqualize(this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvEqul.updateEqualize(this.model.MatEqualizeID, this.model, this.matDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvEqul.deleteEqualize(this.model.MatEqualizeID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        this.errorMessage = ret.error.message || ret.error.originalError.info.message ;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

@@ -113,7 +113,7 @@ router.post('/Plan', function (req, res, next) {
     var yplans = req.body.target;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
 
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);

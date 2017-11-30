@@ -4,6 +4,7 @@ import { UserService, AuthenticationService } from '../../services';
 import { emailValidator, matchingPasswords, alreadyExist } from '../../pipes/index';
 import { User, CurrentUser, JobClass } from '../../Models';
 import { ResizeOptions, ImageResult } from 'ng2-imageupload';
+import * as hf from '../helper.functions'
 
 @Component({
   selector: 'app-user',
@@ -164,7 +165,7 @@ export class UserComponent implements OnInit {
   ApproveUser(id: number) {
     this.serv.ApproveUser(id, this.currentUser.userID).subscribe(ret => {
       if (ret.error) {
-        this.errorMessage = ret.error.message;
+        hf.handleError(ret.error)
       } else if (ret.affected > 0) {
         this.ngOnInit();
       }

@@ -10,6 +10,9 @@ export class FinishedStore {
     Entryno: string;
     StoreType: string;
     StoreTypeID: number;
+    ReceivingQty: number;
+    DispensingQty: number;
+    EqualizeQty: number;
 
     DisplayNames = {
         ModelCode: { Disp: "Model Code كود الموديل" },
@@ -189,7 +192,7 @@ export class Barcode {
     ProdColorCode: string;
     ColorName: string;
     BatchNo: string;
-    Quantity: number;    
+    Quantity: number;
     DisplayNames = {
         ModelCode: { Disp: "Model Code كود الموديل" },
         ModelName: { Disp: "Model Name الموديل" },

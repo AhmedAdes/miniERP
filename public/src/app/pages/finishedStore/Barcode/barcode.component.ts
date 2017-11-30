@@ -4,6 +4,7 @@ import { CurrentUser, FinishedReceiving, FinishedStoreDetail, Model, ModelColor,
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../pipes/validators';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'fin-barcode',
@@ -60,7 +61,7 @@ export class BarcodeComponent implements OnInit {
             this.showTable = false;
             this.Detmodel = new Barcode();
             this.detform.reset();
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
     }
 
     onProdChange(value) {

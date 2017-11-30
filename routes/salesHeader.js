@@ -403,7 +403,7 @@ router.post('/', function (req, res, next) {
     var pays = req.body.payments;
     var SOrderID;
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
 
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
@@ -508,7 +508,7 @@ router.put('/:id', function (req, res, next) {
     var pays = req.body.payments;
     var SOrderID;
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
 
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);

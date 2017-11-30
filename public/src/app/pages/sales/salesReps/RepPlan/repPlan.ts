@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AuthenticationService, SalesRepService } from '../../../../services';
 import { SalesRep, SalesRepTarget, CurrentUser } from '../../../../Models';
+import * as hf from '../../../helper.functions'
 
 @Component({
     selector: 'sales-rep-target',
@@ -35,11 +36,11 @@ export class SalesRepTargetComponent implements OnInit {
         event.preventDefault();
         this.serv.insertSalesPlan(this.salesRep, this.collection).subscribe(ret => {
             if (ret.error) {
-                this.errorMessage = ret.error.message;
+                hf.handleError(ret.error)
             } else if (ret.affected > 0) {
                 this.backHit.emit()
             }
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
     }
     TableBack() {
         this.backHit.emit()

@@ -103,7 +103,7 @@ router.post('/', function (req, res, next) {
     var modelID;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -197,7 +197,7 @@ router.put('/:id', function (req, res, next) {
     var sizes = req.body.sizes;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.Connection(conf.config);
+    var connection = new sql.ConnectionPool(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()

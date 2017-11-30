@@ -3,6 +3,7 @@ import { AuthenticationService, FinReceivingService, FinDetailService, ModelServ
 import { CurrentUser, FinishedReceiving, FinishedStoreDetail, Model } from '../../../Models';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'fin-Rec',
@@ -124,7 +125,7 @@ export class FinReceivingComponent implements OnInit {
         this.stillSaving = true
         this.model.UserID = this.currentUser.userID;
         if (this.finDetails.length == 0) {
-            this.errorMessage = "Must Add some Products First";
+            hf.handleError('Must Add some Products First')
             this.stillSaving = false
             return;
         }
@@ -133,29 +134,29 @@ export class FinReceivingComponent implements OnInit {
                 this.model.RecYear = new Date().getFullYear();
                 this.srvRec.insertReceiving(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.srvRec.updateReceiving(this.model.FinReceivingID, this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.srvRec.deleteReceiving(this.model.FinReceivingID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:

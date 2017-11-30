@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, SalesPaymentService } from '../../../services';
 import { SalesPayment, CurrentUser } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'sales-payment',
@@ -101,29 +102,29 @@ export class PaymentComponent implements OnInit {
             //   case 'Create':
             //     this.serv.insert(this.model).subscribe(ret => {
             //       if (ret.error) {
-            //         this.errorMessage = ret.error.message;
+            //         hf.handleError(ret.error)
             //       } else if (ret.affected > 0) {
             //         this.ngOnInit();
             //       }
-            //     }, err => this.errorMessage = err.message);
+            //     }, err => hf.handleError(err));
             //     break;
             case 'Edit':
                 this.serv.updateSalesPayment(this.model.SOPayID, this.model).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             //   case 'Delete':
             //     this.serv.deleteSalesPayment(this.model.SOPayID).subscribe(ret => {
             //       if (ret.error) {
-            //         this.errorMessage = ret.error.message;
+            //         hf.handleError(ret.error)
             //       } else if (ret.affected > 0) {
             //         this.ngOnInit();
             //       }
-            //     }, err => this.errorMessage = err.message);
+            //     }, err => hf.handleError(err));
             //     break;
 
             default:

@@ -14,7 +14,6 @@ export class DashboardService {
   options = new RequestOptions({ headers: this.headers });
 
   getCounts() {
-    console.log(this.headers)
     return this.http.get(this.url, this.options).map(res => res.json());
   }
 }

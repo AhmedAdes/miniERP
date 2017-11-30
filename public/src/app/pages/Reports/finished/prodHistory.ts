@@ -12,6 +12,7 @@ import {
 } from '../../../Models';
 import { CompleterService, CompleterData, CompleterItem } from 'ng2-completer';
 import { Observable } from "rxjs/Observable";
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'rpt-finHstry',
@@ -63,7 +64,7 @@ export class RptFinHistoryComponent implements OnInit {
             this.showTable = '';
             this.Detmodel = new FinishedStoreDetail();
             this.detform.reset();
-        }, err => this.errorMessage = err.message);
+        }, err => hf.handleError(err));
     }
 
     onProdChange(value) {

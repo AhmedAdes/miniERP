@@ -3,6 +3,7 @@ import { AuthenticationService, CustomerService, ProvinceService, RegionService 
 import { FormBuilder, FormGroup, Validators, AbstractControl, PatternValidator } from '@angular/forms';
 import { Customer, CurrentUser, CustTypes, Province, Region } from '../../../Models';
 import { alreadyExist } from '../../../pipes/validators'
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'app-customer',
@@ -154,7 +155,7 @@ export class CustomerComponent implements OnInit {
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.serv.updateCustomer(this.model.CustID, this.model).subscribe(ret => {
@@ -164,7 +165,7 @@ export class CustomerComponent implements OnInit {
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.serv.deleteCustomer(this.model.CustID).subscribe(ret => {
@@ -175,7 +176,7 @@ export class CustomerComponent implements OnInit {
                         this.ngOnInit();
                     }
                 }, err => {
-                    this.errorMessage = err.message
+                    hf.handleError(err)
                     this.stillSaving = false
                 });
                 break;

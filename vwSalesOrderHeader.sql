@@ -85,6 +85,7 @@ CREATE TABLE Regions
 	CONSTRAINT PK_Regions PRIMARY KEY CLUSTERED (RegionID),
 	CONSTRAINT FK_Regions_Provinces FOREIGN KEY (ProvinceID) REFERENCES dbo.Provinces(ProvinceID)
 )
+GO
 
 INSERT dbo.Provinces (Province,engName) 
 VALUES (N'الدقهلية', 'Ad Daqahliyah'),

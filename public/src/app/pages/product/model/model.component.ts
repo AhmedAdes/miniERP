@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { AuthenticationService, ModelService, BrandService, ColorService, SizeService, WashTypeService } from '../../../services';
 import { Brand, WashType, Model, CurrentUser, ModelColor, ModelSize } from '../../../Models';
+import * as hf from '../../helper.functions'
 
 @Component({
     selector: 'app-model',
@@ -39,13 +40,13 @@ export class ModelComponent implements OnInit {
     errorMessage: string;
     orderbyString: string = "";
     orderbyClass: string = "fa fa-sort";
-    
+
 
     ngOnInit() {
         this.serv.getModel().subscribe(cols => {
             this.collection = cols;
             this.brandServ.getBrand().subscribe(set => {
-                this.BrandList = set; 
+                this.BrandList = set;
                 this.srvwash.getWashType().subscribe(w => this.WashList = w)
                 this.TableBack();
             });
@@ -130,29 +131,29 @@ export class ModelComponent implements OnInit {
             case 'Create':
                 this.serv.insertModel(this.model, this.colorList, newSizeList).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Edit':
                 this.serv.updateModel(this.model.ModelID, this.model, this.colorList, newSizeList).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
             case 'Delete':
                 this.serv.deleteModel(this.model.ModelID).subscribe(ret => {
                     if (ret.error) {
-                        this.errorMessage = ret.error.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => this.errorMessage = err.message);
+                }, err => hf.handleError(err));
                 break;
 
             default:
