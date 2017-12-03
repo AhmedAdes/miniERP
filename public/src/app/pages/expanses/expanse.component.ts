@@ -39,7 +39,7 @@ export class ExpansesComponent implements OnInit {
     stillSaving: boolean
 
     ngOnInit() {
-        this.serv.getExpanses().subscribe(cols => this.collection = cols);
+        this.serv.getExpanses().subscribe(cols => this.collection = cols, err => hf.handleError(err));
         this.TableBack();
     }
 
@@ -76,7 +76,7 @@ export class ExpansesComponent implements OnInit {
             this.showTable = false;
             this.Formstate = state;
             this.headerText = state == 'Detail' ? `Expanses ${state}s` : `${state} Expanses`;
-        })
+        }, err => hf.handleError(err))
     }
     TableBack() {
         this.showTable = true;

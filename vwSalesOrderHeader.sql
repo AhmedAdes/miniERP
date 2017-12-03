@@ -397,6 +397,13 @@ UPDATE dbo.Customers SET CustName=@CustName, CustType=@CustType ,Country=@Countr
 ,UserID=@UserID ,ContactPerson=@ContactPerson ,Area=@Area, RegionID=@RegionID, ProvinceID=@ProvinceID
 WHERE CustID = @CustID
 GO
+CREATE VIEW vwCustomer AS 
+SELECT c.CustID ,ISNULL(c.CustName, '') CustName,c.CustType ,c.Country ,c.Area ,c.Address ,c.Tel ,c.Email ,c.Website ,
+c.UserID ,c.CreateDate ,ISNULL(c.ContactPerson, '') ContactPerson, u.UserName, 
+r.RegionID, r.Region, p.ProvinceID, p.Province, p.engName 
+FROM dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID 
+LEFT JOIN dbo.Regions r ON r.RegionID = c.RegionID LEFT JOIN dbo.Provinces p ON p.ProvinceID = c.ProvinceID
+GO
 
 UPDATE dbo.Customers SET ProvinceID =qry.ProvinceID FROM (SELECT p.ProvinceID, p.Province FROM dbo.Provinces p) qry WHERE qry.Province = Country
 UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.ProvinceID, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
@@ -411,10 +418,12 @@ EXEC dbo.UserChangePass  @UserID = 1, -- int
     @NewPass = N'123ades' -- nvarchar(50)
 GO
 
-CREATE VIEW vwCustomer AS 
-SELECT c.CustID ,ISNULL(c.CustName, '') CustName,c.CustType ,c.Country ,c.Area ,c.Address ,c.Tel ,c.Email ,c.Website ,
-c.UserID ,c.CreateDate ,ISNULL(c.ContactPerson, '') ContactPerson, u.UserName, 
-r.RegionID, r.Region, p.ProvinceID, p.Province, p.engName 
-FROM dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID 
-LEFT JOIN dbo.Regions r ON r.RegionID = c.RegionID LEFT JOIN dbo.Provinces p ON p.ProvinceID = c.ProvinceID
+UPDATE dbo.SalesOrderHeader SET DiscountPrcnt = 1
+UPDATE dbo.SalesOrderHeader SET DiscountPrcnt = 0 WHERE SOID IN (12084)
 GO
+
+--SELECT h.SOID, h.GrandTotal, h.Discount, SUM(d.Quantity * d.Price) subTotal,
+--SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price) afterDiscount
+--FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID
+--GROUP BY h.SOID, h.GrandTotal, h.Discount
+--HAVING  h.GrandTotal != SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price)

@@ -97,8 +97,9 @@
           <td *ngIf="selGroup == 'No-Group'" colspan="6" class="text-center">Totals</td>
           <td *ngIf="selGroup !== 'No-Group' && selGroup !== 'Store'" colspan="2" class="text-center">Totals</td>
           <td *ngIf="selGroup == 'Store'" class="text-center">Totals</td>
-          <td>{{sumSales | number}}</td>
+          <td *ngIf="selGroup !== 'No-Group'">{{sumSales | number}}</td>
           <td>{{sumQty | number}}</td>
+          <td *ngIf="selGroup == 'No-Group'"></td>
           <td>{{subTotals | number}}</td>
           <td>{{sumDiscount | number}}</td>
         </tr>

@@ -3,6 +3,7 @@ import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHead
 import { ModelService, ColorService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../../pipes/validators';
+import * as hf from '../../../helper.functions'
 
 @Component({
     selector: 'fin-equl-detail',
@@ -118,7 +119,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
                     }
                 }
             }
-        });
+        }, err => hf.handleError(err));
     }
     onColorChange(value) {
         if (!value || !this.colorList) {
@@ -133,7 +134,7 @@ export class FinEqualDetailsComponent implements OnInit, OnChanges {
             if (this.Detmodel.StoreTypeID && this.EditForm) {
                 this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
             }
-        })
+        }, err => hf.handleError(err))
     }
     onstrProdTypeChange(value) {
         if (!value || !this.prodTypes) {

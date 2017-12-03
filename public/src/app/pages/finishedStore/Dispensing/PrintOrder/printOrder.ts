@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { CurrentUser, Model, ModelColor, FinishedDispensing, FinishedStoreDetail, BatchNo, SalesHeader, CompanyName } from '../../../../Models';
 import { FinDispensingService, FinDetailService } from '../../../../services';
+import * as hf from '../../../helper.functions'
 
 @Component({
     selector: 'print-findisp-order',
@@ -26,9 +27,9 @@ export class PrintFinDispOrderComponent implements OnInit {
                 this.srvDet.getFinDispDetail(id).subscribe(det => {
                     this.finDetails = det;
                     this.AfterViewInit()
-                });
-            })
-        })
+                }, err => hf.handleError(err));
+            }, err => hf.handleError(err))
+        }, err => hf.handleError(err))
     }
 
     AfterViewInit() {

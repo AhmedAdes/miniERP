@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService, SalesHeaderService } from '../../services';
+import * as hf from '../helper.functions'
 
 @Component({
     selector: 'dashboard',
@@ -20,14 +21,14 @@ export class DashboardComponent implements OnInit {
     PaidA
     PaidQ
 
-    
-    ngOnInit() { 
+
+    ngOnInit() {
         this.srv.getCounts().subscribe(cnt =>{
             this.FabricCount = cnt[0].FabricCount
             this.AccessoryCount = cnt[0].AccessoryCount
             this.ModelCount = cnt[0].ModelCount
             this.SalesCount = cnt[0].SalesCount
-            
+
             this.srvsales.getIncomeTracker().subscribe(ret => {
                 this.UnpaidA = ret.Unpaid[0].UnpaidAmount
                 this.UnpaidQ = ret.Unpaid[0].OpenInvoices
@@ -35,7 +36,7 @@ export class DashboardComponent implements OnInit {
                 this.OverDueQ = ret.OverDue[0].OverDueInvoices
                 this.PaidA = ret.Paid[0].PaidAmount
                 this.PaidQ = ret.Paid[0].BilledInvoices
-            })
-        })
+            }, err => hf.handleError(err))
+        }, err => hf.handleError(err))
     }
 }

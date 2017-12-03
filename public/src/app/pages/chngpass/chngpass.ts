@@ -29,7 +29,7 @@ export class ChngPassComponent implements OnInit {
             this.model = usr[0]
             this.inputForm.setValidators([matchingPasswords('UserPass', 'ConfPass'), matchFieldValue('OldPass', this.model.Password)])
             this.model.Password = ''
-        })
+        }, err => hf.handleError(err))
     }
     SavePassword(event) {
         event.preventDefault();

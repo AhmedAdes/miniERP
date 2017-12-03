@@ -3,6 +3,7 @@ import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHead
 import { ModelService, ColorService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../../pipes/validators';
+import * as hf from '../../../helper.functions'
 
 @Component({
     selector: 'fin-disp-detail',
@@ -119,7 +120,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
                     this.onColorChange(this.Detmodel.ColorID)
                 }
             }
-        });
+        }, err => hf.handleError(err));
     }
     onColorChange(value) {
         if (!value || !this.colorList) { this.BatchList = null; return; }
@@ -132,7 +133,7 @@ export class FinDispDetailsComponent implements OnInit, OnChanges {
                     this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
                 }
             }
-        })
+        }, err => hf.handleError(err))
     }
     onstrProdTypeChange(value) {
         if (!value || !this.prodTypes) { return; }

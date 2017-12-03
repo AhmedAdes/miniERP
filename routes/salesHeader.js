@@ -636,7 +636,9 @@ router.get('/SalesGroupPeriod/:groupby.:fromDate.:toDate', function (req, res, n
     let mainStr = `
         SELECT h.CustID, c.CustName, d.ColorID, m.ModelName, d.Quantity, d.Price AS UnitPrice, (d.Quantity * d.Price) SubTotal, ISNULL(h.Discount, 0) Discount, 
                 m.ModelCode, h.SODate, c.Country + ' - ' + c.Area AS Region, c.Country, c.Area, h.SOID, h.DiscountPrcnt, d.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType,
-                CASE h.DiscountPrcnt WHEN 1 THEN (ISNULL(h.Discount, 0) * (d.Quantity * d.Price) / 100) WHEN 0 THEN ISNULL(h.Discount, 0) END TOTDiscount
+                CASE h.DiscountPrcnt 
+                WHEN 1 THEN CAST((ISNULL(h.Discount, 0) * (d.Quantity * d.Price) / 100) / (SELECT COUNT(ColorID) FROM dbo.SalesOrderDetails WHERE SOID = h.SOID) AS MONEY)	
+                WHEN 0 THEN CAST(ISNULL(h.Discount, 0) / (SELECT COUNT(ColorID) FROM dbo.SalesOrderDetails WHERE SOID = h.SOID) AS MONEY) END TOTDiscount
         FROM dbo.SalesOrderDetails d 
         JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
         JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID 

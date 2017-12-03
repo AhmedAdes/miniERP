@@ -66,10 +66,10 @@ export class FinDispensingComponent implements OnInit {
             this.collection = cols;
             this.srvModel.getModel().subscribe(mod => {
                 this.modelsList = mod;
-                this.srvSO.getUnFinishedSalesHeader().subscribe(so => this.SOList = so);
+                this.srvSO.getUnFinishedSalesHeader().subscribe(so => this.SOList = so, err => hf.handleError(err));
                 this.TableBack();
-            })
-        });
+            }, err => hf.handleError(err))
+        }, err => hf.handleError(err));
     }
 
     HandleDate(date: Date) {
@@ -104,9 +104,9 @@ export class FinDispensingComponent implements OnInit {
                     this.showTable = false;
                     this.Formstate = state;
                     this.headerText = state == 'Detail' ? `Finished Store Dispensing ${state}s` : `${state} Finished Store Dispensing`;
-                })
-            });
-        });
+                }, err => hf.handleError(err))
+            }, err => hf.handleError(err));
+        }, err => hf.handleError(err));
     }
     EditThis(id: number) {
         this.LoadDetails(id, 'Edit');
@@ -216,7 +216,7 @@ export class FinDispensingComponent implements OnInit {
                 det.UserID = this.currentUser.userID
                 // det.BatchNo = 'Edit TO Fill This'
             })
-        })
+        }, err => hf.handleError(err))
     }
     DeleteDetail(i: number) {
         this.finDetails.splice(i, 1);

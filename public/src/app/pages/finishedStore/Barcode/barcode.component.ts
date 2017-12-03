@@ -71,7 +71,7 @@ export class BarcodeComponent implements OnInit {
             this.colorList = clrs;
             this.selectedModel = this.modelsList.filter(obj => obj.ModelID == value)[0];
             this.Detmodel.ModelCode = this.selectedModel.ModelCode
-        });
+        }, err => hf.handleError(err));
     }
 
     onColorChange(value) {
