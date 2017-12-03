@@ -25,20 +25,6 @@ import * as hf from '../../helper.functions'
 })
 export class FinDispensingComponent implements OnInit {
 
-    constructor(public srvDisp: FinDispensingService, private auth: AuthenticationService,
-        private srvDet: FinDetailService, private srvModel: ModelService, private srvSO: SalesHeaderService,
-        private srvSODet: SalesDetailService, fb: FormBuilder, private router: Router) {
-        this.basicform = fb.group({
-            soID: [{ value: '', disabled: true }],
-            chkSOID: [''],
-            RecDate: ['', Validators.required],
-            DispenseTo: ['', Validators.required]
-        });
-
-        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
-        this.basicform.controls['chkSOID'].valueChanges.subscribe(value => this.onchkchange(value));
-        this.basicform.controls['soID'].valueChanges.subscribe(value => this.onSOIDchange(value));
-    }
 
     currentUser: CurrentUser = this.auth.getUser();
     collection: FinishedDispensing[] = [];
@@ -57,6 +43,23 @@ export class FinDispensingComponent implements OnInit {
     cnvRecDate: string;
     basicform: FormGroup;
     stillSaving: boolean
+    selModID: number
+    reset: boolean
+
+    constructor(public srvDisp: FinDispensingService, private auth: AuthenticationService,
+        private srvDet: FinDetailService, private srvModel: ModelService, private srvSO: SalesHeaderService,
+        private srvSODet: SalesDetailService, fb: FormBuilder, private router: Router) {
+        this.basicform = fb.group({
+            soID: [{ value: '', disabled: true }],
+            chkSOID: [''],
+            RecDate: ['', Validators.required],
+            DispenseTo: ['', Validators.required]
+        });
+
+        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
+        this.basicform.controls['chkSOID'].valueChanges.subscribe(value => this.onchkchange(value));
+        this.basicform.controls['soID'].valueChanges.subscribe(value => this.onSOIDchange(value));
+    }
 
     ngOnInit() {
         this.srvDisp.getDispensing().subscribe(cols => {
@@ -126,8 +129,8 @@ export class FinDispensingComponent implements OnInit {
         this.stillSaving = false
         this.basicform.reset();
     }
-    RemoveSOIDfromtheList(){
-        var index = this.SOList.findIndex(a=> a.SOID == this.model.SOID)
+    RemoveSOIDfromtheList() {
+        var index = this.SOList.findIndex(a => a.SOID == this.model.SOID)
         this.SOList.splice(index, 1);
     }
     HandleForm(event) {
@@ -147,7 +150,7 @@ export class FinDispensingComponent implements OnInit {
             case 'Create':
                 this.srvDisp.insertDispensing(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                      hf.handleError(ret.error)
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -156,7 +159,7 @@ export class FinDispensingComponent implements OnInit {
             case 'Edit':
                 this.srvDisp.updateDispensing(this.model.FinDispensingID, this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
-                      hf.handleError(ret.error)
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -165,7 +168,7 @@ export class FinDispensingComponent implements OnInit {
             case 'Delete':
                 this.srvDisp.deleteDispensing(this.model.FinDispensingID).subscribe(ret => {
                     if (ret.error) {
-                      hf.handleError(ret.error)
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -236,5 +239,17 @@ export class FinDispensingComponent implements OnInit {
         this.router.navigate(['printout/finDisp', orderID])
 
         // window.open(`#/printout/invoice/${soid}`, '_blank')
+    }
+    StartSearch() {
+        if (!this.selModID) return
+        this.srvDisp.searchModelCode(this.selModID).subscribe(cols => this.collection = cols, err => hf.handleError(err))
+    }
+    ResetSearch() {
+        this.reset = true
+        this.selModID = undefined
+        this.srvDisp.getDispensing().subscribe(cols => this.collection = cols, err => hf.handleError(err), () => this.reset = false)
+    }
+    modSearchSelect(value) {
+        this.selModID = value
     }
 }

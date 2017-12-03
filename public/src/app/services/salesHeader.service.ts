@@ -97,4 +97,7 @@ export class SalesHeaderService {
   getSalesColor(modelID, soid: number) {
     return this.http.get(this.url + 'SlsHdColors/' + modelID + '.' + soid, this.options).map(res => res.json())
   }
+  searchModelCode(model: string) {
+    return this.http.get(this.url + 'SearchModel/' + model, this.options).map(res => res.json());
+  }
 }

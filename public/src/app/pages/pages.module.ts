@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ImageUploadModule } from 'ng2-imageupload';
 import { ImageZoomModule } from 'angular2-image-zoom';
+import { Ng2CompleterModule } from "ng2-completer";
 
 import { routing } from './pages.routing';
 import { NgaModule } from '../theme/nga.module';
@@ -29,7 +30,7 @@ import { PrintOutModule } from './PrintOut/printout.module'
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
     NgxPaginationModule, ImageUploadModule, ImageZoomModule,
-    BrowserAnimationsModule, PrintOutModule
+    BrowserAnimationsModule, PrintOutModule, Ng2CompleterModule
   ],
   declarations: [
     Pages,

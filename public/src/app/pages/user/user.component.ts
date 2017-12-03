@@ -131,7 +131,7 @@ export class UserComponent implements OnInit {
         this.serv.InsertUser(newUser).subscribe(ret => {
           if (ret.error) {
             this.stillSaving = false
-            this.errorMessage = ret.error.message || ret.error.originalError.info.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
@@ -141,7 +141,7 @@ export class UserComponent implements OnInit {
         this.serv.UpdateUser(newUser.UserID, newUser).subscribe(ret => {
           if (ret.error) {
             this.stillSaving = false
-            this.errorMessage = ret.error.message || ret.error.originalError.info.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }
@@ -151,7 +151,7 @@ export class UserComponent implements OnInit {
         this.serv.DeleteUser(newUser.UserID).subscribe(ret => {
           if (ret.error) {
             this.stillSaving = false
-            this.errorMessage = ret.error.message || ret.error.originalError.info.message;
+            hf.handleError(ret.error)
           } else if (ret.affected > 0) {
             this.ngOnInit();
           }

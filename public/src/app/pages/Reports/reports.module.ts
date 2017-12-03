@@ -5,6 +5,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgaModule } from '../../theme/nga.module';
 import { Ng2CompleterModule } from "ng2-completer";
 import { ChartsModule } from 'ng2-charts';
+import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 
 import { routing } from './reports.routing';
 import {
@@ -34,10 +35,20 @@ let fin_Rpts = [RptFinHistoryComponent, RptFinRecPeriodComponent, RptFinDispPeri
   RptFinEqzPeriodComponent, RptFinRetPeriodComponent, RptFinEmptyStockComponent, RptFinStoreBlncDateComponent,
   RptSalesByPeriodComponent
 ]
+let spinConfig = {
+  animationType: ANIMATION_TYPES.threeBounce,
+  backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+  backdropBorderRadius: '10px',
+  fullScreenBackdrop: false,
+  primaryColour: 'lightseagreen', 
+  secondaryColour: 'lightseagreen', 
+  tertiaryColour: 'lightseagreen'
+}
 @NgModule({
   imports: [
     CommonModule, FormsModule, ReactiveFormsModule, NgaModule, routing,
-    PipeModule, NgxPaginationModule, ChartsModule, Ng2CompleterModule
+    PipeModule, NgxPaginationModule, ChartsModule, Ng2CompleterModule,
+    LoadingModule.forRoot(spinConfig)
   ],
   declarations: [
     ReportsComponent, ReportHomeComponent, cust_Rpts, sls_Rpts, fin_Rpts

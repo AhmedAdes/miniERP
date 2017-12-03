@@ -42,8 +42,10 @@
   </div>
   <div class="panel-body">
     <br>
+    <ngx-loading [show]="showLoading"></ngx-loading><!--> [color]="'lightseagreen'"<-->
     <table id="tblReps" class="table table-hover text-center table-striped table-responsive table-bordered">
       <colgroup>
+        <!-- <col width="10%" />
         <col width="10%" />
         <col width="10%" />
         <col width="10%" />
@@ -52,8 +54,7 @@
         <col width="10%" />
         <col width="10%" />
         <col width="10%" />
-        <col width="10%" />
-        <col width="10%" />
+        <col width="10%" /> -->
       </colgroup>
       <thead class="bg-dark text-white font-weight-bold">
         <tr class="text-center">
@@ -77,9 +78,9 @@
         <tr *ngFor="let item of collection" class="text-center">
           <td *ngIf="selGroup == 'No-Group'">{{item.SOID}}</td>
           <td *ngIf="selGroup == 'No-Group'">{{item.SODate | date:'dd/MM/yyyy'}}</td>
-          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Customer'">{{item.CustName}}</td>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Customer'"><a href="javascript:void(0)" (click)="viewCustDetails(item.CustID)">{{item.CustName}}</a></td>
           <td *ngIf="selGroup == 'Customer'"> {{item.Region}} </td>
-          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Product'">{{item.ModelCode}}</td>
+          <td *ngIf="selGroup == 'No-Group' || selGroup == 'Product'"><a href="javascript:void(0)" (click)="viewProdDetails(item.ModelCode)">{{item.ModelCode}}</a></td>
           <td *ngIf="selGroup == 'No-Group' || selGroup == 'Product'">{{item.ModelName}}</td>
           <td *ngIf="selGroup == 'No-Group' || selGroup == 'Store'">{{item.StoreType}}</td>
           <th *ngIf="selGroup == 'Country'"> {{item.Country}} </th>

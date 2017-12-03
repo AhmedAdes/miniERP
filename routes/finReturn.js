@@ -50,7 +50,6 @@ router.get('/', function (req, res, next) {
             }
         })
 });
-
 router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
@@ -66,7 +65,23 @@ router.get('/:id', function (req, res, next) {
             }
         })
 });
-
+router.get('/SearchModel/:model', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinReturnID = fr.FinReturnID GROUP BY FinReturnID) SumQty
+    FROM dbo.FinishedReturn fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID
+    WHERE fr.FinReturnID IN (SELECT DISTINCT FinReturnID FROM dbo.vwFinishStoreDetails WHERE ModelID = ${req.params.model} AND FinReturnID IS NOT NULL)`)
+        .then(function (result) {
+            res.json(result.recordset);
+        }).catch(function (err) {
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
+        })
+});
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var finRet = req.body.master;

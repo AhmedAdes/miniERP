@@ -151,7 +151,7 @@ export class CustomerComponent implements OnInit {
                 this.serv.insertCustomer(this.model).subscribe(ret => {
                     if (ret.error) {
                         this.stillSaving = false
-                        this.errorMessage = ret.error.message || ret.error.originalError.info.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -161,7 +161,7 @@ export class CustomerComponent implements OnInit {
                 this.serv.updateCustomer(this.model.CustID, this.model).subscribe(ret => {
                     if (ret.error) {
                         this.stillSaving = false
-                        this.errorMessage = ret.error.message || ret.error.originalError.info.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
@@ -171,7 +171,7 @@ export class CustomerComponent implements OnInit {
                 this.serv.deleteCustomer(this.model.CustID).subscribe(ret => {
                     if (ret.error) {
                         this.stillSaving = false
-                        this.errorMessage = ret.error.message || ret.error.originalError.info.message;
+                        hf.handleError(ret.error)
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }

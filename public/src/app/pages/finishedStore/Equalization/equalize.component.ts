@@ -25,17 +25,6 @@ import * as hf from '../../helper.functions'
 })
 export class FinEqualizeComponent implements OnInit {
     //RecYear ,SerialNo ,EqualizeDate ,EqualizeType ,UserID
-    constructor(public srvEqul: FinEqualizeService, private auth: AuthenticationService,
-        private srvDet: FinDetailService, private srvModel: ModelService, fb: FormBuilder, private router: Router) {
-        this.basicform = fb.group({
-            RecDate: ['', Validators.required],
-            EqType: ['', Validators.required]
-        });
-
-        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
-        // this.basicform.controls['EqualizeType'].valueChanges.subscribe(value => this.onchkchange(value));
-    }
-
     currentUser: CurrentUser = this.auth.getUser();
     collection: FinishedEqualization[] = [];
     finDetails: FinishedStoreDetail[] = [];
@@ -53,6 +42,19 @@ export class FinEqualizeComponent implements OnInit {
     cnvRecDate: string;
     basicform: FormGroup;
     stillSaving: boolean
+    selModID: number
+    reset: boolean
+
+    constructor(public srvEqul: FinEqualizeService, private auth: AuthenticationService,
+        private srvDet: FinDetailService, private srvModel: ModelService, fb: FormBuilder, private router: Router) {
+        this.basicform = fb.group({
+            RecDate: ['', Validators.required],
+            EqType: ['', Validators.required]
+        });
+
+        this.basicform.controls['RecDate'].valueChanges.subscribe(value => this.onRecDatechange(value));
+        // this.basicform.controls['EqualizeType'].valueChanges.subscribe(value => this.onchkchange(value));
+    }
 
     ngOnInit() {
         this.srvEqul.getEqualize().subscribe(cols => {
@@ -199,5 +201,17 @@ export class FinEqualizeComponent implements OnInit {
         this.router.navigate(['printout/finEqul', orderID])
 
         // window.open(`#/printout/invoice/${soid}`, '_blank')
+    }
+    StartSearch() {
+        if(! this.selModID) return
+        this.srvEqul.searchModelCode(this.selModID).subscribe(cols => this.collection = cols, err => hf.handleError(err))
+    }
+    ResetSearch() {
+        this.reset = true
+        this.selModID = undefined
+        this.srvEqul.getEqualize().subscribe(cols => this.collection = cols, err => hf.handleError(err), () => this.reset = false)
+    }
+    modSearchSelect(value) {
+        this.selModID = value
     }
 }

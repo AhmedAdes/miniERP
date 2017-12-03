@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
+import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { CustomerService, SalesHeaderService } from '../../../services';
 import { Customer, SalesHeader, rptSalesByCust } from '../../../Models';
 // import { BaseChartDirective } from 'ng2-charts';
@@ -11,9 +12,6 @@ import * as hf from '../../helper.functions'
     styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesByCustComponent implements OnInit {
-    constructor(private srv: SalesHeaderService, private srvCst: CustomerService, private loc: Location) { }
-    // @ViewChild(BaseChartDirective) private _chart;
-
     collection: rptSalesByCust[] = []
     custList: Customer[] = []
     custID: number
@@ -26,11 +24,18 @@ export class RptSalesByCustComponent implements OnInit {
     subTotals: number
     sumDiscount: number
 
+    constructor(private srv: SalesHeaderService, private srvCst: CustomerService,
+        private route: ActivatedRoute, private loc: Location) { }
+
     ngOnInit() {
         this.srvCst.getSalesCustomers().subscribe(cst => {
             this.custList = cst
-            this.fromDate = hf.handleDate(new Date())
-            this.toDate = hf.handleDate(new Date())
+            this.route.params.subscribe((params: Params) => {
+                this.custID = params[0] || undefined
+                this.fromDate = params[1] || hf.handleDate(new Date())
+                this.toDate = params[2] || hf.handleDate(new Date())
+                if (this.custID) this.ViewReport()
+            })
         })
     }
 

@@ -18,8 +18,8 @@
       <label for="CustID" class="col-sm-3 text-right control-label">Customer</label>
       <div class="col-sm-9">
         <select class="form-control" name="CustID" [(ngModel)]="custID" #cstId="ngModel" required>
-          <option [ngValue]="null">Select a Customer...</option>
-          <option *ngFor="let i of custList" [ngValue]="i.CustID">{{i.CustName}} - {{i.CustType}}</option>
+          <option value="">Select a Customer...</option>
+          <option *ngFor="let i of custList" [value]="i.CustID">{{i.CustName}} - {{i.CustType}}</option>
         </select>
       </div>
     </div>

@@ -37,7 +37,11 @@ export function handleError(err) {
       '';
   }
   if (err.type == 2 && errorMessage == '') {
-    errorMessage = err.statusText + '; Status: 500';
+    if (err._body) {
+      errorMessage = err.statusText + `; Status: ${err.status}; \n Error ${JSON.parse(err._body).error.originalError.info.message}`;
+    } else {
+      errorMessage = err.statusText + `; Status: ${err.status}; `;
+    }
   }
   swal('Some Error Occured', errorMessage, 'error');
 }

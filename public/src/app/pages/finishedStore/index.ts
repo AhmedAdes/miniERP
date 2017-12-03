@@ -9,3 +9,4 @@ export * from './Equalization/Details/details.component';
 export * from './Returns/return.component';
 export * from './Returns/Details/details.component';
 export * from './Barcode/barcode.component';
+export * from './modSelect/modSelect.component'

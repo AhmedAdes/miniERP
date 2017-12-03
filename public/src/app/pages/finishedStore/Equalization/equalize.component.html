@@ -5,6 +5,18 @@
     <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
     <br>
     <br>
+    <div class="row" *ngIf="!Formstate">
+      <app-mod-select class="col-10 col-sm-10 col-md-10" [modelsList]="modelsList" submitted="true" [required]="false" [reset]="reset"
+        (modelSelected)="modSearchSelect($event)"></app-mod-select>
+      <div class="col-2 col-sm-2 col-md-2">
+        <button type="button" (click)="StartSearch()" class="btn btn-success" title="Start Search">
+          <i class="fa fa-search"></i>
+        </button>
+        <button type="button" (click)="ResetSearch()" class="btn btn-danger" title="Reset">
+          <i class="fa fa-eraser"></i>
+        </button>
+      </div>
+    </div>
     <div class="alert alert-danger" *ngIf="errorMessage">
       <p>{{errorMessage}}</p>
     </div>
@@ -160,14 +172,14 @@
               </fin-equl-detail>
 
               <table class="table table-hover text-center table-striped table-responsive">
-                <colgroup>
+                <!-- <colgroup>
                   <col width="10%" />
                   <col width="10%" />
                   <col width="10%" />
                   <col width="10%" />
                   <col width="10%" />
                   <col width="10%" />
-                </colgroup>
+                </colgroup> -->
                 <thead class="bg-dark text-white font-weight-bold">
                   <tr>
                     <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
@@ -188,9 +200,7 @@
                     <td>{{item.StoreType }}</td>
                     <td>{{item.Quantity}}</td>
                     <td>
-                      <a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Remove</a>
-                    </td>
-                    <td>
+                      <a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Remove</a>  |
                       <a class="no-print" href="javascript:void(0)" (click)="EditDetail(i)">Edit</a>
                     </td>
                   </tr>

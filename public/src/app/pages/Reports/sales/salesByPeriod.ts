@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
+import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { ModelService, SalesHeaderService } from '../../../services';
 import { SalesHeader, rptSalesPeriod } from '../../../Models';
 import { BaseChartDirective, Color } from 'ng2-charts';
-import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import * as hf from '../../helper.functions'
 
 @Component({
@@ -12,8 +12,6 @@ import * as hf from '../../helper.functions'
     styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesByPeriodComponent implements OnInit {
-    constructor(private srv: SalesHeaderService, private srvProd: ModelService, private route: ActivatedRoute,
-        private router: Router, private loc: Location) { }
     @ViewChild(BaseChartDirective) private _chart;
 
     collection: rptSalesPeriod[] = []
@@ -28,6 +26,7 @@ export class RptSalesByPeriodComponent implements OnInit {
     sumSales: number
     subTotals: number
     sumDiscount: number
+    showLoading: boolean
 
     chartData = [{ data: [], label: '' }];
     lineChartLabels: Array<any> = [];
@@ -38,6 +37,9 @@ export class RptSalesByPeriodComponent implements OnInit {
         maintainAspectRatio: true
     };
     colorsEmpty: Array<Color> = []
+
+    constructor(private srv: SalesHeaderService, private srvProd: ModelService, private route: ActivatedRoute,
+        private router: Router, private loc: Location) { }
 
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
@@ -50,10 +52,11 @@ export class RptSalesByPeriodComponent implements OnInit {
     }
 
     ViewReport() {
+        this.showLoading = true
         this.srv.getSalesByPeriod(this.selGroup, this.fromDate, this.toDate).subscribe(ret => {
             // this.srv.getSalesByProductMonthsReport(this.modelID, this.fromDate, this.toDate).subscribe(chrt => {
             this.collection = ret
-            this.reportHeader = `Sales By Period Grouped By ${this.selGroup !== 'No-Group' ? this.selGroup : ''}`
+            this.reportHeader = `Sales By Period ${this.selGroup !== 'No-Group' ?  'Grouped By ' + this.selGroup : ''}`
             this.subHeader = `From ${this.fromDate} To ${this.toDate}`
             this.sumQty = this.collection.reduce((a, b) => a + b.Quantity, 0)
             this.sumSales = this.collection.reduce((a, b) => a + b.SalesCount, 0)
@@ -68,7 +71,7 @@ export class RptSalesByPeriodComponent implements OnInit {
             // this.lineChartLabels = chrt.map(data => { return data.MonthDate.split('T')[0] })
             // this.forceChartRefresh()
             // })
-        })
+        }, err => hf.handleError(err), () => this.showLoading = false)
     }
     forceChartRefresh() {
         setTimeout(() => {
@@ -85,5 +88,11 @@ export class RptSalesByPeriodComponent implements OnInit {
     }
     printReport() {
         window.print();
+    }
+    viewCustDetails(id) {
+        this.router.navigate(['/home/reports/slsCust', [id, this.fromDate, this.toDate]])
+    }
+    viewProdDetails(id) {
+        this.router.navigate(['/home/reports/slsProd', [id, this.fromDate, this.toDate]])
     }
 }

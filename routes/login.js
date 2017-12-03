@@ -30,8 +30,8 @@ router.post("/", function (req, res, next) {
           expiresIn: 86400, // expires in 86400 sec = 1440 min = 24 hours
           algorithm: 'HS384'
         });
-        console.log(token)
-        console.log(ret.recordset[0].Salt)
+        // console.log(token)
+        // console.log(ret.recordset[0].Salt)
         res.json({
           user: ret.recordset,
           tkn: token,

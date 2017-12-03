@@ -25,24 +25,26 @@ import * as hf from '../../helper.functions'
     ]
 })
 export class FinReturnComponent implements OnInit {
-    currentUser: CurrentUser = this.auth.getUser();
-    collection: FinishedReturn[] = [];
-    finDetails: FinishedStoreDetail[] = [];
-    modelsList: any[];
-    SOList: SalesHeader[] = [];
-    model: FinishedReturn = new FinishedReturn();
-    Detmodel: FinishedStoreDetail = new FinishedStoreDetail();
-    srchObj: FinishedReturn = new FinishedReturn();
-    showTable: boolean;
-    Formstate: string;
-    headerText: string;
-    errorMessage: string;
-    orderbyString: string = "";
-    orderbyClass: string = "fa fa-sort";
-    cnvRecDate: string;
-    basicform: FormGroup;
+    currentUser: CurrentUser = this.auth.getUser()
+    collection: FinishedReturn[] = []
+    finDetails: FinishedStoreDetail[] = []
+    modelsList: any[]
+    SOList: SalesHeader[] = []
+    model: FinishedReturn = new FinishedReturn()
+    Detmodel: FinishedStoreDetail = new FinishedStoreDetail()
+    srchObj: FinishedReturn = new FinishedReturn()
+    showTable: boolean
+    Formstate: string
+    headerText: string
+    errorMessage: string
+    orderbyString: string = ""
+    orderbyClass: string = "fa fa-sort"
+    cnvRecDate: string
+    basicform: FormGroup
     stillSaving: boolean
-    SOIDList: CompleterData;
+    SOIDList: CompleterData
+    selModID: number
+    reset: boolean
 
     //RecYear ,SerialNo ,ReturnDate ,ReturnFrom ,ReturnReason ,UserID
     constructor(public srvRet: FinReturnService, private auth: AuthenticationService, private srvCmp: CompleterService,
@@ -229,5 +231,17 @@ export class FinReturnComponent implements OnInit {
         this.router.navigate(['printout/finRet', orderID])
 
         // window.open(`#/printout/invoice/${soid}`, '_blank')
+    }
+    StartSearch() {
+        if (!this.selModID) return
+        this.srvRet.searchModelCode(this.selModID).subscribe(cols => this.collection = cols, err => hf.handleError(err))
+    }
+    ResetSearch() {
+        this.reset = true
+        this.selModID = undefined
+        this.srvRet.getReturn().subscribe(cols => this.collection = cols, err => hf.handleError(err), () => this.reset = false)
+    }
+    modSearchSelect(value) {
+        this.selModID = value
     }
 }

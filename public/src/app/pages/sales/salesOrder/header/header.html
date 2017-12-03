@@ -9,7 +9,7 @@
         <div *ngIf="headerForm.controls['SODate'].touched && !headerForm.controls['SODate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.SODate.Disp}} is required.</div>
       </div>
     </div>
-    <div class="form-group row" [ngClass]="{'has-error': (submitted && !detform.controls['ModelID'].valid)}">
+    <div class="form-group row">
       <label for="CustID" class="form-control-label col-md-2">{{srchObj.DisplayNames.CustName.Disp}}</label>
       <div class="col-md-5">
         <ng2-completer name="ModelID" [(ngModel)]="model.CustName" [formControl]="headerForm.controls['autoCustID']" [datasource]="CustsList"

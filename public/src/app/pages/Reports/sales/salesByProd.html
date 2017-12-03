@@ -22,7 +22,7 @@
                     (selected)="IDSelected($event)"></ng2-completer>
             </div>
             <div class="col-md-5" [ngClass]="{'has-error': (f.submitted && !modID.valid)}">
-                <select class="form-control" name="ModelID" [(ngModel)]="modelID" #modID="ngModel" required>
+                <select class="form-control" name="ModelID" [(ngModel)]="modelID" #modID="ngModel" required (change)="CodeSelected($event)">
                     <option value="">Select a Model ...</option>
                     <option *ngFor="let i of prodList" [value]="i.ModelID">{{i.ModelName}}</option>
                 </select>

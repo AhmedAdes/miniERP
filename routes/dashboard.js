@@ -8,8 +8,8 @@ router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
     var token = req.body.token || req.query.token || req.headers["authorization"];
     var secret = req.body.salt || req.query.salt || req.headers["salt"];
-    console.log(token)
-    console.log(secret)
+    // console.log(token)
+    // console.log(secret)
     // decode token
     if (token) {
         // verifies secret and checks exp

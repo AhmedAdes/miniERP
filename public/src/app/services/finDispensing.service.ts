@@ -30,5 +30,8 @@ export class FinDispensingService {
   deleteDispensing(id: number) {
     return this.http.delete(this.url + id, this.options).map(res => res.json());
   }
+  searchModelCode(model: number) {
+    return this.http.get(this.url + 'SearchModel/' + model, this.options).map(res => res.json());
+  }
 
 }

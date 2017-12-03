@@ -42,6 +42,8 @@ export class FinReceivingComponent implements OnInit {
     cnvManfDate: string;
     basicform: FormGroup;
     stillSaving: boolean
+    selModID: number
+    reset: boolean
 
     constructor(public srvRec: FinReceivingService, private auth: AuthenticationService,
         private srvDet: FinDetailService, private srvModel: ModelService, fb: FormBuilder, private router: Router) {
@@ -207,5 +209,17 @@ export class FinReceivingComponent implements OnInit {
         this.router.navigate(['printout/finRec', orderID])
 
         // window.open(`#/printout/invoice/${soid}`, '_blank')
+    }
+    StartSearch() {
+        if(! this.selModID) return
+        this.srvRec.searchModelCode(this.selModID).subscribe(cols => this.collection = cols, err => hf.handleError(err))
+    }
+    ResetSearch() {
+        this.reset = true
+        this.selModID = undefined
+        this.srvRec.getReceiving().subscribe(cols => this.collection = cols, err => hf.handleError(err), () => this.reset = false)
+    }
+    modSearchSelect(value) {
+        this.selModID = value
     }
 }

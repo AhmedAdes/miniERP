@@ -1,0 +1,15 @@
+<div class="form-group row">
+    <label for="modelID" class="form-control-label col-md-2 text-right font-weight-bold"><span class=" align-middle">Search Model البحث بالموديل</span></label>
+    <div class="col-md-5" [ngClass]="{'has-error': (submitted && !modID.valid)}">
+        <ng2-completer name="modelID" [(ngModel)]="modelCode" [datasource]="modelIDsList"
+            [minSearchLength]="0" [maxChars]="5" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Model Codes'"
+            [textNoResults]="'No Models found'" [inputClass]="'form-control'" (selected)="IDSelected($event)"></ng2-completer>
+    </div>
+    <div class="col-md-5" [ngClass]="{'has-error': (submitted && !modID.valid)}">
+        <select class="form-control" name="modelID" [(ngModel)]="modelID" #modID="ngModel" [required]="required" (change)="onProdChange($event)"> 
+            <option value="">Select a Model ...</option>
+            <option *ngFor="let i of modelsList" [value]="i.ModelID">{{i.ModelName}}</option>
+        </select>
+    </div>
+    <div *ngIf="(modID.touched || submitted) && !modID.valid" class="alert alert-danger">Model الموديل is required.</div>
+</div>

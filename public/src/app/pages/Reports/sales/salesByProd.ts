@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, AfterViewInit, ViewChild, OnChanges } from '@angular/core';
 import { Location } from '@angular/common'
+import { Router, ActivatedRoute, Params, Data } from '@angular/router';
 import { ModelService, SalesHeaderService } from '../../../services';
 import { Model, SalesHeader, rptSalesByProd } from '../../../Models';
 import { BaseChartDirective, Color } from 'ng2-charts';
-// import { BaseChartDirective } from 'ng2-charts';
 import * as hf from '../../helper.functions'
 
 interface MonthChart {
@@ -17,7 +17,6 @@ interface MonthChart {
     styleUrls: ['../../../Styles/PrintPortrait.css']
 })
 export class RptSalesByProdComponent implements OnInit {
-    constructor(private srv: SalesHeaderService, private srvProd: ModelService, private loc: Location) { }
     @ViewChild(BaseChartDirective) private _chart;
 
     collection: rptSalesByProd[] = []
@@ -45,19 +44,27 @@ export class RptSalesByProdComponent implements OnInit {
     };
     colorsEmpty: Array<Color> = []
 
+    constructor(private srv: SalesHeaderService, private srvProd: ModelService,
+        private route: ActivatedRoute, private loc: Location) { }
+
     ngOnInit() {
         this.srvProd.getModel().subscribe(cst => {
             this.prodList = cst
             this.modelIDsList = this.prodList.map(m => { return m.ModelCode })
-            this.fromDate = hf.handleDate(new Date())
-            this.toDate = hf.handleDate(new Date())
+            this.route.params.subscribe((params: Params) => {
+                this.modelCode = params[0] || undefined
+                this.IDSelected({ title: this.modelCode })
+                this.fromDate = params[1] || hf.handleDate(new Date())
+                this.toDate = params[2] || hf.handleDate(new Date())
+                if (this.modelID) this.ViewReport()
+            })
         })
     }
 
     ViewReport() {
         this.srv.getSalesByProductReport(this.modelID, this.fromDate, this.toDate).subscribe(ret => {
             this.srv.getSalesByProductMonthsReport(this.modelID, this.fromDate, this.toDate).subscribe(chrt => {
-                this.reportHeader = `Sales By Customer`
+                this.reportHeader = `Sales By Product`
                 this.subHeader = `From ${this.fromDate} To ${this.toDate}`
                 this.collection = ret
                 this.selProd = this.prodList.find(x => x.ModelID == this.modelID)
@@ -87,7 +94,9 @@ export class RptSalesByProdComponent implements OnInit {
             this.modelID = null;
         }
     }
-    CodeSelected(selected) {
+    CodeSelected(obj) {
+        const selected = obj.target.value
+        console.log(selected)
         if (selected) {
             this.modelCode = this.prodList.find(m => m.ModelID == selected).ModelCode
         } else {

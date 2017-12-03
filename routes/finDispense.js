@@ -50,7 +50,6 @@ router.get('/', function (req, res, next) {
             }
         })
 });
-
 router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
@@ -67,7 +66,24 @@ router.get('/:id', function (req, res, next) {
             }
         })
 });
-
+router.get('/SearchModel/:model', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT fr.*, s.CustName , u.UserName, 
+    (SELECT SUM(ABS(Quantity)) FROM dbo.FinishedStoreDetails WHERE FinDispensingID = fr.FinDispensingID GROUP BY FinDispensingID) SumQty 
+    FROM dbo.FinishedDispensing fr LEFT JOIN dbo.vwSalesOrderHeader s ON fr.SOID = s.SOID JOIN dbo.SystemUsers u ON u.UserID = fr.UserID 
+    WHERE fr.FinDispensingID IN (SELECT DISTINCT FinDispensingID FROM dbo.vwFinishStoreDetails WHERE ModelID = ${req.params.model} AND FinDispensingID IS NOT NULL)`)
+        .then(function (result) {
+            res.json(result.recordset);
+        }).catch(function (err) {
+            if (err) {
+                res.json({
+                    error: err
+                });
+                console.log(err);
+            }
+        })
+});
 router.post('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var finDisp = req.body.master;

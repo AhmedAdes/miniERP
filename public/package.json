@@ -69,6 +69,7 @@
     "ngx-bootstrap": "^1.9.3",
     "ngx-color-picker": "^4.3.3",
     "ngx-filter-pipe": "^1.0.0",
+    "ngx-loading": "^1.0.9",
     "ngx-pagination": "^3.0.1",
     "ngx-toastr": "^6.1.5",
     "ngx-uploader": "^3.3.11",
