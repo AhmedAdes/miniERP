@@ -1,0 +1,241 @@
+<div class="panel panel-default zz">
+  <div class="panel-heading">
+
+    <h2> {{headerText}} </h2>
+    <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew()">Create New</button>
+    <br>
+    <br>
+    <div class="row" *ngIf="!Formstate">
+      <app-mod-select class="col-10 col-sm-10 col-md-10" [modelsList]="modelsList" submitted="true" [required]="false" [reset]="reset"
+        (modelSelected)="modSearchSelect($event)"></app-mod-select>
+      <div class="col-2 col-sm-2 col-md-2">
+        <button type="button" (click)="StartSearch()" class="btn btn-success" title="Start Search">
+          <i class="fa fa-search"></i>
+        </button>
+        <button type="button" (click)="ResetSearch()" class="btn btn-danger" title="Reset">
+          <i class="fa fa-eraser"></i>
+        </button>
+      </div>
+    </div>
+    <div class="alert alert-danger" *ngIf="errorMessage">
+      <p>{{errorMessage}}</p>
+    </div>
+  </div>
+  <div [@myAnimation]="showTable" class="panel-body table-responsive" *ngIf="showTable">
+    <table id="tblFinReceivings" class="table table-hover text-center table-striped table-responsive">
+      <!-- <colgroup>
+        <col width="10%" />
+        <col width="10%" />
+        <col width="15%" />
+        <col width="15%" />
+        <col width="20%" />
+        <col width="10%" />
+        <col width="20%" />
+      </colgroup> -->
+      <thead class="bg-dark text-white font-weight-bold">
+        <tr>
+          <th> {{srchObj.DisplayNames.RecYear.Disp}}
+            <i (click)="SortTable('RecYear')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('RecYear') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.SerialNo.Disp}}
+            <i (click)="SortTable('SerialNo')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SerialNo') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.TransferDate.Disp}}
+            <i (click)="SortTable('TransferDate')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('TransferDate') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.FromStoreName.Disp}}
+            <i (click)="SortTable('FromStoreName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('FromStoreName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.ToStoreName.Disp}}
+            <i (click)="SortTable('ToStoreName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('ToStoreName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.SumQty.Disp}}
+            <i (click)="SortTable('SumQty')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('SumQty') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th> {{srchObj.DisplayNames.UserName.Disp}}
+            <i (click)="SortTable('UserName')" class="btn btn-default" [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i>
+          </th>
+          <th></th>
+        </tr>
+        <tr>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchRecYear" name="RecYear" [(ngModel)]="srchObj.RecYear">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchSerialNo" name="SerialNo" [(ngModel)]="srchObj.SerialNo">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchTransferDate" name="TransferDate" [(ngModel)]="srchObj.TransferDate">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchFromStoreName" name="FromStoreName" [(ngModel)]="srchObj.FromStoreName">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchToStoreName" name="ToStoreName" [(ngModel)]="srchObj.ToStoreName">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchSumQty" name="SumQty" [(ngModel)]="srchObj.SumQty">
+            </div>
+          </th>
+          <th>
+            <div class="input-group">
+              <span class="input-group-addon addon-left" id="basic-addon1">
+                <i class="icon ion-android-search"></i>
+              </span>
+              <input class="form-control" type="text" id="srchUserName" name="UserName" [(ngModel)]="srchObj.UserName">
+            </div>
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of (collection | filter:srchObj | orderby:orderbyString | paginate: { itemsPerPage: 10, currentPage: p })">
+          <td>{{item.RecYear}}</td>
+          <td>{{item.SerialNo}}</td>
+          <td>{{item.TransferDate | date:'mediumDate'}}</td>
+          <td>{{item.FromStoreName}}</td>
+          <td>{{item.ToStoreName}}</td>
+          <td>{{item.SumQty | number}}</td>
+          <td>{{item.UserName}}</td>
+          <td>
+            <!-- <button (click)="PrintOrder(item.FinTransferID)" class="btn btn-warning" title="Print Order">
+              <i class="icon ion-printer"></i>
+            </button> -->
+            <button (click)="EditThis(item.FinTransferID)" class="btn btn-info btn-icon" title="Edit">
+              <i class="icon ion-edit"></i>
+            </button>
+            <button (click)="ShowDetails(item.FinTransferID)" class="btn btn-success btn-icon" title="Details">
+              <i class="icon ion-eye"></i>
+            </button>
+            <button (click)="Delete(item.FinTransferID)" class="btn btn-danger btn-icon" title="Delete">
+              <i class="icon ion-trash-a"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>
+
+  <div [@myAnimation]="!showTable" class="panel-body" *ngIf="Formstate">
+    <form (submit)="basicform.valid && HandleForm($event)" id="f1" [formGroup]="basicform" novalidate>
+      <div class="form-horizontal">
+        <h2 *ngIf="Formstate == 'Delete'">Are you sure you want to delete this Equalization ?</h2>
+        <br>
+        <div class="row">
+          <div class="col-lg-12">
+            <ba-card title="Basic Info" baCardClass="with-scroll">
+              <div class="form-group row">
+                <label for="cnvRecDate" class="control-label col-md-2">{{srchObj.DisplayNames.TransferDate.Disp}}</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="date" name="cnvRecDate" [(ngModel)]="cnvRecDate" [formControl]="basicform.controls['RecDate']">
+                  <div *ngIf="basicform.controls['RecDate'].touched && !basicform.controls['RecDate'].valid" class="alert alert-danger">{{srchObj.DisplayNames.TransferDate.Disp}} is required.</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="FromStoreName" class="control-label col-md-2">{{srchObj.DisplayNames.FromStoreName.Disp}}</label>
+                <div class="col-md-10">
+                  <select class="form-control" id="FromStoreName" name="FromStoreName" [(ngModel)]="model.FromStoreName" [formControl]="basicform.controls['fromStr']"
+                    required>
+                    <option value="">Select a Type ...</option>
+                    <option *ngFor="let i of TransferList" [ngValue]="i.name">{{i.name}}</option>
+                  </select>
+                  <div *ngIf="basicform.controls['fromStr'].touched && !basicform.controls['fromStr'].valid" class="alert alert-danger">{{srchObj.DisplayNames.FromStoreName.Disp}} is required.</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="ToStoreName" class="control-label col-md-2">{{srchObj.DisplayNames.ToStoreName.Disp}}</label>
+                <div class="col-md-10">
+                  <select class="form-control" id="FromStoreName" name="ToStoreName" [(ngModel)]="model.ToStoreName" [formControl]="basicform.controls['toStr']"
+                    required>
+                    <option value="">Select a Type ...</option>
+                    <option *ngFor="let i of TransferList" [ngValue]="i.name">{{i.name}}</option>
+                  </select>
+                  <div *ngIf="basicform.controls['toStr'].touched && !basicform.controls['toStr'].valid" class="alert alert-danger">{{srchObj.DisplayNames.FromStoreName.Disp}} is required.</div>
+                </div>
+              </div>
+            </ba-card>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <ba-card title="Products Details" baCardClass="with-scroll">
+              <fin-equl-detail *ngIf="Formstate!='Detail' && Formstate!='Delete'" [Details]="finDetails" [currentUser]="currentUser" [modelsList]="modelsList"
+                [Detmodel]="Detmodel">
+              </fin-equl-detail>
+
+              <table class="table table-hover text-center table-striped table-responsive">
+                <!-- <colgroup>
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                  <col width="10%" />
+                </colgroup> -->
+                <thead class="bg-dark text-white font-weight-bold">
+                  <tr>
+                    <th>{{Detmodel.DisplayNames.RecordDate.Disp}}</th>
+                    <th>{{Detmodel.DisplayNames.ModelName.Disp}}</th>
+                    <th>{{Detmodel.DisplayNames.ColorName.Disp}}</th>
+                    <th>{{Detmodel.DisplayNames.BatchNo.Disp}}</th>
+                    <th>{{Detmodel.DisplayNames.Quantity.Disp}}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of finDetails; let i = index">
+                    <td>{{item.RecordDate | date:'mediumDate'}}</td>
+                    <td>{{item.ModelName}}</td>
+                    <td>{{item.ColorName}}</td>
+                    <td>{{item.BatchNo }}</td>
+                    <td>{{item.Quantity}}</td>
+                    <td>
+                      <a class="no-print" href="javascript:void(0)" (click)="DeleteDetail(i)">Remove</a>  |
+                      <a class="no-print" href="javascript:void(0)" (click)="EditDetail(i)">Edit</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ba-card>
+          </div>
+        </div>
+
+        <div class="form-group no-print col-md-offset-2 col-md-10">
+          <button type="submit" value="Save" class="btn btn-info" *ngIf="Formstate!='Detail' && Formstate!='Delete'" [disabled]="!basicform.valid">Save</button> |
+          <button type="submit" value="Delete" class="btn btn-info" *ngIf="Formstate == 'Delete'">Delete</button> |
+          <button type="button" (click)="TableBack()" class="btn btn-danger">Back to List</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

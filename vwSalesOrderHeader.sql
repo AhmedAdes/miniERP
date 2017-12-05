@@ -212,7 +212,7 @@ GO
 CREATE PROC RegionInsert 
 @Region NVARCHAR(200), @ProvinceID INT AS 
 INSERT dbo.Regions ( Region, ProvinceID )
-VALUES  ( @Region, @ProvinceID)
+VALUES  ( @Region, @ProvinceID )
 GO
 CREATE PROC RegionUpdate
 @RegionID INT, @Region NVARCHAR(200), @ProvinceID INT AS 

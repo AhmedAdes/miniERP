@@ -8,7 +8,7 @@ import { Ng2CompleterModule } from "ng2-completer";
 import { routing } from './finishStore.routing';
 import { FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, FinReceivingComponent, FinRecDetailsComponent,
   FinDispensingComponent, FinDispDetailsComponent, FinEqualizeComponent, FinEqualDetailsComponent,
-  FinReturnComponent, FinReturnDetailsComponent, ModelSelectComponent
+  FinReturnComponent, FinReturnDetailsComponent, ModelSelectComponent, FinTransferComponent
 } from './index';
 import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingService, SalesHeaderService, SalesDetailService,
   FinEqualizeService, FinRejectService, FinReturnService } from '../../services';
@@ -19,11 +19,12 @@ import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingSe
     NgaModule, routing, NgxPaginationModule, Ng2CompleterModule
   ],
   declarations: [
-      FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, 
-      FinReceivingComponent, FinRecDetailsComponent, 
-      FinDispensingComponent, FinDispDetailsComponent, 
+      FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent,
+      FinReceivingComponent, FinRecDetailsComponent,
+      FinDispensingComponent, FinDispDetailsComponent,
       FinEqualizeComponent, FinEqualDetailsComponent,
-      FinReturnComponent, FinReturnDetailsComponent, ModelSelectComponent
+      FinReturnComponent, FinReturnDetailsComponent, ModelSelectComponent,
+      FinTransferComponent
   ],
   providers: [
       FinStoreService, FinDetailService, FinReceivingService, FinDispensingService, SalesHeaderService, SalesDetailService,
