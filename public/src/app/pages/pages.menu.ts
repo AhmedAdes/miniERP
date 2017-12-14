@@ -250,6 +250,16 @@ export const PAGES_MENU = [
                 hidden: 1,
               }
             }
+          },
+          {
+            path: 'fintrns',
+            data: {
+              menu: {
+                title: 'Transfer التحويل',
+                icon: 'fa fa-circle-o',
+                hidden: 1,
+              }
+            }
           }
         ]
       },

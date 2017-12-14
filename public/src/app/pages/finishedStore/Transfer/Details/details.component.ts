@@ -6,10 +6,10 @@ import { min, max } from '../../../../pipes/validators';
 import * as hf from '../../../helper.functions'
 
 @Component({
-    selector: 'fin-equl-detail',
+    selector: 'fin-trans-detail',
     templateUrl: './details.component.html'
 })
-export class FinEqualDetailsComponent implements OnInit, OnChanges {
+export class FinTransDetailsComponent implements OnInit, OnChanges {
     @Input() Details: FinishedStoreDetail[];
     @Input() Detmodel: FinishedStoreDetail;
     @Input() currentUser: CurrentUser;

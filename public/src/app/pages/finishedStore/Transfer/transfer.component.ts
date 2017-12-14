@@ -29,7 +29,7 @@ export class FinTransferComponent implements OnInit {
     collection: FinishedTransfer[] = [];
     finDetails: FinishedStoreDetail[] = [];
     modelsList: Model[];
-    StoreList = StoreProductTypes;
+    transferList = StoreProductTypes;
     model: FinishedTransfer = new FinishedTransfer();
     Detmodel: FinishedStoreDetail = new FinishedStoreDetail();
     srchObj: FinishedTransfer = new FinishedTransfer();

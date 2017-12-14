@@ -167,7 +167,7 @@
                   <select class="form-control" id="FromStoreName" name="FromStoreName" [(ngModel)]="model.FromStoreName" [formControl]="basicform.controls['fromStr']"
                     required>
                     <option value="">Select a Type ...</option>
-                    <option *ngFor="let i of TransferList" [ngValue]="i.name">{{i.name}}</option>
+                    <option *ngFor="let i of transferList" [ngValue]="i.name">{{i.name}}</option>
                   </select>
                   <div *ngIf="basicform.controls['fromStr'].touched && !basicform.controls['fromStr'].valid" class="alert alert-danger">{{srchObj.DisplayNames.FromStoreName.Disp}} is required.</div>
                 </div>
@@ -178,7 +178,7 @@
                   <select class="form-control" id="FromStoreName" name="ToStoreName" [(ngModel)]="model.ToStoreName" [formControl]="basicform.controls['toStr']"
                     required>
                     <option value="">Select a Type ...</option>
-                    <option *ngFor="let i of TransferList" [ngValue]="i.name">{{i.name}}</option>
+                    <option *ngFor="let i of transferList" [ngValue]="i.name">{{i.name}}</option>
                   </select>
                   <div *ngIf="basicform.controls['toStr'].touched && !basicform.controls['toStr'].valid" class="alert alert-danger">{{srchObj.DisplayNames.FromStoreName.Disp}} is required.</div>
                 </div>
