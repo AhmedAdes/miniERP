@@ -1,21 +1,22 @@
 ﻿
 ALTER PROC dbo.FinishDetailInsert
 @RecYear INT,@SerialNo INT,@RecordDate DATE,@ColorID INT,@Quantity INT,@BatchNo NVARCHAR(20) ,@FinReceivingID INT,
-@FinDispensingID INT,@FinEqualizeID INT,@FinReturnID INT,@FinRejectID INT,@UserID INT, @StoreTypeID INT
+@FinDispensingID INT,@FinEqualizeID INT,@FinReturnID INT,@FinRejectID INT,@FinTransferID INT,@UserID INT, @StoreTypeID INT
 AS
 INSERT dbo.FinishedStoreDetails
         ( RecYear ,SerialNo ,RecordDate ,ColorID ,Quantity ,BatchNo ,FinReceivingID ,FinDispensingID ,FinEqualizeID ,
-          FinReturnID ,FinRejectID ,UserID, StoreTypeID )
+          FinReturnID ,FinRejectID ,FinTransferID ,UserID, StoreTypeID )
 VALUES  ( @RecYear ,@SerialNo ,@RecordDate ,@ColorID ,@Quantity ,@BatchNo ,@FinReceivingID ,@FinDispensingID ,@FinEqualizeID ,
-          @FinReturnID ,@FinRejectID ,@UserID, @StoreTypeID )
+          @FinReturnID ,@FinRejectID, @FinTransferID ,@UserID, @StoreTypeID )
 GO
 
 ALTER PROC dbo.FinishDetailUpdate
 @FinStoreID INT,@RecYear INT,@SerialNo INT,@RecordDate DATE,@ColorID INT,@Quantity INT,@BatchNo NVARCHAR(20) ,@FinReceivingID INT,
-@FinDispensingID INT,@FinEqualizeID INT,@FinReturnID INT,@FinRejectID INT,@UserID INT, @StoreTypeID INT
+@FinDispensingID INT,@FinEqualizeID INT,@FinReturnID INT,@FinRejectID INT,@FinTransferID INT,@UserID INT, @StoreTypeID INT
 AS
 UPDATE dbo.FinishedStoreDetails SET RecordDate=@RecordDate, ColorID=@ColorID, Quantity=@Quantity, BatchNo=@BatchNo, FinReceivingID=@FinReceivingID,
-FinDispensingID=@FinDispensingID ,FinEqualizeID=@FinEqualizeID ,FinReturnID=@FinReturnID ,FinRejectID=@FinRejectID ,UserID=@UserID, StoreTypeID=@StoreTypeID
+FinDispensingID=@FinDispensingID ,FinEqualizeID=@FinEqualizeID ,FinReturnID=@FinReturnID ,FinRejectID=@FinRejectID ,FinTransferID=@FinTransferID ,
+UserID=@UserID, StoreTypeID=@StoreTypeID
 WHERE FinStoreID=@FinStoreID AND RecYear=@RecYear AND SerialNo=@SerialNo
 GO
 
@@ -30,7 +31,7 @@ GO
 ALTER VIEW	dbo.vwFinishStoreDetails
 AS
 SELECT d.FinStoreID ,d.RecYear ,d.SerialNo ,d.RecordDate ,d.ColorID ,ABS(d.Quantity) Quantity,d.BatchNo ,
-       d.FinReceivingID ,d.FinDispensingID ,d.FinEqualizeID ,d.FinReturnID ,d.FinRejectID ,d.UserID, 
+       d.FinReceivingID ,d.FinDispensingID ,d.FinEqualizeID ,d.FinReturnID ,d.FinRejectID ,d.FinTransferID ,d.UserID, 
        ModelName, ModelCode, c.ModelID, Color, ColorName, ProdColorCode, d.StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType
 FROM dbo.FinishedStoreDetails d
 JOIN dbo.ProductColorCoding c ON c.ColorID = d.ColorID
@@ -421,9 +422,62 @@ GO
 UPDATE dbo.SalesOrderHeader SET DiscountPrcnt = 1
 UPDATE dbo.SalesOrderHeader SET DiscountPrcnt = 0 WHERE SOID IN (12084)
 GO
+-------------------------------------------------------------------------------------------
+
+CREATE TABLE dbo.FinishedTransfer
+(
+	FinTransferID INT NOT NULL IDENTITY(1,1),
+	RecYear INT,
+	SerialNo INT,
+	TransferDate DATE,
+	FromStoreID INT,
+	ToStoreID INT,
+	UserID INT,
+	CONSTRAINT PK_FinishedTransfer PRIMARY KEY CLUSTERED (FinTransferID)
+)
+GO
+ALTER TABLE dbo.FinishedStoreDetails ADD FinTransferID INT
+GO
+ALTER TABLE dbo.FinishedStoreDetails ADD CONSTRAINT FK_FinDetails_FinishedTransfer FOREIGN KEY (FinTransferID) REFERENCES dbo.FinishedTransfer(FinTransferID)
+GO
+CREATE PROC FinishTransferInsert
+@RecYear INT,@SerialNo INT,@TransferDate DATE ,@FromStoreID INT, @ToStoreID INT, @UserID INT
+AS
+INSERT dbo.FinishedTransfer
+        ( RecYear ,SerialNo ,TransferDate ,FromStoreID ,ToStoreID ,UserID )
+VALUES  ( @RecYear ,(SELECT ISNULL(MAX(SerialNo), 0) +1 FROM dbo.FinishedTransfer WHERE RecYear=@RecYear) ,
+@TransferDate ,@FromStoreID ,@ToStoreID ,@UserID)
+SELECT @@IDENTITY AS FinTransferID, SerialNo FROM dbo.FinishedTransfer WHERE FinTransferID = @@IDENTITY
+Go
+CREATE PROC dbo.FinishTransferUpdate
+@FinTransferID INT, @RecYear INT,@SerialNo INT,@TransferDate DATE ,@FromStoreID INT, @ToStoreID INT,@UserID INT
+AS
+UPDATE dbo.FinishedTransfer SET RecYear=@RecYear ,SerialNo=@SerialNo ,TransferDate=@TransferDate ,FromStoreID=@FromStoreID ,ToStoreID=@ToStoreID,UserID=@UserID 
+WHERE FinTransferID = @FinTransferID
+GO
+CREATE proc dbo.FinishTransferDelete
+@FinTransferID INT AS
+DELETE dbo.FinishedStoreDetails WHERE FinTransferID = @FinTransferID
+DELETE dbo.FinishedTransfer WHERE FinTransferID = @FinTransferID
+GO
+  
+CREATE PROC FinTransferDetailsInsert
+@FinTransferID INT, @RecYear INT,@SerialNo INT,@FromStoreID INT, @ToStoreID INT,@UserID INT,
+@RecordDate DATE,@ColorID INT,@Quantity INT,@BatchNo NVARCHAR(20) 
+AS
+INSERT dbo.FinishedStoreDetails
+    ( RecYear ,SerialNo ,RecordDate ,Quantity ,BatchNo ,FinTransferID ,UserID ,ColorID ,StoreTypeID )
+VALUES  
+  ( @RecYear ,@SerialNo ,@RecordDate ,-@Quantity ,@BatchNo ,@FinTransferID ,@UserID ,@ColorID ,@FromStoreID )
+, ( @RecYear ,@SerialNo ,@RecordDate ,@Quantity ,@BatchNo ,@FinTransferID ,@UserID ,@ColorID ,@ToStoreID )
+GO
 
 --SELECT h.SOID, h.GrandTotal, h.Discount, SUM(d.Quantity * d.Price) subTotal,
 --SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price) afterDiscount
 --FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID
 --GROUP BY h.SOID, h.GrandTotal, h.Discount
 --HAVING  h.GrandTotal != SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price)
+
+--SELECT * FROM dbo.FinishedTransfer
+DELETE FROM dbo.FinishedStoreDetails WHERE FinTransferID IS NOT NULL
+DELETE FROM  dbo.FinishedTransfer

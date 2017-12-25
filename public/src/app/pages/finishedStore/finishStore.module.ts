@@ -12,7 +12,7 @@ import { FinStoreHomeComponent, StoreBalanceComponent, BarcodeComponent, FinRece
   FinTransDetailsComponent
 } from './index';
 import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingService, SalesHeaderService, SalesDetailService,
-  FinEqualizeService, FinRejectService, FinReturnService } from '../../services';
+  FinEqualizeService, FinRejectService, FinReturnService, FinTransferService } from '../../services';
 
 @NgModule({
   imports: [
@@ -29,7 +29,7 @@ import { FinStoreService, FinDetailService, FinReceivingService, FinDispensingSe
   ],
   providers: [
       FinStoreService, FinDetailService, FinReceivingService, FinDispensingService, SalesHeaderService, SalesDetailService,
-      FinEqualizeService, FinRejectService, FinReturnService
+      FinEqualizeService, FinRejectService, FinReturnService, FinTransferService
   ]
 })
 export class FinStoreModule { }

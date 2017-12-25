@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-import { CurrentUser, Model, ModelColor, FinishedStoreDetail, BatchNo, SalesHeader } from '../../../../Models';
+import { CurrentUser, Model, ModelColor, FinishedStoreDetail, FinishedTransfer, BatchNo, SalesHeader } from '../../../../Models';
 import { ModelService, ColorService, FinDetailService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { min, max } from '../../../../pipes/validators';
@@ -11,6 +11,7 @@ import * as hf from '../../../helper.functions'
 })
 export class FinTransDetailsComponent implements OnInit, OnChanges {
     @Input() Details: FinishedStoreDetail[];
+    @Input() FromStoreID: number;
     @Input() Detmodel: FinishedStoreDetail;
     @Input() currentUser: CurrentUser;
     @Input() modelsList: Model[];
@@ -31,14 +32,12 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
             autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
-            strProdType: ['', Validators.required],
             BatchNo: ['', Validators.required],
             Stock: [''],
             Quantity: ['', [Validators.required, min(0)]],
         });
         this.detform.controls['ModelID'].valueChanges.subscribe(value => this.onProdChange(value));
         this.detform.controls['ColorID'].valueChanges.subscribe(value => this.onColorChange(value));
-        this.detform.controls['strProdType'].valueChanges.subscribe(value => this.onstrProdTypeChange(value));
         this.detform.controls['BatchNo'].valueChanges.subscribe(value => this.onBatchChange(value));
     }
 
@@ -130,7 +129,8 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
         this.srvDet.getFinStock(value).subscribe(btc => {
             this.AllStock = btc
             this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
-            this.Detmodel.StoreTypeID = null
+            this.Detmodel.StoreTypeID = this.FromStoreID
+            this.onstrProdTypeChange(this.FromStoreID)
             if (this.Detmodel.StoreTypeID && this.EditForm) {
                 this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
             }

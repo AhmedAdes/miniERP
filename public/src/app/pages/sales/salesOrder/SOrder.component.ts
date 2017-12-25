@@ -117,12 +117,13 @@ export class SalesOrderComponent implements OnInit {
             return;
         }
         if (this.SPayments.length == 0) {
-            this.errorMessage = "Must Add some Payments First";
-            this.stillSaving = false
-            return;
+          hf.handleError('Must Add some Payments First')
+          this.errorMessage = "Must Add some Payments First";
+          this.stillSaving = false
+          return;
         }
         if (!this.headerValid) {
-            this.errorMessage = "Please Validate Basic Data";
+          hf.handleError('Please Validate Basic Data')
             this.stillSaving = false
             return;
         }
