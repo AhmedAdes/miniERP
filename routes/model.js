@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -41,8 +41,8 @@ router.get('/', function (req, res, next) {
                 JOIN dbo.SystemUsers u on c.UserID = u.UserID 
                 JOIN dbo.ProductBrandCoding b ON b.BrandID = c.BrandID
                 Left JOIN dbo.WashTypes w ON w.WashID = c.WashID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -61,9 +61,9 @@ router.get('/:id', function (req, res, next) {
                 JOIN dbo.ProductBrandCoding b ON b.BrandID = c.BrandID
                 Left JOIN dbo.WashTypes w ON w.WashID = c.WashID
                 Where ModelID = '${req.params.id}'`)
-        .then(function (result) {
-            result.recordset[0].SelectedProductImgSrc = result.recordset[0].Photo == null ? null : new Buffer(result.recordset[0].Photo).toString('base64');
-            res.json(result.recordset);
+        .then(function (recordset) {
+            recordset[0].SelectedProductImgSrc = recordset[0].Photo == null ? null : new Buffer(recordset[0].Photo).toString('base64');
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -82,8 +82,8 @@ router.get('/withColors/all', function (req, res, next) {
                 FROM dbo.ProductModelCoding m JOIN dbo.ProductColorCoding c ON c.ModelID = m.ModelID
                 JOIN dbo.FinishedStoreDetails fdet ON fdet.ColorID = c.ColorID
                 GROUP BY m.ModelID, m.ModelCode,m.ModelName, c.ColorName ,c.ColorID , fdet.BatchNo, fdet.StoreTypeID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -103,7 +103,7 @@ router.post('/', function (req, res, next) {
     var modelID;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -120,8 +120,8 @@ router.post('/', function (req, res, next) {
                 request.input('WashID', model.WashID);
                 request.input('UserID', model.UserID);
                 request.execute('ModelInsert')
-                    .then(function (result) {
-                        modelID = result.recordset[0].ModelID;
+                    .then(function (recordset) {
+                        modelID = recordset[0].ModelID;
 
                         promises.push(Promise.map(clrs, function (color) {
                             var request = trans.request();
@@ -142,7 +142,7 @@ router.post('/', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -197,7 +197,7 @@ router.put('/:id', function (req, res, next) {
     var sizes = req.body.sizes;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -214,11 +214,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('WashID', model.WashID);
                 request.input('UserID', model.UserID);
                 request.execute('ModelUpdate')
-                    .then(function (result) {
+                    .then(function (recordset) {
 
                         var request = trans.request();
                         request.query(`SELECT * From dbo.ProductColorCoding Where ModelID=${req.params.id}`)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 var clrsDet = recordset;
                                 var addedClrList = clrs.filter(function (det) {
                                     return !det.ColorID
@@ -258,7 +258,7 @@ router.put('/:id', function (req, res, next) {
                                 }));
                                 var request = trans.request();
                                 request.query(`SELECT * From dbo.ProductSizes Where ModelID=${req.params.id}`)
-                                    .then(function (result) {
+                                    .then(function (recordset) {
                                         var sizDet = recordset;
                                         var addedSizList = sizes.filter(function (det) {
                                             return !det.ProdSizeID
@@ -299,7 +299,7 @@ router.put('/:id', function (req, res, next) {
 
 
                                         Promise.all(promises)
-                                            .then(function (result) {
+                                            .then(function (recordset) {
                                                 trans.commit().then(function () {
                                                     res.json({
                                                         returnValue: 1,
@@ -365,7 +365,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('ModelID', req.params.id);
-    request.execute('ModelDelete', function (err, result) {
+    request.execute('ModelDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -373,8 +373,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -383,8 +383,8 @@ router.delete('/:id', function (req, res, next) {
 function generateModelID() {
     var request = new sql.Request(sqlcon);
     request.query("SELECT (ISNULL(MAX(BrandID), 0) + 1) as max FROM dbo.ProductModelCoding")
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({

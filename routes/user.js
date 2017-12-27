@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -40,8 +40,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("SELECT * FROM dbo.SystemUsers")
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -56,8 +56,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("SELECT * FROM dbo.SystemUsers Where UserID=" + req.params.id)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -78,7 +78,7 @@ router.post('/', function (req, res, next) {
     request.input("JobClass", user.JobClass);
     request.input("Email", user.Email);
     request.input("Phone", user.Phone);
-    request.execute("UserInsert", function (err, result) {
+    request.execute("UserInsert", function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -86,8 +86,8 @@ router.post('/', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -104,7 +104,7 @@ router.put('/:id', function (req, res, next) {
     request.input("JobClass", user.JobClass);
     request.input("Email", user.Email);
     request.input("Phone", user.Phone);
-    request.execute("UserUpdate", function (err, result) {
+    request.execute("UserUpdate", function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -112,8 +112,8 @@ router.put('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -125,7 +125,7 @@ router.put('/Approve/:id', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.input("UserID", data.id);
     request.input("ApproveUser", data.appuser);
-    request.execute("UserApprove", function (err, result) {
+    request.execute("UserApprove", function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -133,8 +133,8 @@ router.put('/Approve/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -145,7 +145,7 @@ router.put('/ChangePass/:id', function (req, res, next) {
     var data = req.body;
     request.input("UserID", req.params.id);
     request.input("NewPass", data.Password);
-    request.execute("UserChangePass", function (err, result) {
+    request.execute("UserChangePass", function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -153,8 +153,8 @@ router.put('/ChangePass/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -163,7 +163,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input("UserID", req.params.id);
-    request.execute("UserDelete", function (err, result) {
+    request.execute("UserDelete", function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -171,8 +171,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });

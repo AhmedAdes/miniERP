@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -37,8 +37,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwFinishStoreDetails`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -51,8 +51,8 @@ router.get('/Receiving/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwFinishStoreDetails Where FinReceivingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -65,8 +65,8 @@ router.get('/Dispensing/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwFinishStoreDetails Where FinDispensingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -79,8 +79,8 @@ router.get('/Equalize/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwFinishStoreDetails Where FinEqualizeID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -93,8 +93,8 @@ router.get('/Return/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwFinishStoreDetails Where FinReturnID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -107,8 +107,24 @@ router.get('/Reject/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwFinishStoreDetails Where FinRejectID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
+        })
+        .catch(function (err) {
+            res.json({
+                error: err
+            });
+            console.log(err);
+        })
+});
+router.get('/Trans/:id', function (req, res, next) {
+    res.setHeader('Content-Type', 'application/json');
+    var request = new sql.Request(sqlcon);
+    request.query(`SELECT DISTINCT RecYear, SerialNo, RecordDate, ColorID, Quantity, BatchNo, 
+                FinTransferID, UserID, ModelName, ModelCode, ModelID, Color, ColorName, ProdColorCode
+                FROM dbo.vwFinishStoreDetails Where FinTransferID = ${req.params.id}`)
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -123,8 +139,8 @@ router.get('/ClrStock/:id', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`SELECT BatchNo, StoreTypeID, (SELECT StoreType FROM StoreTypes WHERE StoreTypeID=d.StoreTypeID) StoreType, SUM(Quantity) Stock 
                     FROM dbo.FinishedStoreDetails d WHERE ColorID = ${req.params.id} GROUP BY BatchNo, StoreTypeID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -140,7 +156,7 @@ router.get('/ClrStockWOrders/:id.:strID', function (req, res, next) {
     request.query(`SELECT ISNULL(SUM(Quantity),0) OrderQty FROM dbo.SalesOrderDetails WHERE ColorID=${req.params.id} AND StoreTypeID=${req.params.strID} AND 
                 SOID NOT IN (SELECT SOID FROM dbo.FinishedDispensing WHERE SOID IS NOT NULL);
                 SELECT ISNULL(SUM(Quantity),0) StockQty FROM dbo.FinishedStoreDetails Where ColorID = ${req.params.id} AND StoreTypeID=${req.params.strID} ; `,
-        function (err, result) {
+        function (err, recordset) {
             if (err) {
                 res.json({
                     error: err
@@ -148,8 +164,8 @@ router.get('/ClrStockWOrders/:id.:strID', function (req, res, next) {
                 console.log(err);
             }
             res.json({
-                orders: result.recordsets[0],
-                stock: result.recordsets[1]
+                orders: recordset[0],
+                stock: recordset[1]
             });
         })
 });
@@ -170,7 +186,7 @@ router.post('/', function (req, res, next) {
     request.input('FinReturnID', material.FinReturnID);
     request.input('FinRejectID', material.FinRejectID);
     request.input('UserID', material.UserID);
-    request.execute('FinishDetailInsert', function (err, result) {
+    request.execute('FinishDetailInsert', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -178,8 +194,8 @@ router.post('/', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -189,7 +205,7 @@ router.delete('/Receiving/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('FinReceivingID', req.params.id);
-    request.execute('FinishDetailDeleteReceiving', function (err, result) {
+    request.execute('FinishDetailDeleteReceiving', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -197,8 +213,8 @@ router.delete('/Receiving/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -207,7 +223,7 @@ router.delete('/Dispensing/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('FinDispensingID', req.params.id);
-    request.execute('FinishDetailDeleteDispense', function (err, result) {
+    request.execute('FinishDetailDeleteDispense', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -215,8 +231,8 @@ router.delete('/Dispensing/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -225,7 +241,7 @@ router.delete('/Equalize/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('FinEqualizeID', req.params.id);
-    request.execute('FinishDetailDeleteEqualize', function (err, result) {
+    request.execute('FinishDetailDeleteEqualize', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -233,8 +249,8 @@ router.delete('/Equalize/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -243,7 +259,7 @@ router.delete('/Return/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('FinReturnID', req.params.id);
-    request.execute('FinishDetailDeleteReturn', function (err, result) {
+    request.execute('FinishDetailDeleteReturn', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -251,8 +267,8 @@ router.delete('/Return/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -261,7 +277,7 @@ router.delete('/Reject/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('FinRejectID', req.params.id);
-    request.execute('FinishDetailDeleteReject', function (err, result) {
+    request.execute('FinishDetailDeleteReject', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -269,8 +285,8 @@ router.delete('/Reject/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });

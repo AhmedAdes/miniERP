@@ -3,7 +3,7 @@ var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
 var Promise = require('bluebird');
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -38,8 +38,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.SalesRep")
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -53,8 +53,8 @@ router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.SalesRep Where SalesRepID = " + req.params.id)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -76,8 +76,8 @@ router.get('/Plan/:id(\\d+).:year(\\d+)', function (req, res, next) {
         ISNULL((SELECT MonthQty FROM dbo.SalesRepTarget WHERE SalesRepID=${req.params.id} AND TargetYear=${req.params.year} AND TargetMonth=m.MonthDate),0) AS MonthQty, 
         (SELECT SalesPerson FROM dbo.SalesRep WHERE SalesRepID=${req.params.id}) SalesPerson
         FROM MonthRecursive m `)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -93,7 +93,7 @@ router.post('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.input('SalesPerson', srep.SalesPerson);
     request.input('Tel', srep.Tel);
-    request.execute('SalesRepInsert', function (err, result) {
+    request.execute('SalesRepInsert', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -101,8 +101,8 @@ router.post('/', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -113,7 +113,7 @@ router.post('/Plan', function (req, res, next) {
     var yplans = req.body.target;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
 
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
@@ -135,7 +135,7 @@ router.post('/Plan', function (req, res, next) {
                 }));
 
                 Promise.all(promises)
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,
@@ -178,7 +178,7 @@ router.put('/:id', function (req, res, next) {
     request.input('SalesRepID', req.params.id);
     request.input('SalesPerson', srep.SalesPerson);
     request.input('Tel', srep.Tel);
-    request.execute('SalesRepUpdate', function (err, result) {
+    request.execute('SalesRepUpdate', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -186,8 +186,8 @@ router.put('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -198,7 +198,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('SalesRepID', req.params.id);
-    request.execute('SalesRepDelete', function (err, result) {
+    request.execute('SalesRepDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -206,8 +206,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });

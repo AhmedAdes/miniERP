@@ -10,9 +10,9 @@ var compression = require('compression');
 
 var sql = require('mssql');
 var con = require('./SQLConfig.js');
-var connection = new sql.ConnectionPool(con.config);
+var connection = new sql.Connection(con.config);
 //store the connection
-sql.globalPool = connection;
+sql.globalConnection = connection;
 
 var app = express();
 

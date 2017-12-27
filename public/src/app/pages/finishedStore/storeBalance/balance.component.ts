@@ -81,6 +81,7 @@ export class StoreBalanceComponent implements OnInit {
               ReceivingQty: m.ReceivingQty,
               DispensingQty: m.DispensingQty,
               EqualizeQty: m.EqualizeQty,
+              TransferQty: m.TransferQty,
               Color: m.StoreTypeID == 1 ? 'primary' : m.StoreTypeID == 2 ? 'danger' : m.StoreTypeID == 3 ? 'success' : 'dark'
             };
           })

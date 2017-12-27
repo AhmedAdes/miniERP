@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -38,8 +38,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.MaterialDispensing fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,8 +54,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.MaterialDispensing fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.MatDispensingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -73,7 +73,7 @@ router.post('/', function (req, res, next) {
     var matDispID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -87,9 +87,9 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', matDisp.UserID);
                 request.input('Category', matDisp.Category);
                 request.execute('MaterialDispensingInsert')
-                    .then(function (result) {
-                        matDispID = result.recordset[0].MatDispensingID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        matDispID = recordset[0].MatDispensingID;
+                        serial = recordset[0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -111,7 +111,7 @@ router.post('/', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -163,7 +163,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -176,11 +176,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('DispensingDate', matDisp.DispensingDate);
                 request.input('DispenseTO', matDisp.DispenseTO);
                 request.input('UserID', matDisp.UserID);
-                request.execute('MaterialDispensingUpdate').then(function (result) {
+                request.execute('MaterialDispensingUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.MaterialStoreDetails Where MatDispensingID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -244,7 +244,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -295,7 +295,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -303,7 +303,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('MatDispensingID', req.params.id);
                 request.execute('MaterialDispensingDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

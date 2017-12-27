@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -37,8 +37,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.vwMaterialStore")
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -53,8 +53,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select * From dbo.vwMaterialStore Where MaterialID = '" + req.params.id + "'")
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({

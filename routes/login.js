@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var sql = require("mssql");
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.post("/", function (req, res, next) {
   res.setHeader("Content-Type", "application/json");

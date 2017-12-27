@@ -90,7 +90,7 @@ export class FinTransferComponent implements OnInit {
     LoadDetails(id, state) {
         this.srvTrns.getTransfer(id).subscribe(mat => {
             this.model = mat[0];
-            this.srvDet.getFinEqualDetail(id).subscribe(det => {
+            this.srvDet.getFinTransDetail(id).subscribe(det => {
                 this.finDetails = det;
                 this.cnvRecDate = this.model.TransferDate ? this.HandleDate(new Date(this.model.TransferDate)) : this.HandleDate(new Date());
                 this.showTable = false;
