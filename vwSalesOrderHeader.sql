@@ -267,7 +267,6 @@ VALUES  ( @SODate ,@CustID ,@SalesTax ,@Discount ,@Notes ,@DeliveryDate ,@Commis
 		@DeliveryType ,@PayMethod ,@GrandTotal ,@SalesRepID, @DiscountPrcnt, @SelfNotes )
 SELECT IDENT_CURRENT  ('SalesOrderHeader') AS SOID
 GO
-
 ALTER PROC dbo.SalesHeaderUpdate
 @SOID INT,@SODate DATE,@CustID INT,@SalesTax DECIMAL(10,2),@Discount DECIMAL(10,2),@Notes nvarchar(max),@DeliveryDate DATE,
 @Commisioner NVARCHAR(200),@CommisionerTel NVARCHAR(20),@UserID INT,@DeliveryType NVARCHAR(50),@PayMethod NVARCHAR(50),
@@ -405,7 +404,7 @@ r.RegionID, r.Region, p.ProvinceID, p.Province, p.engName
 FROM dbo.Customers c Join dbo.SystemUsers u on c.UserID = u.UserID 
 LEFT JOIN dbo.Regions r ON r.RegionID = c.RegionID LEFT JOIN dbo.Provinces p ON p.ProvinceID = c.ProvinceID
 GO
-
+--------------------------------------------------------------------------------------------------
 UPDATE dbo.Customers SET ProvinceID =qry.ProvinceID FROM (SELECT p.ProvinceID, p.Province FROM dbo.Provinces p) qry WHERE qry.Province = Country
 UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.ProvinceID, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
 WHERE qry.Region = Area AND qry.Province = Country
@@ -477,7 +476,3 @@ GO
 --FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID
 --GROUP BY h.SOID, h.GrandTotal, h.Discount
 --HAVING  h.GrandTotal != SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price)
-
---SELECT * FROM dbo.FinishedTransfer
-DELETE FROM dbo.FinishedStoreDetails WHERE FinTransferID IS NOT NULL
-DELETE FROM  dbo.FinishedTransfer
