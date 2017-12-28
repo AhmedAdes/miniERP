@@ -23,7 +23,7 @@ export class AuthenticationService {
         return this.http.post(this.url, user)
             .map((response: Response) => {
                 const arrRet = response.json();
-                // console.log(arrRet)
+                console.log(arrRet)
                 if (arrRet.error) {
                     return { login: false, error: arrRet.error }
                 } else if (arrRet.Approved == false) {
@@ -69,10 +69,11 @@ export class AuthenticationService {
     }
 
     getClass(job: string): number {
-        let ret = JobClass.filter(obj => obj.name == job)[0].class;
-        return ret;
+      let Jobs = JobClass
+      let ret = Jobs.filter(obj => obj.name == job)[0].class;
+      return ret;
     }
-    
+
     getUser(): CurrentUser {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
         return this.currentUser;

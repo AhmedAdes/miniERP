@@ -38,7 +38,7 @@ router.get('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`Select c.*,u.UserName From dbo.MaterialCoding c Join dbo.SystemUsers u on c.UserID = u.UserID Where Category='Accessories'`)
         .then(function (ret) {
-            res.json(ret.recordset);
+            res.json(ret);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,7 +54,7 @@ router.get('/:id', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`Select c.*,u.UserName From dbo.MaterialCoding c Join dbo.SystemUsers u on c.UserID = u.UserID Where Category='Accessories' And MaterialID = ${req.params.id}`)
         .then(function (ret) {
-            res.json(ret.recordset);
+            res.json(ret);
         }).catch(function (err) {
             if (err) {
                 res.json({

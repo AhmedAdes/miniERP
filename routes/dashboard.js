@@ -40,7 +40,7 @@ router.get('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`Select * From dbo.vwDashBoardCounts`)
         .then(function (ret) {
-            res.json(ret.recordset);
+            res.json(ret);
         }).catch(function (err) {
             if (err) {
                 res.json({

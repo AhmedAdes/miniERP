@@ -409,7 +409,7 @@ UPDATE dbo.Customers SET ProvinceID =qry.ProvinceID FROM (SELECT p.ProvinceID, p
 UPDATE dbo.Customers SET RegionID = qry.RegionID FROM (SELECT RegionID, Region, p.ProvinceID, p.Province FROM dbo.Regions r JOIN dbo.Provinces p ON p.ProvinceID = r.ProvinceID) qry
 WHERE qry.Region = Area AND qry.Province = Country
 GO
-
+SELECT * FROM SystemUsers
 UPDATE dbo.SystemUsers SET Salt=NEWID()
 UPDATE dbo.SystemUsers SET hashPass=HASHBYTES('SHA2_512', Password + CAST(Salt AS NVARCHAR(40)))
 UPDATE dbo.SystemUsers SET JobClass = 'SysAdmin' WHERE IsAdmin = 1

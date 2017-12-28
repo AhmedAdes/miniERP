@@ -17,25 +17,26 @@ router.post("/", function (req, res, next) {
       });
       console.log(err);
     } else {
-      if (ret[0].Error) {
+      if (ret[0][0].Error) {
         res.json({
-          error: ret[0].Error
+          error: ret[0][0].Error
         });
-        console.log(ret[0].Error);
+        console.log(ret[0][0].Error);
       } else {
+        console.log(ret)
         const payload = {
-          admin: ret[0].UserName
+          admin: ret[0][0].UserName
         };
-        var token = jwt.sign(payload, ret[0].Salt, {
+        var token = jwt.sign(payload, ret[0][0].Salt, {
           expiresIn: 86400, // expires in 86400 sec = 1440 min = 24 hours
           algorithm: 'HS384'
         });
         // console.log(token)
         // console.log(ret.recordset[0].Salt)
         res.json({
-          user: ret,
+          user: ret[0],
           tkn: token,
-          salt: ret[0].Salt
+          salt: ret[0][0].Salt
         });
       }
     }

@@ -132,7 +132,7 @@ function generateBrandID() {
     var request = new sql.Request(sqlcon);
     request.query(`SELECT (ISNULL(MAX(BrandID), 0) + 1) as max FROM dbo.ProductBrandCoding`)
         .then(function (ret) {
-            res.json(ret.recordset);
+            res.json(ret);
         }).catch(function (err) {
             if (err) {
                 res.json({
