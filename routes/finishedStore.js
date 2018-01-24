@@ -161,7 +161,7 @@ router.get('/ProdHistoryMod/:id', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.multiple = true;
     request.input("ModelID", req.params.id)
-    request.query(`SELECT * FROM dbo.vwFinProductActivity WHERE ModelID = @ModelID;
+    request.query(`SELECT * FROM dbo.vwFinProductActivity WHERE ModelID = @ModelID  ORDER BY RecYear, SerialNo;
                     SELECT sd.SOID ,sh.SODate ,Quantity ,Price ,ColorID ,ColorName ,ModelID ,ModelCode ,ModelName, c.CustName, c.ContactPerson, sh.GrandTotal 
                     FROM dbo.vwSalesOrderDetail sd JOIN dbo.SalesOrderHeader sh ON sh.SOID = sd.SOID JOIN dbo.Customers c ON c.CustID = sh.CustID
                     WHERE ModelID = @ModelID;
@@ -179,6 +179,7 @@ router.get('/ProdHistoryMod/:id', function (req, res, next) {
                 finEqz: recordset[0].filter(f => f.FinEqualizeID != null),
                 finRet: recordset[0].filter(f => f.FinReturnID != null),
                 finRej: recordset[0].filter(f => f.FinRejectID != null),
+                finTrns: recordset[0].filter(f => f.FinTransferID != null),
                 sales: recordset[1],
                 stock: recordset[2]
             });

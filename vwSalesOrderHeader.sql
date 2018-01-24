@@ -481,6 +481,26 @@ UPDATE dbo.MaterialInspection SET ReceivedApp = 1 WHERE InspID=@InspID
 SELECT IDENT_CURRENT('MaterialReceiving') AS MatReceivingID, SerialNo FROM dbo.MaterialReceiving WHERE MatReceivingID = IDENT_CURRENT('MaterialReceiving')
 GO
 
+Alter VIEW dbo.vwFinProductActivity
+AS 
+SELECT DISTINCT det.RecYear ,det.SerialNo ,RecordDate ,det.ColorID ,ABS(Quantity) Quantity,det.BatchNo ,
+       det.FinReceivingID ,det.FinDispensingID ,det.FinEqualizeID ,det.FinReturnID ,det.FinRejectID ,
+       det.FinTransferID, ModelName ,ModelCode ,m.ModelID ,Color ,ColorName ,ProdColorCode, 
+	   fr.ReceivingDate, fr.ReceivedFrom, 
+	   fd.DispensingDate, fd.SOID, fd.DispenseTo, 
+	   fe.EqualizeDate, fe.EqualizeType, fn.ReturnDate, fn.ReturnFrom,
+	   ft.TransferDate, 
+	   (SELECT StoreType FROM dbo.StoreTypes WHERE StoreTypeID = ft.FromStoreID) FromStore,
+	   (SELECT StoreType FROM dbo.StoreTypes WHERE StoreTypeID = ft.ToStoreID) ToStore
+FROM dbo.FinishedStoreDetails det
+JOIN dbo.ProductColorCoding c ON c.ColorID = det.ColorID
+JOIN dbo.ProductModelCoding m ON m.ModelID = c.ModelID
+LEFT JOIN dbo.FinishedReceiving fr ON fr.FinReceivingID = det.FinReceivingID
+LEFT JOIN dbo.FinishedDispensing fd ON fd.FinDispensingID = det.FinDispensingID
+LEFT JOIN dbo.FinStoreEqualization fe ON fe.FinEqualizeID = det.FinEqualizeID
+LEFT JOIN dbo.FinishedReturn fn ON fn.FinReturnID = det.FinReturnID
+LEFT JOIN dbo.FinishedTransfer ft ON ft.FinTransferID = det.FinTransferID
+GO
 --SELECT h.SOID, h.GrandTotal, h.Discount, SUM(d.Quantity * d.Price) subTotal,
 --SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price) afterDiscount
 --FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID
