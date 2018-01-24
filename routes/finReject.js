@@ -87,8 +87,8 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', finRej.UserID);
                 request.execute('FinishRejectInsert')
                     .then(function (recordset) {
-                        finRejID = recordset[0].FinRejectID;
-                        serial = recordset[0].SerialNo;
+                        finRejID = recordset[0][0].FinRejectID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();

@@ -2,8 +2,6 @@
     <div class="panel-heading">
 
         <h2> {{headerText}} </h2>
-        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew('Accessories')">Create New for Accessories</button>
-        <button *ngIf="!Formstate" class="btn btn-primary" (click)="CreateNew('Cloth')">Create New for Fabrics</button>
         <br *ngIf="!Formstate"><br *ngIf="!Formstate">
         <div class="alert alert-danger" *ngIf="errorMessage">
             <p>{{errorMessage}}</p>
@@ -133,14 +131,12 @@
                         <table class="table table-hover text-center table-striped table-responsive">
                             <colgroup>
                                 <col width="10%" />
-                                <col width="10%" />
+                                <col width="15%" />
                                 <col width="20%" />
+                                <col width="15%" />
                                 <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
-                                <col width="10%" />
+                                <col width="15%" />
+                                <col width="15%" />
                             </colgroup>
                             <thead class="bg-dark text-white font-weight-bold">
                                 <tr>
@@ -151,12 +147,8 @@
                                             [ngClass]="(orderbyString.indexOf('MaterialName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                                     <th>{{srchObj.DisplayNames.Quantity.Disp}} <i (click)="SortTable('Quantity')" class="btn btn-default"
                                             [ngClass]="(orderbyString.indexOf('Quantity') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                                    <th>{{srchObj.DisplayNames.ManfDate.Disp}} <i (click)="SortTable('ManfDate')" class="btn btn-default"
-                                            [ngClass]="(orderbyString.indexOf('ManfDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                                     <th>{{srchObj.DisplayNames.InvoiceNo.Disp}} <i (click)="SortTable('InvoiceNo')" class="btn btn-default"
                                             [ngClass]="(orderbyString.indexOf('InvoiceNo') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
-                                    <th>{{srchObj.DisplayNames.InvoiceDate.Disp}} <i (click)="SortTable('InvoiceDate')" class="btn btn-default"
-                                            [ngClass]="(orderbyString.indexOf('InvoiceDate') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                                     <th> {{srchObj.DisplayNames.UserName.Disp}} <i (click)="SortTable('UserName')" class="btn btn-default"
                                             [ngClass]="(orderbyString.indexOf('UserName') == 1) ? orderbyClass : 'fa fa-sort'"></i></th>
                                     <th></th>
@@ -184,19 +176,7 @@
                                     <th>
                                         <div class="input-group">
                                             <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
-                                            <input class="form-control" type="text" name="ManfDate" [(ngModel)]="srchObj.ManfDate">
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
                                             <input class="form-control" type="text" name="InvoiceNo" [(ngModel)]="srchObj.InvoiceNo">
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div class="input-group">
-                                            <span class="input-group-addon addon-left" id="basic-addon1"><i class="icon ion-android-search"></i></span>
-                                            <input class="form-control" type="text" name="InvoiceDate" [(ngModel)]="srchObj.InvoiceDate">
                                         </div>
                                     </th>
                                     <th>
@@ -214,9 +194,7 @@
                                     <td>{{item.ReceivingDate | date: 'dd/MM/yyyy'}}</td>
                                     <td>{{item.MaterialName}}</td>
                                     <td>{{item.Quantity}}</td>
-                                    <td>{{item.ManfDate | date: 'dd/MM/yyyy'}}</td>
                                     <td>{{item.InvoiceNo}}</td>
-                                    <td>{{item.InvoiceDate}}</td>
                                     <td>{{item.UserName}}</td>
                                     <td>
                                         <button (click)="PrintOrder(item.MatReceivingID)" class="btn btn-warning" title="Print Order"><i class="icon ion-printer"></i></button>
@@ -308,7 +286,7 @@
                                         <th *ngIf="Formstate!='Detail' && Formstate!='Delete'">{{Detmodel.DisplayNames.QtyApproved.Disp}}</th>
                                         <th *ngIf="Formstate=='Detail' || Formstate=='Delete'">{{Detmodel.DisplayNames.Quantity.Disp}}</th>
                                         <th *ngIf="Formstate=='Detail' || Formstate=='Delete'">{{Detmodel.DisplayNames.UnitPrice.Disp}}</th>
-                                        <th></th>
+                                        <!-- <th></th> -->
                                     </tr>
                                 </thead>
                                 <tbody>

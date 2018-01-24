@@ -88,8 +88,8 @@ router.post('/', function (req, res, next) {
                 request.input('Category', matEqul.Category);
                 request.execute('MaterialEqualizationInsert')
                     .then(function (recordset) {
-                        matEqulID = recordset[0].MatEqualizeID;
-                        serial = recordset[0].SerialNo;
+                        matEqulID = recordset[0][0].MatEqualizeID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();

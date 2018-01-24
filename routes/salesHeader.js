@@ -428,7 +428,7 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', so.UserID);
                 request.execute('SalesHeaderInsert')
                     .then(function (recordset) {
-                        SOrderID = recordset[0].SOID;
+                        SOrderID = recordset[0][0].SOID;
                         console.log('SOID: ' + SOrderID);
 
                         promises.push(Promise.map(sod, function (det) {

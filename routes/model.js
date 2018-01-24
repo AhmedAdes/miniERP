@@ -121,7 +121,7 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', model.UserID);
                 request.execute('ModelInsert')
                     .then(function (recordset) {
-                        modelID = recordset[0].ModelID;
+                        modelID = recordset[0][0].ModelID;
 
                         promises.push(Promise.map(clrs, function (color) {
                             var request = trans.request();

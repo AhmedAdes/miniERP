@@ -105,8 +105,8 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', finRet.UserID);
                 request.execute('FinishReturnInsert')
                     .then(function (recordset) {
-                        finRetID = recordset[0].FinReturnID;
-                        serial = recordset[0].SerialNo;
+                        finRetID = recordset[0][0].FinReturnID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();

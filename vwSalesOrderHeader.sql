@@ -471,6 +471,16 @@ VALUES
 , ( @RecYear ,@SerialNo ,@RecordDate ,@Quantity ,@BatchNo ,@FinTransferID ,@UserID ,@ColorID ,@ToStoreID )
 GO
 
+ALTER PROC MaterialReceivingInsert
+(@RecYear INT,@SerialNo INT,@ReceivingDate DATE,@ManfDate DATE,@POID INT,@InvoiceNo NVARCHAR(50),@InvoiceDate DATE,@QCNO BIGINT,@UserID INT,@InspID INT)
+AS
+INSERT dbo.MaterialReceiving
+        ( RecYear ,SerialNo ,ReceivingDate ,ManfDate ,POID ,InvoiceNo ,InvoiceDate ,QCNO ,UserID ,InspID )
+VALUES  ( @RecYear ,(SELECT ISNULL(MAX(SerialNo), 0) +1 FROM dbo.MaterialReceiving) ,@ReceivingDate ,@ManfDate ,@POID ,@InvoiceNo ,@InvoiceDate ,@QCNO ,@UserID ,@InspID )
+UPDATE dbo.MaterialInspection SET ReceivedApp = 1 WHERE InspID=@InspID
+SELECT IDENT_CURRENT('MaterialReceiving') AS MatReceivingID, SerialNo FROM dbo.MaterialReceiving WHERE MatReceivingID = IDENT_CURRENT('MaterialReceiving')
+GO
+
 --SELECT h.SOID, h.GrandTotal, h.Discount, SUM(d.Quantity * d.Price) subTotal,
 --SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price) afterDiscount
 --FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID

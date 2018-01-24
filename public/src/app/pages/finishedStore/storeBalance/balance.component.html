@@ -152,7 +152,7 @@
       </thead>
     </table>
     <div class="row">
-      <div class="card col-md-4 col-sm-6" *ngFor="let model of (VisibleBalance | filter:srchObj | orderby:orderbyString)" style="border: 2px solid;"
+      <div class="card col-md-6 col-sm-12" *ngFor="let model of (VisibleBalance | filter:srchObj | orderby:orderbyString)" style="border: 2px solid;"
         [style.border-color]="model.Color ? 'green' : 'red'">
         <div class="card-body row">
           <h4 class="text-center text-primary">Code: {{model.ModelCode}}</h4>

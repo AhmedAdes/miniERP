@@ -89,8 +89,8 @@ router.post('/', function (req, res, next) {
                 request.input('Category', matRet.Category);
                 request.execute('MaterialReturnInsert')
                     .then(function (recordset) {
-                        matRetID = recordset[0].MatReturnID;
-                        serial = recordset[0].SerialNo;
+                        matRetID = recordset[0][0].MatReturnID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();

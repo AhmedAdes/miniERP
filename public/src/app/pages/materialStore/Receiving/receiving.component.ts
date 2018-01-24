@@ -90,15 +90,11 @@ export class MatReceivingComponent implements OnInit {
         this.model.InvoiceDate = item.InvoiceDate
         this.model.POID = item.POID
         this.model.ManfDate = item.ManfDate
+        this.model.BatchNo = item.BatchNo
+        this.model.QCNO = item.QCNO
         this.model.RecYear = new Date().getFullYear();
 
-        var Det = new MaterialStoreDetail()
-        Det.MaterialID = item.MaterialID; Det.MaterialName = item.MaterialName; Det.Unit = item.Unit;
-        Det.Quantity = item.QtyApproved; Det.QCNO = item.QCNO; Det.SupName = item.SupName; Det.SupID = item.SupID;
-        Det.QtyApproved = item.QtyApproved; Det.QtyReceived = item.QtyReceived;
-        Det.RecYear = item.RecYear; Det.UserID = item.UserID; Det.UnitPrice = item.UnitPrice;
-        Det.SupplierBatchNo = item.BatchNo; Det.RecordDate = new Date()
-        this.matDetails.push(Det);
+        this.InitiateMatDetail(item);
 
         this.cnvRecDate = this.model.ReceivingDate ? this.HandleDate(new Date(this.model.ReceivingDate)) : this.HandleDate(new Date());
         this.cnvManfDate = this.model.ManfDate ? this.HandleDate(new Date(this.model.ManfDate)) : this.HandleDate(new Date());
@@ -113,6 +109,25 @@ export class MatReceivingComponent implements OnInit {
         this.headerText = 'Create New Material Store Receiving';
         // })
     }
+  private InitiateMatDetail(item: MaterialInspection) {
+    var Det = new MaterialStoreDetail();
+    Det.MaterialID = item.MaterialID;
+    Det.MaterialName = item.MaterialName;
+    Det.Unit = item.Unit;
+    Det.Quantity = item.QtyApproved;
+    Det.QCNO = item.QCNO;
+    Det.SupName = item.SupName;
+    Det.SupID = item.SupID;
+    Det.QtyApproved = item.QtyApproved;
+    Det.QtyReceived = item.QtyReceived;
+    Det.RecYear = item.RecYear;
+    Det.UserID = item.UserID;
+    Det.UnitPrice = item.UnitPrice;
+    Det.SupplierBatchNo = item.BatchNo;
+    Det.RecordDate = new Date();
+    this.matDetails.push(Det);
+  }
+
     LoadDetails(id, state) {
         this.srvRec.getReceiving(id).subscribe(mat => {
             if (mat[0].Category == 'Cloth') {

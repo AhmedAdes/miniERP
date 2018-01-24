@@ -105,8 +105,9 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', finrec.UserID);
                 request.execute('FinishReceivingInsert')
                     .then(function (recordset) {
-                        finRecID = recordset[0].FinReceivingID;
-                        serial = recordset[0].SerialNo;
+                        console.log(recordset)
+                        finRecID = recordset[0][0].FinReceivingID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -121,6 +122,7 @@ router.post('/', function (req, res, next) {
                             request.input('FinEqualizeID', det.FinEqualizeID);
                             request.input('FinReturnID', det.FinReturnID);
                             request.input('FinRejectID', det.FinRejectID);
+                            request.input('FinTransferID', det.FinTransferID);
                             request.input('UserID', det.UserID);
                             request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('FinishDetailInsert')
@@ -231,6 +233,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinEqualizeID', det.FinEqualizeID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailInsert');
@@ -249,6 +252,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinEqualizeID', det.FinEqualizeID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailUpdate');
