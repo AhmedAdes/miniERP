@@ -130,7 +130,7 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
             this.AllStock = btc
             this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
             this.Detmodel.StoreTypeID = this.FromStoreID
-            this.onstrProdTypeChange(this.FromStoreID)
+            // this.onstrProdTypeChange(this.FromStoreID)
             if (this.Detmodel.StoreTypeID && this.EditForm) {
                 // this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
             }

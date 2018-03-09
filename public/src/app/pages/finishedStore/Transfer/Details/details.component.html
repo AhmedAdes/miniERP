@@ -28,19 +28,6 @@
                 <div *ngIf="(detform.controls['ColorID'].touched || submitted) && !detform.controls['ColorID'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.ColorName.Disp}} is required.</div>
             </div>
         </div>
-<<<<<<< HEAD
-        <!-- <div class="form-group row">
-            <label for="StoreTypeID" class="form-control-label col-md-2">{{Detmodel.DisplayNames.StoreType.Disp}}</label>
-            <div class="col-md-10" [ngClass]="{'has-error': (submitted && !detform.controls['strProdType'].valid)}">
-                <select class="form-control" name="StoreTypeID" [(ngModel)]="Detmodel.StoreTypeID" [formControl]="detform.controls['strProdType']">
-                    <option value="">Select a Type ...</option>
-                    <option *ngFor="let i of prodTypes" [value]="i.ID">{{i.name}}</option>
-                </select>
-                <div *ngIf="(detform.controls['strProdType'].touched || submitted) && !detform.controls['strProdType'].valid" class="alert alert-danger">{{Detmodel.DisplayNames.StoreType.Disp}} is required.</div>
-            </div>
-        </div> -->
-=======
->>>>>>> 1d5d3807cf640f04c59e8b9afcdcb73254a518b3
         <div class="form-group row">
             <label for="BatchNo" class="form-control-label col-md-2">{{Detmodel.DisplayNames.BatchNo.Disp}}</label>
             <div class="col-md-4" [ngClass]="{'has-error': (submitted && !detform.controls['BatchNo'].valid)}">
