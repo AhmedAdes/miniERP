@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -40,8 +40,8 @@ router.get('/', function (req, res, next) {
     request.query(`SELECT fr.*, u.UserName, c.MaterialID,c.MaterialName,c.Category,c.Unit, det.Quantity, det.QCNO, det.UnitPrice 
 FROM dbo.MaterialReceiving fr JOIN dbo.MaterialStoreDetails det ON det.MatReceivingID = fr.MatReceivingID 
 JOIN dbo.MaterialCoding c ON c.MaterialID = det.MaterialID JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -58,8 +58,8 @@ router.get('/:id(\\d+)', function (req, res, next) {
     request.query(`SELECT fr.*, u.UserName, c.MaterialID,c.MaterialName,c.Category,c.Unit, det.Quantity, det.QCNO, det.UnitPrice 
 FROM dbo.MaterialReceiving fr JOIN dbo.MaterialStoreDetails det ON det.MatReceivingID = fr.MatReceivingID 
 JOIN dbo.MaterialCoding c ON c.MaterialID = det.MaterialID JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.MatReceivingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -77,7 +77,7 @@ router.post('/', function (req, res, next) {
     var matRecID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -95,9 +95,9 @@ router.post('/', function (req, res, next) {
                 request.input('InspID', matrec.InspID);
                 request.input('UserID', matrec.UserID);
                 request.execute('MaterialReceivingInsert')
-                    .then(function (result) {
-                        matRecID = result.recordset[0].MatReceivingID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        matRecID = recordset[0][0].MatReceivingID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -121,7 +121,7 @@ router.post('/', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -173,7 +173,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -191,11 +191,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('QCNO', matrec.QCNO);
                 request.input('InspID', matrec.InspID);
                 request.input('UserID', matrec.UserID);
-                request.execute('MaterialReceivingUpdate').then(function (result) {
+                request.execute('MaterialReceivingUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.MaterialStoreDetails Where MatReceivingID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -259,7 +259,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -310,7 +310,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -318,7 +318,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('MatReceivingID', req.params.id);
                 request.execute('MaterialReceivingDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

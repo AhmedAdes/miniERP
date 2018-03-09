@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -39,8 +39,8 @@ router.get('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, s.CustName , u.UserName, (SELECT SUM(ABS(Quantity)) FROM dbo.FinishedStoreDetails WHERE FinDispensingID = fr.FinDispensingID GROUP BY FinDispensingID) SumQty 
                 FROM dbo.FinishedDispensing fr LEFT JOIN dbo.vwSalesOrderHeader s ON fr.SOID = s.SOID JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -55,8 +55,8 @@ router.get('/:id', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, s.CustName , u.UserName FROM dbo.FinishedDispensing fr LEFT JOIN dbo.vwSalesOrderHeader s ON fr.SOID = s.SOID 
                     JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.FinDispensingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -73,8 +73,8 @@ router.get('/SearchModel/:model', function (req, res, next) {
     (SELECT SUM(ABS(Quantity)) FROM dbo.FinishedStoreDetails WHERE FinDispensingID = fr.FinDispensingID GROUP BY FinDispensingID) SumQty 
     FROM dbo.FinishedDispensing fr LEFT JOIN dbo.vwSalesOrderHeader s ON fr.SOID = s.SOID JOIN dbo.SystemUsers u ON u.UserID = fr.UserID 
     WHERE fr.FinDispensingID IN (SELECT DISTINCT FinDispensingID FROM dbo.vwFinishStoreDetails WHERE ModelID = ${req.params.model} AND FinDispensingID IS NOT NULL)`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -91,7 +91,7 @@ router.post('/', function (req, res, next) {
     var finDispID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -105,13 +105,12 @@ router.post('/', function (req, res, next) {
                 request.input('DispenseTo', finDisp.DispenseTo);
                 request.input('UserID', finDisp.UserID);
                 request.execute('FinishDispensingInsert')
-                    .then(function (result) {
-                        finDispID = result.recordset[0].FinDispensingID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        finDispID = recordset[0][0].FinDispensingID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
-                            console.log(det);
                             request.input('RecYear', finDisp.RecYear);
                             request.input('SerialNo', serial);
                             request.input('RecordDate', det.RecordDate);
@@ -123,13 +122,14 @@ router.post('/', function (req, res, next) {
                             request.input('FinEqualizeID', det.FinEqualizeID);
                             request.input('FinReturnID', det.FinReturnID);
                             request.input('FinRejectID', det.FinRejectID);
+                            request.input('FinTransferID', det.FinTransferID);
                             request.input('UserID', det.UserID);
                             request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('FinishDetailInsert')
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -181,7 +181,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -195,11 +195,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('SOID', finDisp.SOID);
                 request.input('DispenseTo', finDisp.DispenseTo);
                 request.input('UserID', finDisp.UserID);
-                request.execute('FinishDispensingUpdate').then(function (result) {
+                request.execute('FinishDispensingUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.FinishedStoreDetails Where FinDispensingID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -232,6 +232,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinEqualizeID', det.FinEqualizeID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailInsert');
@@ -250,6 +251,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinEqualizeID', det.FinEqualizeID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailUpdate');
@@ -261,7 +263,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -312,7 +314,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -320,7 +322,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('FinDispensingID', req.params.id);
                 request.execute('FinishDispensingDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

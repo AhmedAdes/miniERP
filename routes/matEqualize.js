@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -38,8 +38,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.MatStoreEqualization fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,8 +54,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.MatStoreEqualization fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.MatEqualizeID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -73,7 +73,7 @@ router.post('/', function (req, res, next) {
     var matEqulID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -87,9 +87,9 @@ router.post('/', function (req, res, next) {
                 request.input('UserID', matEqul.UserID);
                 request.input('Category', matEqul.Category);
                 request.execute('MaterialEqualizationInsert')
-                    .then(function (result) {
-                        matEqulID = result.recordset[0].MatEqualizeID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        matEqulID = recordset[0][0].MatEqualizeID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -111,7 +111,7 @@ router.post('/', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -163,7 +163,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -176,11 +176,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('EqualizeDate', matEqul.EqualizeDate);
                 request.input('EqualizeType', matEqul.EqualizeType);
                 request.input('UserID', matEqul.UserID);
-                request.execute('MaterialEqualizationUpdate').then(function (result) {
+                request.execute('MaterialEqualizationUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.MaterialStoreDetails Where MatEqualizeID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -244,7 +244,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -295,7 +295,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -303,7 +303,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('MatEqualizeID', req.params.id);
                 request.execute('MaterialEqualizationDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

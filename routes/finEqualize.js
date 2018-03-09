@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -39,8 +39,8 @@ router.get('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinEqualizeID = fr.FinEqualizeID GROUP BY FinEqualizeID) SumQty 
             FROM dbo.FinStoreEqualization fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,8 +54,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.FinStoreEqualization fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.FinEqualizeID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -71,8 +71,8 @@ router.get('/SearchModel/:model', function (req, res, next) {
     request.query(`SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinEqualizeID = fr.FinEqualizeID GROUP BY FinEqualizeID) SumQty
     FROM dbo.FinStoreEqualization fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID
     WHERE fr.FinEqualizeID IN (SELECT DISTINCT FinEqualizeID FROM dbo.vwFinishStoreDetails WHERE ModelID = ${req.params.model} AND FinEqualizeID IS NOT NULL)`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -89,7 +89,7 @@ router.post('/', function (req, res, next) {
     var finEqulID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -102,9 +102,9 @@ router.post('/', function (req, res, next) {
                 request.input('EqualizeType', finEqul.EqualizeType);
                 request.input('UserID', finEqul.UserID);
                 request.execute('FinishEqualizeInsert')
-                    .then(function (result) {
-                        finEqulID = result.recordset[0].FinEqualizeID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        finEqulID = recordset[0][0].FinEqualizeID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -119,13 +119,14 @@ router.post('/', function (req, res, next) {
                             request.input('FinDispensingID', det.FinDispensingID);
                             request.input('FinReturnID', det.FinReturnID);
                             request.input('FinRejectID', det.FinRejectID);
+                            request.input('FinTransferID', det.FinTransferID);
                             request.input('UserID', det.UserID);
                             request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('FinishDetailInsert')
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -177,7 +178,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -190,11 +191,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('EqualizeDate', finEqul.EqualizeDate);
                 request.input('EqualizeType', finEqul.EqualizeType);
                 request.input('UserID', finEqul.UserID);
-                request.execute('FinishEqualizeUpdate').then(function (result) {
+                request.execute('FinishEqualizeUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.FinishedStoreDetails Where FinEqualizeID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -227,6 +228,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinDispensingID', det.FinDispensingID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailInsert');
@@ -245,6 +247,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinDispensingID', det.FinDispensingID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailUpdate');
@@ -256,7 +259,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -307,7 +310,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -315,7 +318,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('FinEqualizeID', req.params.id);
                 request.execute('FinishEqualizeDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

@@ -13,6 +13,7 @@ export class FinishedStore {
   ReceivingQty: number;
   DispensingQty: number;
   EqualizeQty: number;
+  TransferQty: number;
 
   DisplayNames = {
     ModelCode: { Disp: 'Model Code كود الموديل' },

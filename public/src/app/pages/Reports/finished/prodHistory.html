@@ -102,6 +102,18 @@
         <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="small-box alert-success">
                 <div class="inner">
+                    <h4>Total Transfers</h4>
+                    <h4>إجمالي التحويلات</h4>
+                    <h3>{{totTrns | number:'1.2-2'}}</h3>
+                    <div>
+                        <button type="button" (click)="showTable = 'Transfer'" class="btn btn-success">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="small-box alert-success">
+                <div class="inner">
                     <h4>Total Returns</h4>
                     <h4>إجمالي المرتجعات</h4>
                     <h3>{{totRet | number:'1.2-2'}}</h3>
@@ -271,7 +283,6 @@
                     <col width="10%" />
                     <col width="10%" />
                     <col width="10%" />
-                    <col width="10%" />
                 </colgroup>
                 <thead class="bg-dark text-white font-weight-bold">
                     <tr>
@@ -288,6 +299,42 @@
                         <td>{{item.RecYear}} / {{item.SerialNo}}</td>
                         <td>{{item.ReturnDate | date:'mediumDate'}}</td>
                         <td>{{item.ReturnFrom}}</td>
+                        <td>{{item.ColorName}}</td>
+                        <td>{{item.BatchNo}}</td>
+                        <td>{{item.Quantity}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="showTable == 'Transfer'">
+            <table class="table table-hover text-center table-bordered table-responsive">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                    <col width="10%" />
+                </colgroup>
+                <thead class="bg-dark text-white font-weight-bold">
+                    <tr>
+                        <th>Year / Serial</th>
+                        <th>Transfer Date</th>
+                        <th>Transfer From</th>
+                        <th>Transfer To</th>
+                        <th>Color Name</th>
+                        <th>BatchNo</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of finTrns">
+                        <td>{{item.RecYear}} / {{item.SerialNo}}</td>
+                        <td>{{item.TransferDate | date:'mediumDate'}}</td>
+                        <td>{{item.FromStore}}</td>
+                        <td>{{item.ToStore}}</td>
                         <td>{{item.ColorName}}</td>
                         <td>{{item.BatchNo}}</td>
                         <td>{{item.Quantity}}</td>

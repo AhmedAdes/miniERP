@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -37,8 +37,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderDetail`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -52,8 +52,8 @@ router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderDetail Where SOID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -69,8 +69,8 @@ router.get('/salesFinDet/:id(\\d+)', function (req, res, next) {
                 (SELECT TOP 1 BatchNo FROM dbo.FinishedStoreDetails f WHERE f.ColorID = s.ColorID GROUP BY ColorID,BatchNo HAVING SUM(Quantity)>=s.Quantity) BatchNo
                 FROM dbo.vwSalesOrderDetail s 
                 WHERE SOID =  ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -89,7 +89,7 @@ router.post('/', function (req, res, next) {
     request.input('Price', sod.Price);
     request.input('ColorID', sod.ColorID);
     request.input('UserID', sod.UserID);
-    request.execute('SalesDetailInsert', function (err, result) {
+    request.execute('SalesDetailInsert', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -97,8 +97,8 @@ router.post('/', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -108,7 +108,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('SOID', req.params.id);
-    request.execute('SalesDetailDelete', function (err, result) {
+    request.execute('SalesDetailDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -116,8 +116,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });

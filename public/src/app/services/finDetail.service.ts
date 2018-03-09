@@ -30,6 +30,9 @@ export class FinDetailService {
   getFinRejectDetail(id: number) {
     return this.http.get(this.url + 'Reject/' + id, this.options).map(res => res.json());
   }
+  getFinTransDetail(id: number) {
+    return this.http.get(this.url + 'Trans/' + id, this.options).map(res => res.json());
+  }
 
   getFinStock(clrid: number) {
     return this.http.get(this.url + 'ClrStock/' + clrid, this.options).map(res => res.json());

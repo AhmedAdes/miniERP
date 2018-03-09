@@ -3,7 +3,7 @@ var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
 var Promise = require('bluebird');
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -38,8 +38,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * FROM dbo.vwSalesOrderHeader`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -52,8 +52,8 @@ router.get('/:id(\\d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * FROM dbo.vwSalesOrderHeader Where SOID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -66,8 +66,8 @@ router.get('/unfinSales', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * FROM dbo.vwSalesOrderHeader Where SOID NOT IN (SELECT SOID FROM dbo.FinishedDispensing WHERE SOID IS NOT NULL)`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -80,8 +80,8 @@ router.get('/finSales', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select * FROM dbo.vwSalesOrderHeader Where SOID IN (SELECT SOID FROM dbo.FinishedDispensing WHERE SOID IS NOT NULL)`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -98,8 +98,8 @@ router.get('/salesByStrType/:id(\\d+).:fromDate.:toDate', function (req, res, ne
                     JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
                     JOIN dbo.Customers c ON c.CustID = h.CustID
                     WHERE d.StoreTypeID = ${req.params.id} AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -116,8 +116,8 @@ router.get('/salesByCust/:id(\\d+).:fromDate.:toDate', function (req, res, next)
                     JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
                     JOIN dbo.Customers c ON c.CustID = h.CustID
                     WHERE c.CustID = ${req.params.id} AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -135,8 +135,8 @@ router.get('/salesByProduct/:id(\\d+).:fromDate.:toDate', function (req, res, ne
                     JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
                     JOIN dbo.Customers c ON c.CustID = h.CustID
                     WHERE m.ModelID = ${req.params.id} AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -156,8 +156,8 @@ router.get('/salesByProductMonths/:id(\\d+).:fromDate.:toDate', function (req, r
                 SELECT MonthDate, (SELECT SUM(d.Quantity * d.Price)  FROM dbo.SalesOrderDetails d JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID
                 JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID JOIN dbo.SalesOrderHeader h ON h.SOID = d.SOID 
                 WHERE m.ModelID=${req.params.id} AND h.SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalAmount from MonthRecursive d`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -173,8 +173,8 @@ router.get('/salesByCntry/:fromDate.:toDate', function (req, res, next) {
                     FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID JOIN dbo.Customers c ON c.CustID = h.CustID 
                     WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
                     GROUP BY c.Country ORDER BY c.Country`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -190,8 +190,8 @@ router.get('/salesByArea/:cntry.:fromDate.:toDate', function (req, res, next) {
                     FROM dbo.SalesOrderHeader h JOIN dbo.SalesOrderDetails d ON d.SOID = h.SOID JOIN dbo.Customers c ON c.CustID = h.CustID 
                     WHERE c.Country = '${req.params.cntry}' AND h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
                     GROUP BY c.Country, c.Area ORDER BY c.Area`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -204,8 +204,8 @@ router.get('/sellingCntry', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT DISTINCT Country FROM dbo.Customers WHERE CustID IN (SELECT CustID FROM dbo.SalesOrderHeader)`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -222,8 +222,8 @@ router.get('/TsellProdQty/:fltr.:fromDate.:toDate', function (req, res, next) {
                     JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID
                     WHERE  h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
                     GROUP BY m.ModelCode, m.ModelName ORDER BY ${req.params.fltr} DESC`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -240,8 +240,8 @@ router.get('/LsellProdQty/:fltr.:fromDate.:toDate', function (req, res, next) {
                     JOIN dbo.ProductColorCoding p ON p.ColorID = d.ColorID JOIN dbo.ProductModelCoding m ON m.ModelID = p.ModelID
                     WHERE  h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'
                     GROUP BY m.ModelCode, m.ModelName ORDER BY ${req.params.fltr} ASC`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -256,8 +256,8 @@ router.get('/compareSales/:month1.:year1.:month2.:year2', function (req, res, ne
     request.query(`SELECT M1.ModelCode, M1.ModelName, M1.Quantity M1Quantity, M1.Amount M1Amount, ISNULL(M2.Quantity,0) M2Quantity, ISNULL(M2.Amount,0) M2Amount 
                     FROM fncMonthSales(${req.params.month1}, ${req.params.year1}) M1 
                     LEFT JOIN (SELECT * FROM dbo.fncMonthSales(${req.params.month2},${req.params.year2})) M2 ON M1.ModelCode = M2.ModelCode`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -274,8 +274,8 @@ router.get('/salesSummary/:fromDate.:toDate', function (req, res, next) {
     (SELECT SUM(Quantity) From dbo.SalesOrderDetails d join dbo.SalesOrderHeader h on d.SOID = h.SOID 
     And h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}') AS TotalProducts 
     FROM dbo.SalesOrderHeader h WHERE h.SODate BETWEEN '${req.params.fromDate}' And '${req.params.toDate}'`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -299,8 +299,8 @@ router.get('/salesSummaryChrt/:fromDate.:toDate', function (req, res, next) {
                 (SELECT SUM(SumQty)  FROM dbo.vwSalesOrderHeader h 
                 WHERE SODate BETWEEN MonthDate AND DATEADD(DAY,-1,DATEADD(MONTH,1,MonthDate))) TotalQty
                 from MonthRecursive d`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -318,7 +318,7 @@ router.get('/incomeTracker/', function (req, res, next) {
         SELECT ISNULL(SUM(PayAmount),0) UnpaidAmount, COUNT(SOPayID) OpenInvoices FROM dbo.SalesOrderPayment WHERE Paid = 0 ;
         SELECT ISNULL(SUM(PayAmount),0) OverDueAmount, COUNT(SOPayID) OverDueInvoices FROM dbo.SalesOrderPayment WHERE Paid = 0 AND PaymentDate < GETDATE();
         SELECT ISNULL(SUM(PayAmount),0) PaidAmount, COUNT(SOPayID) BilledInvoices FROM dbo.SalesOrderPayment WHERE Paid = 1 AND ReceivePaymentDate > DATEADD(MONTH, -1, GETDATE());
-    `, function (err, result) {
+    `, function (err, recordset) {
         if (err) {
             res.json({
                 error: err
@@ -326,9 +326,9 @@ router.get('/incomeTracker/', function (req, res, next) {
             console.log(err);
         }
         res.json({
-            Unpaid: result.recordsets[0],
-            OverDue: result.recordsets[1],
-            Paid: result.recordsets[2]
+            Unpaid: recordset[0],
+            OverDue: recordset[1],
+            Paid: recordset[2]
         });
     })
 });
@@ -336,8 +336,8 @@ router.get('/unpaidInvoices', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderPayment WHERE Paid = 0`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -350,8 +350,8 @@ router.get('/overDueInvoices', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderPayment WHERE Paid = 0 AND PaymentDate < GETDATE()`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -364,8 +364,8 @@ router.get('/paidInvoices', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * FROM dbo.vwSalesOrderPayment WHERE Paid = 1 AND ReceivePaymentDate > DATEADD(MONTH, -1, GETDATE())`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -386,8 +386,8 @@ router.get('/SlsHdModels/:soid', function (req, res, next) {
     LEFT JOIN dbo.FinishedDispensing fd ON fd.SOID = det.SOID 
     LEFT JOIN dbo.FinishedStoreDetails fdet ON fdet.FinDispensingID = fd.FinDispensingID AND fdet.ColorID = c.ColorID
     WHERE det.SOID = ${req.params.soid}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -403,7 +403,7 @@ router.post('/', function (req, res, next) {
     var pays = req.body.payments;
     var SOrderID;
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
 
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
@@ -427,8 +427,8 @@ router.post('/', function (req, res, next) {
                 request.input('SalesRepID', so.SalesRepID);
                 request.input('UserID', so.UserID);
                 request.execute('SalesHeaderInsert')
-                    .then(function (result) {
-                        SOrderID = result.recordset[0].SOID;
+                    .then(function (recordset) {
+                        SOrderID = recordset[0][0].SOID;
                         console.log('SOID: ' + SOrderID);
 
                         promises.push(Promise.map(sod, function (det) {
@@ -456,7 +456,7 @@ router.post('/', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -508,7 +508,7 @@ router.put('/:id', function (req, res, next) {
     var pays = req.body.payments;
     var SOrderID;
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
 
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
@@ -533,7 +533,7 @@ router.put('/:id', function (req, res, next) {
                 request.input('SalesRepID', so.SalesRepID);
                 request.input('UserID', so.UserID);
                 request.execute('SalesHeaderUpdate')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         console.log('Sales Order Updated');
                         var request = trans.request();
                         request.input('SOID', req.params.id);
@@ -567,7 +567,7 @@ router.put('/:id', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -616,7 +616,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('SOID', req.params.id);
-    request.execute('SalesHeaderDelete', function (err, result) {
+    request.execute('SalesHeaderDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -624,8 +624,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -664,8 +664,8 @@ router.get('/SalesGroupPeriod/:groupby.:fromDate.:toDate', function (req, res, n
     }
     let request = new sql.Request(sqlcon);
     request.query(str)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({

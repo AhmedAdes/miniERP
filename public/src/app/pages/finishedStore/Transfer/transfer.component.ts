@@ -79,7 +79,7 @@ export class FinTransferComponent implements OnInit {
     LoadDetails(id, state) {
         this.srvTrns.getTransfer(id).subscribe(mat => {
             this.model = mat[0];
-            this.srvDet.getFinEqualDetail(id).subscribe(det => {
+            this.srvDet.getFinTransDetail(id).subscribe(det => {
                 this.finDetails = det;
                 this.cnvRecDate = this.model.TransferDate ? hf.handleDate(new Date(this.model.TransferDate)) : hf.handleDate(new Date());
                 this.showTable = false;
@@ -124,10 +124,13 @@ export class FinTransferComponent implements OnInit {
                 this.srvTrns.insertTransfer(this.model, this.finDetails).subscribe(ret => {
                     if (ret.error) {
                         hf.handleError(ret.error)
+                        this.stillSaving = false
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => hf.handleError(err));
+                }, err => {
+                  this.stillSaving = false; hf.handleError(err);
+                });
                 break;
             case 'Edit':
                 this.srvTrns.updateTransfer(this.model.FinTransferID, this.model, this.finDetails).subscribe(ret => {
@@ -136,7 +139,9 @@ export class FinTransferComponent implements OnInit {
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => hf.handleError(err));
+                }, err => {
+                  this.stillSaving = false; hf.handleError(err);
+                });
                 break;
             case 'Delete':
                 this.srvTrns.deleteTransfer(this.model.FinTransferID).subscribe(ret => {
@@ -145,7 +150,9 @@ export class FinTransferComponent implements OnInit {
                     } else if (ret.affected > 0) {
                         this.ngOnInit();
                     }
-                }, err => hf.handleError(err));
+                }, err => {
+                  this.stillSaving = false; hf.handleError(err);
+                });
                 break;
 
             default:

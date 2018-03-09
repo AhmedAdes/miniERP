@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -38,8 +38,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.FinishedReject fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,8 +54,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.FinishedReject fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.FinRejectID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -73,7 +73,7 @@ router.post('/', function (req, res, next) {
     var finRejID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -86,9 +86,9 @@ router.post('/', function (req, res, next) {
                 request.input('RejectReason', finRej.RejectReason);
                 request.input('UserID', finRej.UserID);
                 request.execute('FinishRejectInsert')
-                    .then(function (result) {
-                        finRejID = result.recordset[0].FinRejectID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        finRejID = recordset[0][0].FinRejectID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -109,7 +109,7 @@ router.post('/', function (req, res, next) {
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -161,7 +161,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -174,11 +174,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('EqualizeDate', finRej.EqualizeDate);
                 request.input('EqualizeType', finRej.DispenseTo);
                 request.input('UserID', finRej.UserID);
-                request.execute('FinishRejectUpdate').then(function (result) {
+                request.execute('FinishRejectUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.FinishedStoreDetails Where FinRejectID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -240,7 +240,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -291,7 +291,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -299,7 +299,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('FinRejectID', req.params.id);
                 request.execute('FinishRejectDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

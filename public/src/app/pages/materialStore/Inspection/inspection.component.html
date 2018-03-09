@@ -333,7 +333,7 @@
                         <div class="form-group row">
                             <label for="Notes" class="control-label col-md-3">{{srchObj.DisplayNames.Notes.Disp}}</label>
                             <div class="col-md-9">
-                                <textarea rows="2" name="Notes" [(ngModel)]="model.Notes" [formControl]="basicform.controls['Notes']"></textarea>
+                                <textarea class="form-control" rows="2" cols="9" name="Notes" [(ngModel)]="model.Notes" [formControl]="basicform.controls['Notes']"></textarea>
                             </div>
                         </div>
                     </div>
@@ -377,7 +377,7 @@
                             <dd>{{model.SampleQty}}</dd>
                         </dl>
                         <div class="form-group row">
-                            <label for="Approved" class="radio-inline control-label col-md-6">                            
+                            <label for="Approved" class="radio-inline control-label col-md-6">
                                 {{srchObj.DisplayNames.Approved.Disp}}  <input class="" type="checkbox" name="Approved" [(ngModel)]="model.Approved" [formControl]="rlsform.controls['Approved']">
                             </label>
                         </div>
@@ -409,7 +409,7 @@
                         <div class="form-group row">
                             <label for="Notes" class="control-label col-md-3">{{srchObj.DisplayNames.Notes.Disp}}</label>
                             <div class="col-md-9">
-                                <textarea rows="2" name="Notes" [(ngModel)]="model.Notes" [formControl]="rlsform.controls['Notes']"></textarea>
+                                <textarea class="form-control" rows="2" cols="9" name="Notes" [(ngModel)]="model.Notes" [formControl]="rlsform.controls['Notes']"></textarea>
                             </div>
                         </div>
                         <div class="form-group no-print col-md-offset-2 col-md-8">

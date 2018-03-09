@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 var Promise = require('bluebird');
 
 router.use(function (req, res, next) {
@@ -39,8 +39,8 @@ router.get('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinReceivingID = fr.FinReceivingID GROUP BY FinReceivingID) SumQty  
                 FROM dbo.FinishedReceiving fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,8 +54,8 @@ router.get('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT fr.*, u.UserName FROM dbo.FinishedReceiving fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID Where fr.FinReceivingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -71,8 +71,8 @@ router.get('/SearchModel/:model', function (req, res, next) {
     request.query(`SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinReceivingID = fr.FinReceivingID GROUP BY FinReceivingID) SumQty  
     FROM dbo.FinishedReceiving fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID
     WHERE fr.FinReceivingID IN (SELECT DISTINCT FinReceivingID FROM dbo.vwFinishStoreDetails WHERE ModelID = ${req.params.model} AND FinReceivingID IS NOT NULL)`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.status(400).json({
@@ -89,7 +89,7 @@ router.post('/', function (req, res, next) {
     var finRecID, serial;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -104,9 +104,10 @@ router.post('/', function (req, res, next) {
                 request.input('ReceivedFrom', finrec.ReceivedFrom);
                 request.input('UserID', finrec.UserID);
                 request.execute('FinishReceivingInsert')
-                    .then(function (result) {
-                        finRecID = result.recordset[0].FinReceivingID;
-                        serial = result.recordset[0].SerialNo;
+                    .then(function (recordset) {
+                        console.log(recordset)
+                        finRecID = recordset[0][0].FinReceivingID;
+                        serial = recordset[0][0].SerialNo;
 
                         promises.push(Promise.map(details, function (det) {
                             var request = trans.request();
@@ -121,13 +122,14 @@ router.post('/', function (req, res, next) {
                             request.input('FinEqualizeID', det.FinEqualizeID);
                             request.input('FinReturnID', det.FinReturnID);
                             request.input('FinRejectID', det.FinRejectID);
+                            request.input('FinTransferID', det.FinTransferID);
                             request.input('UserID', det.UserID);
                             request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('FinishDetailInsert')
                         }));
 
                         Promise.all(promises)
-                            .then(function (result) {
+                            .then(function (recordset) {
                                 trans.commit().then(function () {
                                     res.json({
                                         returnValue: 1,
@@ -179,7 +181,7 @@ router.put('/:id', function (req, res, next) {
     var details = req.body.details;
 
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -194,11 +196,11 @@ router.put('/:id', function (req, res, next) {
                 request.input('BatchNo', finrec.BatchNo);
                 request.input('ReceivedFrom', finrec.ReceivedFrom);
                 request.input('UserID', finrec.UserID);
-                request.execute('FinishReceivingUpdate').then(function (result) {
+                request.execute('FinishReceivingUpdate').then(function (recordset) {
 
                     var request = trans.request();
                     request.query(`SELECT * From dbo.FinishedStoreDetails Where FinReceivingID=${req.params.id}`)
-                        .then(function (result) {
+                        .then(function (recordset) {
                             var curDet = recordset;
                             console.log(curDet);
                             var addedList = details.filter(function (det) {
@@ -231,6 +233,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinEqualizeID', det.FinEqualizeID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailInsert');
@@ -249,6 +252,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinEqualizeID', det.FinEqualizeID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinRejectID', det.FinRejectID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailUpdate');
@@ -260,7 +264,7 @@ router.put('/:id', function (req, res, next) {
                             }));
 
                             Promise.all(promises)
-                                .then(function (result) {
+                                .then(function (recordset) {
                                     trans.commit().then(function () {
                                         res.json({
                                             returnValue: 1,
@@ -311,7 +315,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var conf = require('../SQLConfig');
-    var connection = new sql.ConnectionPool(conf.config);
+    var connection = new sql.Connection(conf.config);
     connection.connect().then(function () {
         var trans = new sql.Transaction(connection);
         trans.begin()
@@ -319,7 +323,7 @@ router.delete('/:id', function (req, res, next) {
                 var request = trans.request();
                 request.input('FinReceivingID', req.params.id);
                 request.execute('FinishReceivingDelete')
-                    .then(function (result) {
+                    .then(function (recordset) {
                         trans.commit().then(function () {
                             res.json({
                                 returnValue: 1,

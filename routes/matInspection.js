@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -39,8 +39,8 @@ router.get('/', function (req, res, next) {
     request.query(`SELECT i.*, c.MaterialName, c.Unit, c.Category, s.SupName, u.UserName
 FROM dbo.MaterialInspection i JOIN dbo.MaterialCoding c ON i.MaterialID = c.MaterialID
 JOIN dbo.Suppliers s ON i.SupID = s.SupID JOIN dbo.SystemUsers u ON i.UserID = u.UserID`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -58,8 +58,8 @@ router.get('/Pending', function (req, res, next) {
 FROM dbo.MaterialInspection i JOIN dbo.MaterialCoding c ON i.MaterialID = c.MaterialID
 JOIN dbo.Suppliers s ON i.SupID = s.SupID JOIN dbo.SystemUsers u ON i.UserID = u.UserID 
 WHERE i.Approved = 1 AND i.ReceivedApp = 0`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -76,8 +76,8 @@ router.get('/:id(\\d+)', function (req, res, next) {
     request.query(`SELECT i.*, c.MaterialName, c.Unit, c.Category, s.SupName, u.UserName
 FROM dbo.MaterialInspection i JOIN dbo.MaterialCoding c ON i.MaterialID = c.MaterialID
 JOIN dbo.Suppliers s ON i.SupID = s.SupID JOIN dbo.SystemUsers u ON i.UserID = u.UserID Where InspID =${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -113,7 +113,7 @@ router.post('/', function (req, res, next) {
     request.input('SupID', insp.SupID);
     request.input('UserID', insp.UserID);
     request.execute('MaterialInspectionInsert')
-        .then(function (result) {
+        .then(function (recordset) {
             res.json({
                 returnValue: recordset.length + 1,
                 affected: recordset.length + 1 > 0
@@ -149,7 +149,7 @@ router.put('/:id', function (req, res, next) {
     request.input('SupID', insp.SupID);
     request.input('UserID', insp.UserID);
     request.execute('MaterialInspectionUpdate')
-        .then(function (result) {
+        .then(function (recordset) {
             res.json({
                 returnValue: recordset.length + 1,
                 affected: recordset.length + 1 > 0
@@ -166,7 +166,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('InspID', req.params.id);
-    request.execute('MaterialInspectionDelete', function (err, result) {
+    request.execute('MaterialInspectionDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -174,8 +174,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -195,7 +195,7 @@ router.put('/Release/:id', function (req, res, next) {
     request.input('Notes', insp.Notes);
     request.input('UserID', insp.UserID);
     request.execute('MaterialInspectionRelease')
-        .then(function (result) {
+        .then(function (recordset) {
             res.json({
                 returnValue: recordset.length + 1,
                 affected: recordset.length + 1 > 0

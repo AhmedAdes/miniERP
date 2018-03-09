@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require(`jsonwebtoken`);
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -38,7 +38,7 @@ router.get('/', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`Select c.*,u.UserName From dbo.MaterialCoding c Join dbo.SystemUsers u on c.UserID = u.UserID Where Category='Accessories'`)
         .then(function (ret) {
-            res.json(ret.recordset);
+            res.json(ret);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -54,7 +54,7 @@ router.get('/:id', function (req, res, next) {
     var request = new sql.Request(sqlcon);
     request.query(`Select c.*,u.UserName From dbo.MaterialCoding c Join dbo.SystemUsers u on c.UserID = u.UserID Where Category='Accessories' And MaterialID = ${req.params.id}`)
         .then(function (ret) {
-            res.json(ret.recordset);
+            res.json(ret);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -82,7 +82,7 @@ router.post('/', function (req, res, next) {
     request.input('LykraPercent', material.LykraPercent);
     request.input('ShrinkPercent', material.ShrinkPercent);
     request.input('PolyesterPercent', material.PolyesterPercent);
-    request.execute('MaterialCodingInsert', function (err, result) {
+    request.execute('MaterialCodingInsert', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -90,8 +90,8 @@ router.post('/', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -115,7 +115,7 @@ router.put('/:id', function (req, res, next) {
     request.input('ShrinkPercent', material.ShrinkPercent);
     request.input('PolyesterPercent', material.PolyesterPercent);
     request.input('UserID', material.UserID);
-    request.execute('MaterialCodingUpdate', function (err, result) {
+    request.execute('MaterialCodingUpdate', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -123,8 +123,8 @@ router.put('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -134,7 +134,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('MaterialID', req.params.id);
-    request.execute('MaterialCodingDelete', function (err, result) {
+    request.execute('MaterialCodingDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -142,8 +142,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });

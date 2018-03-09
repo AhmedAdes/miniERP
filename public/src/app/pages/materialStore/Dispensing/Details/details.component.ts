@@ -49,6 +49,7 @@ export class MatDispDetailsComponent implements OnInit, OnChanges {
     prepareDetail() {
         this.Detmodel.MaterialID = this.selectedMaterialID;
         this.Detmodel.MaterialName = this.selectedMaterial.MaterialName;
+        this.Detmodel.Unit = this.selectedMaterial.Unit
         // this.Detmodel.ColorName = this.colortext == null ? this.colorList.find(c => c.ColorID == this.Detmodel.ColorID).ColorName : this.colortext;
         this.Detmodel.UserID = this.currentUser.userID;
         this.Detmodel.RecordDate = new Date();

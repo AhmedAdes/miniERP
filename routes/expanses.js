@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -37,8 +37,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query("Select e.*,u.UserName From dbo.Expanses e Join dbo.SystemUsers u on e.UserID = u.UserID")
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -53,8 +53,8 @@ router.get('/:id(//d+)', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`Select e.*,u.UserName From dbo.Expanses e Join dbo.SystemUsers u on e.UserID = u.UserID Where ExpanseID = $${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         }).catch(function (err) {
             if (err) {
                 res.json({
@@ -74,7 +74,7 @@ router.post('/', function (req, res, next) {
     request.input('Amount', expans.Amount);
     request.input('ResPerson', expans.ResPerson);
     request.input('UserID', expans.UserID);
-    request.execute('ExpansesInsert', function (err, result) {
+    request.execute('ExpansesInsert', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -82,8 +82,8 @@ router.post('/', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -99,7 +99,7 @@ router.put('/:id', function (req, res, next) {
     request.input('Amount', expans.Amount);
     request.input('ResPerson', expans.ResPerson);
     request.input('UserID', expans.UserID);
-    request.execute('ExpansesUpdate', function (err, result) {
+    request.execute('ExpansesUpdate', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -107,8 +107,8 @@ router.put('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });
@@ -119,7 +119,7 @@ router.delete('/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.input('ExpanseID', req.params.id);
-    request.execute('ExpansesDelete', function (err, result) {
+    request.execute('ExpansesDelete', function (err, returnValue, affected) {
         if (err) {
             res.json({
                 error: err
@@ -127,8 +127,8 @@ router.delete('/:id', function (req, res, next) {
             console.log(err);
         } else {
             res.json({
-                returnValue: result.returnValue,
-                affected: result.rowsAffected[0]
+                returnValue: returnValue,
+                affected: affected
             });
         }
     });

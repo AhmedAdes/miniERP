@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var sql = require('mssql');
 var jwt = require("jsonwebtoken");
-var sqlcon = sql.globalPool;
+var sqlcon = sql.globalConnection;
 
 router.use(function (req, res, next) {
     // check header or url parameters or post parameters for token
@@ -37,8 +37,8 @@ router.get('/', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * From vwMaterialDetials`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -52,8 +52,8 @@ router.get('/Receiving/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * From vwMaterialDetials Where MatReceivingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -66,8 +66,8 @@ router.get('/Dispensing/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * From vwMaterialDetials Where MatDispensingID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -80,8 +80,8 @@ router.get('/Equalize/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * From vwMaterialDetials Where MatEqualizeID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -94,8 +94,8 @@ router.get('/Return/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * From vwMaterialDetials Where MatReturnID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -108,8 +108,8 @@ router.get('/Reject/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT * From vwMaterialDetials Where MatRejectID = ${req.params.id}`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({
@@ -123,8 +123,8 @@ router.get('/ClrStock/:id', function (req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var request = new sql.Request(sqlcon);
     request.query(`SELECT QCNO, SUM(Quantity) Stock FROM dbo.MaterialStoreDetails Where MaterialID = ${req.params.id} GROUP BY QCNo`)
-        .then(function (result) {
-            res.json(result.recordset);
+        .then(function (recordset) {
+            res.json(recordset);
         })
         .catch(function (err) {
             res.json({

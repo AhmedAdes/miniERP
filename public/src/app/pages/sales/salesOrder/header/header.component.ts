@@ -31,7 +31,7 @@ export class SalesHeaderComponent implements OnInit {
         this.headerForm = fb.group({
             SODate: ['', Validators.required],
             CustID: ['', Validators.required],
-            autoCustID: ['', Validators.required],
+            autoCustID: [''],
             SalesTax: [''],
             Discount: [''],
             DiscountPrcnt: [true],

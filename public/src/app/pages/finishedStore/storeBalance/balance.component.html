@@ -152,7 +152,7 @@
       </thead>
     </table>
     <div class="row">
-      <div class="card col-md-4 col-sm-6" *ngFor="let model of (VisibleBalance | filter:srchObj | orderby:orderbyString)" style="border: 2px solid;"
+      <div class="card col-md-6 col-sm-12" *ngFor="let model of (VisibleBalance | filter:srchObj | orderby:orderbyString)" style="border: 2px solid;"
         [style.border-color]="model.Color ? 'green' : 'red'">
         <div class="card-body row">
           <h4 class="text-center text-primary">Code: {{model.ModelCode}}</h4>
@@ -166,6 +166,7 @@
                   <th class="success">Rec.</th>
                   <th class="danger">Disp.</th>
                   <th class="warning">Equal.</th>
+                  <th class="success">Trans.</th>
                   <th class="info">Stock</th>
                 </tr>
               </thead>
@@ -175,6 +176,7 @@
                   <td class="success">{{str.ReceivingQty}}</td>
                   <td class="danger">{{str.DispensingQty}}</td>
                   <td class="warning">{{str.EqualizeQty}}</td>
+                  <td class="success">{{str.TransferQty}}</td>
                   <td class="info font-weight-bold">{{str.Quantity}}</td>
                 </tr>
               </tbody>
