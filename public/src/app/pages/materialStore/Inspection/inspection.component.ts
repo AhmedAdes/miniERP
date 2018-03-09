@@ -100,8 +100,8 @@ export class MatInspectionComponent implements OnInit {
 
     CreateNew(mat: string) {
         this.model = new MaterialInspection();
-        this.cnvRecDate = this.model.RecDate ? this.HandleDate(new Date(this.model.RecDate)) : this.HandleDate(new Date());
-        this.cnvManfDate = this.model.ManfDate ? this.HandleDate(new Date(this.model.ManfDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.RecDate ? hf.handleDate(new Date(this.model.RecDate)) : hf.handleDate(new Date());
+        this.cnvManfDate = this.model.ManfDate ? hf.handleDate(new Date(this.model.ManfDate)) : hf.handleDate(new Date());
         if (mat == 'Fabrics') {
             this.srvMat.getCloth().subscribe(ret => this.materials = ret)
         } else {
@@ -123,8 +123,8 @@ export class MatInspectionComponent implements OnInit {
     }
     LoadDetails2(id, state, mat) {
         this.model = mat[0];
-        this.cnvRecDate = this.model.RecDate ? this.HandleDate(new Date(this.model.RecDate)) : this.HandleDate(new Date());
-        this.cnvManfDate = this.model.ManfDate ? this.HandleDate(new Date(this.model.ManfDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.RecDate ? hf.handleDate(new Date(this.model.RecDate)) : hf.handleDate(new Date());
+        this.cnvManfDate = this.model.ManfDate ? hf.handleDate(new Date(this.model.ManfDate)) : hf.handleDate(new Date());
         this.rlsform.controls['QtyApproved'].setValidators(Validators.compose([min(0), max(this.model.QtyReceived - this.model.SampleQty)]))
         this.showTable = false;
         this.Formstate = state;
@@ -264,17 +264,6 @@ export class MatInspectionComponent implements OnInit {
             this.rlsform.controls['QtyApproved'].disable();
         }
     }
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
-
     TotalPriceChange(value) {
         if (!value) return
         // var unitPrice = this.model.UnitPrice == null ? 0 : this.model.UnitPrice;

@@ -31,14 +31,12 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
             autoModelID: ['', Validators.required],
             ModelID: ['', Validators.required],
             ColorID: ['', Validators.required],
-            strProdType: ['', Validators.required],
             BatchNo: ['', Validators.required],
             Stock: [''],
             Quantity: ['', [Validators.required, min(0)]],
         });
         this.detform.controls['ModelID'].valueChanges.subscribe(value => this.onProdChange(value));
         this.detform.controls['ColorID'].valueChanges.subscribe(value => this.onColorChange(value));
-        this.detform.controls['strProdType'].valueChanges.subscribe(value => this.onstrProdTypeChange(value));
         this.detform.controls['BatchNo'].valueChanges.subscribe(value => this.onBatchChange(value));
     }
 
@@ -113,7 +111,7 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
             if (this.Detmodel.ColorID && this.EditForm) {
                 this.onColorChange(this.Detmodel.ColorID)
                 if (this.Detmodel.StoreTypeID && this.EditForm) {
-                    this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
+                    // this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
                     if (this.Detmodel.BatchNo && this.EditForm) {
                         this.onBatchChange(this.Detmodel.BatchNo)
                     }
@@ -132,23 +130,23 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
             this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
             this.Detmodel.StoreTypeID = null
             if (this.Detmodel.StoreTypeID && this.EditForm) {
-                this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
+                // this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
             }
         }, err => hf.handleError(err))
     }
-    onstrProdTypeChange(value) {
-        if (!value || !this.prodTypes) {
-            this.Detmodel.BatchNo = null
-            this.Detmodel.Stock = null;
-            return;
-        }
-        this.BatchList = this.AllStock.filter(s => s.StoreTypeID == value)
-        this.Detmodel.BatchNo = null
-        this.Detmodel.Stock = null
-        if (this.Detmodel.BatchNo && this.EditForm) {
-            this.onBatchChange(this.Detmodel.BatchNo)
-        }
-    }
+    // onstrProdTypeChange(value) {
+    //     if (!value || !this.prodTypes) {
+    //         this.Detmodel.BatchNo = null
+    //         this.Detmodel.Stock = null;
+    //         return;
+    //     }
+    //     this.BatchList = this.AllStock.filter(s => s.StoreTypeID == value)
+    //     this.Detmodel.BatchNo = null
+    //     this.Detmodel.Stock = null
+    //     if (this.Detmodel.BatchNo && this.EditForm) {
+    //         this.onBatchChange(this.Detmodel.BatchNo)
+    //     }
+    // }
     onBatchChange(value) {
         if (!value || !this.BatchList) {
             this.Detmodel.Stock = null;

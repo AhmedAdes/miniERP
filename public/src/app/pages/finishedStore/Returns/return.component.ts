@@ -77,20 +77,9 @@ export class FinReturnComponent implements OnInit {
         });
     }
 
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
-
     CreateNew() {
         this.model = new FinishedReturn();
-        this.cnvRecDate = this.model.ReturnDate ? this.HandleDate(new Date(this.model.ReturnDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.ReturnDate ? hf.handleDate(new Date(this.model.ReturnDate)) : hf.handleDate(new Date());
         // this.srvDet.getFinRecDetail().subscribe(siz => {
         this.showTable = false;
         this.Formstate = 'Create';
@@ -102,7 +91,7 @@ export class FinReturnComponent implements OnInit {
             this.model = mat[0];
             this.srvDet.getFinRetDetail(id).subscribe(det => {
                 this.finDetails = det;
-                this.cnvRecDate = this.model.ReturnDate ? this.HandleDate(new Date(this.model.ReturnDate)) : this.HandleDate(new Date());
+                this.cnvRecDate = this.model.ReturnDate ? hf.handleDate(new Date(this.model.ReturnDate)) : hf.handleDate(new Date());
                 this.showTable = false;
                 this.Formstate = state;
                 this.headerText = state == 'Detail' ? `Finished Store Return ${state}s` : `${state} Finished Store Return`;

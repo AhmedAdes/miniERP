@@ -62,16 +62,6 @@ export class MatEqualizeComponent implements OnInit {
         });
     }
 
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
     CreateNew(mat: string) {
         this.model = new MaterialEqualization();
         if (mat == 'Cloth') {
@@ -83,7 +73,7 @@ export class MatEqualizeComponent implements OnInit {
         // })
     }
     ContinueNew() {
-        this.cnvRecDate = this.model.EqualizeDate ? this.HandleDate(new Date(this.model.EqualizeDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.EqualizeDate ? hf.handleDate(new Date(this.model.EqualizeDate)) : hf.handleDate(new Date());
         // this.srvDet.getMatRecDetail().subscribe(siz => {
         this.showTable = false;
         this.Formstate = 'Create';
@@ -102,7 +92,7 @@ export class MatEqualizeComponent implements OnInit {
         this.model = mat[0];
         this.srvDet.getMatEqualDetail(id).subscribe(det => {
             this.matDetails = det;
-            this.cnvRecDate = this.model.EqualizeDate ? this.HandleDate(new Date(this.model.EqualizeDate)) : this.HandleDate(new Date());
+            this.cnvRecDate = this.model.EqualizeDate ? hf.handleDate(new Date(this.model.EqualizeDate)) : hf.handleDate(new Date());
             this.showTable = false;
             this.Formstate = state;
             this.headerText = state == 'Detail' ? `Material Store Equalize ${state}s` : `${state} Material Store Equalize`;

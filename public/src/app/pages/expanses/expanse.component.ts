@@ -43,19 +43,9 @@ export class ExpansesComponent implements OnInit {
         this.TableBack();
     }
 
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
     CreateNew() {
         this.model = new Expanses();
-        this.cnvRecDate = this.model.ExpanseDate ? this.HandleDate(new Date(this.model.ExpanseDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.ExpanseDate ? hf.handleDate(new Date(this.model.ExpanseDate)) : hf.handleDate(new Date());
         this.showTable = false;
         this.Formstate = 'Create';
         this.headerText = 'Create New Expanses';
@@ -72,7 +62,7 @@ export class ExpansesComponent implements OnInit {
     LoadDetails(id, state) {
         this.serv.getExpanses(id).subscribe(mat => {
             this.model = mat[0];
-            this.cnvRecDate = this.model.ExpanseDate ? this.HandleDate(new Date(this.model.ExpanseDate)) : this.HandleDate(new Date());
+            this.cnvRecDate = this.model.ExpanseDate ? hf.handleDate(new Date(this.model.ExpanseDate)) : hf.handleDate(new Date());
             this.showTable = false;
             this.Formstate = state;
             this.headerText = state == 'Detail' ? `Expanses ${state}s` : `${state} Expanses`;

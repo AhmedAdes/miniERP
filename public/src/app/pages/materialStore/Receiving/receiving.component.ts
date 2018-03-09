@@ -71,18 +71,6 @@ export class MatReceivingComponent implements OnInit {
             })
         });
     }
-
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
-
     Receive(item: MaterialInspection) {
         this.model = new MaterialReceiving();
         this.model.InspID = item.InspID
@@ -100,8 +88,8 @@ export class MatReceivingComponent implements OnInit {
         Det.SupplierBatchNo = item.BatchNo; Det.RecordDate = new Date()
         this.matDetails.push(Det);
 
-        this.cnvRecDate = this.model.ReceivingDate ? this.HandleDate(new Date(this.model.ReceivingDate)) : this.HandleDate(new Date());
-        this.cnvManfDate = this.model.ManfDate ? this.HandleDate(new Date(this.model.ManfDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.ReceivingDate ? hf.handleDate(new Date(this.model.ReceivingDate)) : hf.handleDate(new Date());
+        this.cnvManfDate = this.model.ManfDate ? hf.handleDate(new Date(this.model.ManfDate)) : hf.handleDate(new Date());
         if (item.Category == 'Cloth') {
             this.srvMat.getCloth().subscribe(ret => this.materialList = ret)
         } else {
@@ -126,8 +114,8 @@ export class MatReceivingComponent implements OnInit {
         this.model = mat[0];
         this.srvDet.getMatRecDetail(id).subscribe(det => {
             this.matDetails = det;
-            this.cnvRecDate = this.model.ReceivingDate ? this.HandleDate(new Date(this.model.ReceivingDate)) : this.HandleDate(new Date());
-            this.cnvManfDate = this.model.ManfDate ? this.HandleDate(new Date(this.model.ManfDate)) : this.HandleDate(new Date());
+            this.cnvRecDate = this.model.ReceivingDate ? hf.handleDate(new Date(this.model.ReceivingDate)) : hf.handleDate(new Date());
+            this.cnvManfDate = this.model.ManfDate ? hf.handleDate(new Date(this.model.ManfDate)) : hf.handleDate(new Date());
             this.showTable = false;
             this.Formstate = state;
             this.headerText = state == 'Detail' ? `Material Store Receiving ${state}s` : `${state} Material Store Receiving`;

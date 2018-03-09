@@ -41,19 +41,9 @@ export class SupplierComponent implements OnInit {
         this.serv.getSupplier().subscribe(cols => this.collection = cols);
         this.TableBack();
     }
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
     CreateNew() {
         this.model = new Supplier();
-        this.cnvContractDate = this.HandleDate(new Date());
+        this.cnvContractDate = hf.handleDate(new Date());
         this.showTable = false;
         this.Formstate = 'Create';
         this.headerText = 'Create New Supplier';
@@ -62,7 +52,7 @@ export class SupplierComponent implements OnInit {
     EditThis(id: number) {
         this.serv.getSupplier(id).subscribe(mat => {
             this.model = mat[0];
-            this.cnvContractDate = this.HandleDate(new Date(this.model.ContractDate));
+            this.cnvContractDate = hf.handleDate(new Date(this.model.ContractDate));
             this.showTable = false;
             this.Formstate = 'Edit';
             this.headerText = 'Edit Supplier';
@@ -71,7 +61,7 @@ export class SupplierComponent implements OnInit {
     ShowDetails(id: number) {
         this.serv.getSupplier(id).subscribe(mat => {
             this.model = mat[0];
-            this.cnvContractDate = this.HandleDate(new Date(this.model.ContractDate));
+            this.cnvContractDate = hf.handleDate(new Date(this.model.ContractDate));
             this.showTable = false;
             this.Formstate = 'Detail';
             this.headerText = 'Supplier Details';
@@ -80,7 +70,7 @@ export class SupplierComponent implements OnInit {
     Delete(id: number) {
         this.serv.getSupplier(id).subscribe(mat => {
             this.model = mat[0];
-            this.cnvContractDate = this.HandleDate(new Date(this.model.ContractDate));
+            this.cnvContractDate = hf.handleDate(new Date(this.model.ContractDate));
             this.showTable = false;
             this.Formstate = 'Delete';
             this.headerText = 'Delete Supplier';

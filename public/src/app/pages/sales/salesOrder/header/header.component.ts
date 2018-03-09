@@ -3,6 +3,7 @@ import { SalesHeader, CurrentUser, Customer, SalesRep, DeliveryTypes, PayMethods
 import { CustomerService, SalesRepService } from '../../../../services';
 import { Form, FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { CompleterService, CompleterData, CompleterItem } from "ng2-completer";
+import * as hf from '../../../helper.functions'
 
 @Component({
     selector: 'sales-header',
@@ -56,23 +57,13 @@ export class SalesHeaderComponent implements OnInit {
             this.customerList = cols;
             this.CustsList = this.srvCmp.local(cols, "CustName", "CustName").descriptionField("Country").descriptionField("Area");
             // this.CustsList = cols.map(c => {return c.CustName})
-            this.cnvSODate = this.model.SODate ? this.HandleDate(new Date(this.model.SODate)) : this.HandleDate(new Date());
-            this.cnvDeliveryDate = this.model.DeliveryDate ? this.HandleDate(new Date(this.model.DeliveryDate)) : this.HandleDate(new Date());
+            this.cnvSODate = this.model.SODate ? hf.handleDate(new Date(this.model.SODate)) : hf.handleDate(new Date());
+            this.cnvDeliveryDate = this.model.DeliveryDate ? hf.handleDate(new Date(this.model.DeliveryDate)) : hf.handleDate(new Date());
             this.srvRep.getSalesRep().subscribe(Reps => this.repsList = Reps)
             this.model.DiscountPrcnt = true
         });
     }
 
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
     CustSelected(selected){
       if (selected) {
           this.model.CustID = this.customerList.find(c => c.CustName = selected.title).CustID

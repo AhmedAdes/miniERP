@@ -3,7 +3,7 @@
         user: 'sa',
         password: 'ITD@reY0u2',
         server: 'localhost', // You can use 'localhost\\instance' to connect to named instance 
-        database: 'miniERP', //_restore
+        database: 'miniERP_restore', //_restore
         options: {
             encrypt: true // Use this if you're on Windows Azure
         }

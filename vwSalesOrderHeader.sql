@@ -421,6 +421,41 @@ GO
 UPDATE dbo.SalesOrderHeader SET DiscountPrcnt = 1
 UPDATE dbo.SalesOrderHeader SET DiscountPrcnt = 0 WHERE SOID IN (12084)
 GO
+------------------------------------------------------------------------------------
+CREATE TABLE FinishedTransfer
+(
+	FinTransferID INT NOT NULL IDENTITY(1,1) ,
+	RecYear INT,
+	SerialNo INT,
+	TransferDate DATE,
+	FromStoreID INT,
+	ToStoreID INT,
+	UserID INT,
+	CONSTRAINT PK_FinTransfer PRIMARY KEY (FinTransferID)
+)
+GO
+CREATE PROC FinTransferInsert
+@RecYear INT, @SerialNo INT, @TransferDate DATE, @FromStoreID INT,
+@ToStoreID INT, @UserID INT AS
+INSERT FinishedTransfer 
+	(RecYear, SerialNo, TransferDate, FromStoreID, ToStoreID, UserID)
+VALUES (@RecYear, @SerialNo, @TransferDate, @FromStoreID, @ToStoreID, @UserID)
+GO
+
+CREATE PROC FinTransferDelete
+@FinTransferID INT AS
+DELETE FinishedTransfer WHERE FinTransferID=@FinTransferID
+GO
+
+CREATE PROC FinTransferUpdate
+@FinTransferID INT, @RecYear INT, @SerialNo INT, @TransferDate DATE, @FromStoreID INT,
+@ToStoreID INT, @UserID INT AS
+Update  FinishedTransfer SET RecYear=@RecYear, SerialNo=@SerialNo, 
+TransferDate=@TransferDate, FromStoreID=@FromStoreID, ToStoreID=@ToStoreID, UserID=@UserID 
+WHERE FinTransferID=@FinTransferID
+GO
+
+
 
 --SELECT h.SOID, h.GrandTotal, h.Discount, SUM(d.Quantity * d.Price) subTotal,
 --SUM(d.Quantity * d.Price) - (h.Discount /100) * SUM(d.Quantity * d.Price) afterDiscount

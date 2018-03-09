@@ -22,6 +22,7 @@ export * from './finEqualize.service';
 export * from './finTransfer.service';
 export * from './finReturn.service';
 export * from './finReject.service';
+export * from './finTransfer.service';
 export * from './matStore.service';
 export * from './matInspection.service';
 export * from './matReceiving.service';

@@ -72,20 +72,9 @@ export class FinDispensingComponent implements OnInit {
         }, err => hf.handleError(err));
     }
 
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
-
     CreateNew() {
         this.model = new FinishedDispensing();
-        this.cnvRecDate = this.model.DispensingDate ? this.HandleDate(new Date(this.model.DispensingDate)) : this.HandleDate(new Date());
+        this.cnvRecDate = this.model.DispensingDate ? hf.handleDate(new Date(this.model.DispensingDate)) : hf.handleDate(new Date());
         // this.srvDet.getFinRecDetail().subscribe(siz => {
         this.showTable = false;
         this.Formstate = 'Create';
@@ -100,7 +89,7 @@ export class FinDispensingComponent implements OnInit {
                 this.basicform.controls['soID'].setValue(this.model.SOID)
                 this.srvDet.getFinDispDetail(id).subscribe(det => {
                     this.finDetails = det;
-                    this.cnvRecDate = this.model.DispensingDate ? this.HandleDate(new Date(this.model.DispensingDate)) : this.HandleDate(new Date());
+                    this.cnvRecDate = this.model.DispensingDate ? hf.handleDate(new Date(this.model.DispensingDate)) : hf.handleDate(new Date());
                     this.showTable = false;
                     this.Formstate = state;
                     this.headerText = state == 'Detail' ? `Finished Store Dispensing ${state}s` : `${state} Finished Store Dispensing`;

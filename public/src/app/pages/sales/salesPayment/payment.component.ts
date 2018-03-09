@@ -43,16 +43,6 @@ export class PaymentComponent implements OnInit {
         this.TableBack();
     }
 
-    HandleDate(date: Date) {
-        var dd = date.getDate();
-        var mm = date.getMonth() + 1; //January is 0!
-        var yyyy = date.getFullYear();
-
-        var goodDate: Date = new Date(yyyy + "/" + mm + "/" + dd);
-        goodDate.setDate(goodDate.getDate() + 1);
-        var Ret = goodDate.toISOString();
-        return goodDate.toISOString().substring(0, 10);
-    }
     //   CreateNew() {
     //     this.model = new SalesPayment();
     //     this.showTable = false;
@@ -63,8 +53,8 @@ export class PaymentComponent implements OnInit {
     EditThis(id: number) {
         this.serv.getSalesPayment(id).subscribe(mat => {
             this.model = mat[0];
-            this.cnvSODate = this.HandleDate(new Date(this.model.SODate));
-            this.cnvPayDate = this.HandleDate(new Date(this.model.PaymentDate));
+            this.cnvSODate = hf.handleDate(new Date(this.model.SODate));
+            this.cnvPayDate = hf.handleDate(new Date(this.model.PaymentDate));
             this.showTable = false;
             this.Formstate = 'Edit';
             this.headerText = 'Edit Payment';
@@ -73,8 +63,8 @@ export class PaymentComponent implements OnInit {
     ShowDetails(id: number) {
         this.serv.getSalesPayment(id).subscribe(mat => {
             this.model = mat[0];
-            this.cnvSODate = this.HandleDate(new Date(this.model.SODate));
-            this.cnvPayDate = this.HandleDate(new Date(this.model.PaymentDate));
+            this.cnvSODate = hf.handleDate(new Date(this.model.SODate));
+            this.cnvPayDate = hf.handleDate(new Date(this.model.PaymentDate));
             this.showTable = false;
             this.Formstate = 'Detail';
             this.headerText = 'Payment Details';
