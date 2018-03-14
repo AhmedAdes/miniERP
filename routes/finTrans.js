@@ -40,7 +40,7 @@ router.get("/", function(req, res, next) {
   request
     .query(
       `SELECT fr.*, st1.StoreType AS FromStoreName, st2.StoreType AS ToStoreName, u.UserName, 
-      (SELECT SUM(DISTINCT ABS(Quantity)) FROM dbo.FinishedStoreDetails WHERE FinTransferID = fr.FinTransferID GROUP BY FinTransferID) SumQty 
+      (SELECT SUM(ABS(Quantity))/2 FROM dbo.FinishedStoreDetails WHERE FinTransferID = fr.FinTransferID GROUP BY FinTransferID) SumQty 
       FROM dbo.FinishedTransfer fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID
       JOIN dbo.StoreTypes st1 ON fr.FromStoreID = st1.StoreTypeID
       JOIN dbo.StoreTypes st2 ON fr.ToStoreID = st2.StoreTypeID`
@@ -81,7 +81,7 @@ router.get("/SearchModel/:model", function(req, res, next) {
   var request = new sql.Request(sqlcon);
   request
     .query(
-      `SELECT fr.*, u.UserName, (SELECT SUM(Quantity) FROM dbo.FinishedStoreDetails WHERE FinTransferID = fr.FinTransferID GROUP BY FinTransferID) SumQty
+      `SELECT fr.*, u.UserName, (SELECT SUM(ABS(Quantity))/2 FROM dbo.FinishedStoreDetails WHERE FinTransferID = fr.FinTransferID GROUP BY FinTransferID) SumQty
     FROM dbo.FinishedTransfer fr JOIN dbo.SystemUsers u ON u.UserID = fr.UserID
     WHERE fr.FinTransferID IN (SELECT DISTINCT FinTransferID FROM dbo.vwFinishStoreDetails WHERE ModelID = ${
       req.params.model

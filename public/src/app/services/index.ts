@@ -19,7 +19,6 @@ export * from './finReceiving.service';
 export * from './finDetail.service';
 export * from './finDispensing.service';
 export * from './finEqualize.service';
-export * from './finTransfer.service';
 export * from './finReturn.service';
 export * from './finReject.service';
 export * from './finTransfer.service';

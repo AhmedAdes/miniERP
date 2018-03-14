@@ -131,6 +131,10 @@ export class FinTransDetailsComponent implements OnInit, OnChanges {
             this.prodTypes = btc.map(b => { return { ID: b.StoreTypeID, name: b.StoreType } })
             this.Detmodel.StoreTypeID = this.FromStoreID
             // this.onstrProdTypeChange(this.FromStoreID)
+            this.BatchList = this.AllStock.filter(s => s.StoreTypeID == this.FromStoreID)
+            this.Detmodel.BatchNo = this.BatchList[0].BatchNo
+            this.onBatchChange(this.Detmodel.BatchNo)
+
             if (this.Detmodel.StoreTypeID && this.EditForm) {
                 // this.onstrProdTypeChange(this.Detmodel.StoreTypeID)
             }

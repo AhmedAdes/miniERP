@@ -109,7 +109,6 @@ export class StoreBalanceComponent implements OnInit {
             default:
               break;
           }
-          this.sumPackQty += element.Quantity;
         });
       });
     });
