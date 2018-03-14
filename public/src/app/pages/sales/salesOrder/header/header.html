@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="form-group row">
-      <label for="CustID" class="form-control-label col-md-2">{{srchObj.DisplayNames.CustName.Disp}}</label>
+      <label for="CustID" class="form-control-label col-md-2">{{srchObj.DisplayNames.CustName.Disp}}{{model.CustID}}</label>
       <div class="col-md-5">
         <ng2-completer name="ModelID" [(ngModel)]="model.CustName" [formControl]="headerForm.controls['autoCustID']" [datasource]="CustsList"
           [minSearchLength]="0" [selectOnClick]='true' [clearUnselected]='true' [placeholder]="'Search Customers'" [textNoResults]="'No Models found'"

@@ -66,7 +66,7 @@ export class SalesHeaderComponent implements OnInit {
 
     CustSelected(selected){
       if (selected) {
-          this.model.CustID = this.customerList.find(c => c.CustName = selected.title).CustID
+          this.model.CustID = this.customerList.find(c => c.CustName == selected.title).CustID
       } else {
           this.model.CustID = null;
       }
