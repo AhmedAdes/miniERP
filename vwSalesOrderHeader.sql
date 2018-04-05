@@ -102,7 +102,7 @@ SELECT  SOID , SODate , soh.CustID , c.CustName , SalesTax , Discount , Notes , 
         Commisioner , CommisionerTel , soh.UserID , u.UserName, DeliveryType , PayMethod , GrandTotal ,
         soh.SalesRepID , r.SalesPerson, c.ContactPerson, 
 		(SELECT SUM(Quantity) FROM dbo.SalesOrderDetails WHERE SOID = soh.SOID) AS SumQty, DiscountPrcnt,
-		CAST(ISNULL((SELECT SOID FROM dbo.FinishedReturn WHERE SOID = soh.SOID),0) AS BIT) AS haveReturn
+		CAST(ISNULL((SELECT TOP 1 SOID FROM dbo.FinishedReturn WHERE SOID = soh.SOID),0) AS BIT) AS haveReturn
 FROM dbo.SalesOrderHeader soh 
 JOIN dbo.Customers c ON soh.CustID = c.CustID
 LEFT JOIN dbo.SalesRep r ON soh.SalesRepID = r.SalesRepID

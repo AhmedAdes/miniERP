@@ -104,6 +104,7 @@ router.post('/', function (req, res, next) {
                             request.input('FinReturnID', det.FinReturnID);
                             request.input('FinEqualizeID', det.FinEqualizeID);
                             request.input('UserID', det.UserID);
+                            request.input('FinTransferID', det.FinTransferID);
                             request.input('StoreTypeID', det.StoreTypeID);
                             return request.execute('FinishDetailInsert')
                         }));
@@ -211,6 +212,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinDispensingID', det.FinDispensingID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinEqualizeID', det.FinEqualizeID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailInsert');
@@ -229,6 +231,7 @@ router.put('/:id', function (req, res, next) {
                                 request.input('FinDispensingID', det.FinDispensingID);
                                 request.input('FinReturnID', det.FinReturnID);
                                 request.input('FinEqualizeID', det.FinEqualizeID);
+                                request.input('FinTransferID', det.FinTransferID);
                                 request.input('UserID', det.UserID);
                                 request.input('StoreTypeID', det.StoreTypeID);
                                 return request.execute('FinishDetailUpdate');
