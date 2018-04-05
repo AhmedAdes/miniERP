@@ -131,7 +131,7 @@
                         <button (click)="PrintInvoice(item.SOID)" class="btn btn-warning" title="Print Invoice">
                             <i class="icon ion-printer"></i>
                         </button>
-                        <button *ngIf="currentUser.jobClass < 1" (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit">
+                        <button *ngIf="currentUser.jobClass < 3" (click)="EditThis(item.SOID)" class="btn btn-info btn-icon" title="Edit">
                             <i class="icon ion-edit"></i>
                         </button>
                         <button (click)="ShowDetails(item.SOID)" class="btn btn-success btn-icon" title="Details">

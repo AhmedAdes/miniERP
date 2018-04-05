@@ -56,6 +56,7 @@ export class StoreBalanceComponent implements OnInit {
 
   ngOnInit() {
     this.serv.getStoreBalanceAll().subscribe(cols => {
+      console.log(cols)
       this.collection = cols;
       this.sumPackQty = 0;
       this.sumIndvQty = 0;
