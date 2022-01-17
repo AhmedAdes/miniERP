@@ -4,7 +4,9 @@
   "description": "CairoNodeJS",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "prepare": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect"
   },
   "author": {
     "name": "IDIsuperAdmin",
@@ -17,15 +19,17 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "debug": "~2.2.0",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
+    "ejs": "^3.1.6",
+    "express": "^4.16.0",
     "express-session": "^1.15.6",
-    "express-validator": "^2.21.0",
+    "express-validator": "^6.5.0",
     "jsonwebtoken": "^8.1.0",
-    "morgan": "^1.9.0",
+    "morgan": "^1.9.1",
     "mssql": "^3.3.0",
     "serve-favicon": "^2.4.5",
     "stylus": "*",
-    "typescript": "^2.6.2"
-  }
+    "typescript": "^2.6.2",
+    "@snyk/protect": "latest"
+  },
+  "snyk": true
 }
